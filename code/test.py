@@ -9,16 +9,16 @@ from ev3dev2 import display
 from ev3dev2.sensor import lego
 
 
-tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
+#tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 # drive in a turn for 5 rotations of the outer motor
 # the first two parameters can be unit classes or percentages.
-tank_drive.on_for_rotations(SpeedPercent(50), SpeedPercent(75), 10)
+#tank_drive.on_for_rotations(SpeedPercent(50), SpeedPercent(75), 10)
 
 # drive in a different turn for 3 seconds
-tank_drive.on_for_seconds(SpeedPercent(60), SpeedPercent(30), 3)
+#tank_drive.on_for_seconds(SpeedPercent(60), SpeedPercent(30), 3)
 
-infrared_sensor = lego.InfraredSensor(INPUT_4)
+infrared_sensor = lego.InfraredSensor()
 
 disp = display.Display()
 

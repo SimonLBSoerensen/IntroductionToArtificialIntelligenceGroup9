@@ -11,6 +11,23 @@ from ev3dev2 import button
 
 from collections import deque
 import time
+import threading
+import socket
+
+
+udp_packet = None
+def rec_UDP():
+    global udp_packet
+
+    while True:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind(('10.0.0.15', 5000))
+        data, addr = sock.recvfrom(1024)
+        udp_packet = data
+
+
+listen_UDP = threading.Thread(target=rec_UDP)
+listen_UDP.start()
 
 #tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
@@ -44,9 +61,11 @@ while True:
 
     tank_drive.on(avg_dist, avg_dist)
 
-    print(avg_dist)
+    print(avg_dist, udp_packet)
 
     if bt.ENTER:
+        break
+    if udp_packet == b"exit":
         break
 
     time.sleep(0.1)

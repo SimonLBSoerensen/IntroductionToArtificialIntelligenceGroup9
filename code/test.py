@@ -24,6 +24,7 @@ infrared_sensor = lego.UltrasonicSensor()
 
 disp = display.Display()
 
+front = fonts.available()[0]
 
 dists = deque(maxlen=50)
 
@@ -32,5 +33,5 @@ while True:
     dists.append(dist)
     avg_dist = sum(dists)/len(dists)
     print(avg_dist)
-    disp.draw.text((10,10), avg_dist, font=fonts.load('luBS14'))
+    disp.draw.text((10,10), avg_dist, font=front)
     time.sleep(0.1)

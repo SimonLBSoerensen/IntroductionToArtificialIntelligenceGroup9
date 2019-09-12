@@ -24,14 +24,19 @@ infrared_sensor = lego.UltrasonicSensor()
 
 disp = display.Display()
 
-front = fonts.available()[0]
-
 dists = deque(maxlen=50)
+
+tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 while True:
     dist = infrared_sensor.distance_centimeters
     dists.append(dist)
     avg_dist = sum(dists)/len(dists)
+
+    avg_dist = min(avg_dist, 100)
+    avg_dist = max(avg_dist, 0)
+
+    tank_drive.on(avg_dist, avg_dist)
+
     print(avg_dist)
-    disp.draw.text((10,10), avg_dist, font=front)
     time.sleep(0.1)

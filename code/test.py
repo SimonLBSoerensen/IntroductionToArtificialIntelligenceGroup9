@@ -15,15 +15,20 @@ import threading
 import socket
 
 
-udp_packet = None
+udp_packet_recv = "None"
+udp_packet_send = "None"
+
 def rec_UDP():
-    global udp_packet
+    global udp_packet_recv
+    global udp_packet_send
 
     while True:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind(('192.168.43.143', 5000))
         data, addr = sock.recvfrom(1024)
-        udp_packet = data
+        udp_packet_recv = data
+        time.sleep(0.5)
+        sock.sendall(str.encode(udp_packet_send))
 
 listen_UDP = threading.Thread(target=rec_UDP)
 listen_UDP.start()
@@ -57,10 +62,11 @@ while True:
 
     tank_drive.on(avg_dist, avg_dist)
 
-    print(avg_dist, udp_packet)
+    print(avg_dist, udp_packet_recv)
 
-    if udp_packet == b"exit":
+    if udp_packet_recv == b"exit":
         break
+
 
     time.sleep(0.1)
 

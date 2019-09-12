@@ -7,6 +7,7 @@ from ev3dev2 import sensor
 from ev3dev2 import display
 from ev3dev2.sensor import lego
 import ev3dev2.fonts as fonts
+from ev3dev2 import button
 
 from collections import deque
 import time
@@ -24,11 +25,14 @@ infrared_sensor = lego.UltrasonicSensor()
 
 disp = display.Display()
 
-dists = deque(maxlen=50)
+dists = deque(maxlen=5)
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
-tank_drive.on(0, 0)
-exit()
+
+bt = button.Button()
+
+
+
 while True:
     dist = infrared_sensor.distance_centimeters
     dists.append(dist)
@@ -36,8 +40,15 @@ while True:
 
     avg_dist = min(avg_dist, 100)
     avg_dist = max(avg_dist, 0)
+    avg_dist = -avg_dist
 
     tank_drive.on(avg_dist, avg_dist)
 
     print(avg_dist)
+
+    if bt.ENTER:
+        break
+
     time.sleep(0.1)
+
+tank_drive.stop()

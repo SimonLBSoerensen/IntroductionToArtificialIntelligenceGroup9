@@ -3,11 +3,12 @@ from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_D, SpeedPercent, MoveTank
 from ev3dev2.sensor import INPUT_1, INPUT_4
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.led import Leds
-
 from ev3dev2 import sensor
 from ev3dev2 import display
 from ev3dev2.sensor import lego
 
+from collections import deque
+import time
 
 #tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
@@ -22,7 +23,12 @@ infrared_sensor = lego.UltrasonicSensor()
 
 disp = display.Display()
 
+
+dists = deque(maxlen=100)
+
 while True:
     dist = infrared_sensor.distance_centimeters
-    disp.text_grid(dist)
+    dists.append(dist)
+    print(sum(dists)/len(dists))
+    time.sleep(0.5)
 

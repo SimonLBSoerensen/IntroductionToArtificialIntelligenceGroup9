@@ -21,7 +21,7 @@ def rec_UDP():
 
     while True:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind(('0.0.0.0', 5000))
+        sock.bind(('192.168.43.143', 5000))
         data, addr = sock.recvfrom(1024)
         udp_packet = data
 

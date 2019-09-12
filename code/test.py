@@ -21,10 +21,9 @@ def rec_UDP():
 
     while True:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind(('10.0.0.15', 5000))
+        sock.bind(('0.0.0.0', 5000))
         data, addr = sock.recvfrom(1024)
         udp_packet = data
-
 
 listen_UDP = threading.Thread(target=rec_UDP)
 listen_UDP.start()

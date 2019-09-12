@@ -23,6 +23,6 @@ infrared_sensor = lego.UltrasonicSensor()
 disp = display.Display()
 
 while True:
-    dist = infrared_sensor.distance_centimeters()
+    dist = infrared_sensor.distance_centimeters
     disp.text_grid(dist)
 

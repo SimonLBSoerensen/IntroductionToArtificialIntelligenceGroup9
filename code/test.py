@@ -24,11 +24,11 @@ infrared_sensor = lego.UltrasonicSensor()
 disp = display.Display()
 
 
-dists = deque(maxlen=100)
+dists = deque(maxlen=10)
 
 while True:
     dist = infrared_sensor.distance_centimeters
     dists.append(dist)
     print(sum(dists)/len(dists))
-    time.sleep(0.5)
+    time.sleep(0.1)
 

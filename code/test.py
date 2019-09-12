@@ -6,6 +6,7 @@ from ev3dev2.led import Leds
 from ev3dev2 import sensor
 from ev3dev2 import display
 from ev3dev2.sensor import lego
+import ev3dev2.fonts as fonts
 
 from collections import deque
 import time
@@ -24,11 +25,12 @@ infrared_sensor = lego.UltrasonicSensor()
 disp = display.Display()
 
 
-dists = deque(maxlen=10)
+dists = deque(maxlen=50)
 
 while True:
     dist = infrared_sensor.distance_centimeters
     dists.append(dist)
-    print(sum(dists)/len(dists))
+    avg_dist = sum(dists)/len(dists)
+    print(avg_dist)
+    disp.draw.text((10,10), avg_dist, font=fonts.load('luBS14'))
     time.sleep(0.1)
-

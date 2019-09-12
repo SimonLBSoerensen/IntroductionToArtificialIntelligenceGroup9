@@ -45,9 +45,6 @@ dists = deque(maxlen=5)
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
-bt = button.Button()
-
-
 
 while True:
     dist = infrared_sensor.distance_centimeters
@@ -62,8 +59,6 @@ while True:
 
     print(avg_dist, udp_packet)
 
-    if bt.ENTER:
-        break
     if udp_packet == b"exit":
         break
 

@@ -27,7 +27,8 @@ disp = display.Display()
 dists = deque(maxlen=50)
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
-
+tank_drive.on(0, 0)
+exit()
 while True:
     dist = infrared_sensor.distance_centimeters
     dists.append(dist)

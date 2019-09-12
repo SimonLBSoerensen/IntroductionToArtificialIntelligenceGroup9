@@ -18,11 +18,11 @@ from ev3dev2.sensor import lego
 # drive in a different turn for 3 seconds
 #tank_drive.on_for_seconds(SpeedPercent(60), SpeedPercent(30), 3)
 
-infrared_sensor = lego.InfraredSensor()
+infrared_sensor = lego.UltrasonicSensor()
 
 disp = display.Display()
 
 while True:
-    dist = infrared_sensor.distance()
+    dist = infrared_sensor.distance_centimeters()
     disp.text_grid(dist)
 

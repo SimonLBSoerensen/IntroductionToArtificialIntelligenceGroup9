@@ -1,0 +1,7 @@
+{
+  "start_up" : ["start_up.txt"],
+  "end" : ["end.txt"],
+  "sounds" : ["sound.r2d2"],
+  "random" : ["module.dadjokes", "module.pyjokes"],
+  "test" : ["sound.test"]
+}

@@ -78,7 +78,7 @@ for pro_step in motor_pro_steps:
     dist = infrared_sensor.distance_centimeters
     print(dist)
 
-    pro_step = -1 * SpeedPercent(pro_step)
+    pro_step = SpeedPercent(pro_step)
 
     tank_drive.on(pro_step, pro_step)
 
@@ -90,7 +90,7 @@ for pro_step in motor_pro_steps:
     dist = infrared_sensor.distance_centimeters
     print(dist)
 
-    pro_step = -1 * SpeedPercent(pro_step)
+    pro_step = SpeedPercent(pro_step)
 
     tank_drive.on(pro_step, pro_step)
 

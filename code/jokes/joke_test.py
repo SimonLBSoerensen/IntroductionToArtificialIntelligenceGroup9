@@ -7,14 +7,23 @@ import platform
 import glob
 import os
 
+if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
+    base_folder = "code"
+else:
+    import getpass
+
+    username = getpass.getuser()
+    if username == "simon":
+        base_folder = r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code"
+
 platform = platform.platform()
 
 sound = Sound()
 
-with open('overview.json') as json_file:
+with open('code/jokes/overview.json') as json_file:
     overview = json.load(json_file)
 
-with open('sounds.json') as json_file:
+with open('code/jokes/sounds.json') as json_file:
     sounds_overview = json.load(json_file)
 
 
@@ -56,13 +65,6 @@ def play_joke(joke_group=None):
         speak(joke)
 
     elif "sound." in joke_sub_group:
-        if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
-            base_folder = "code/jokes/sounds"
-        else:
-            import getpass
-            username = getpass.getuser()
-            if username == "simon":
-                base_folder = r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\jokes\sounds"
 
         _, sound_group = joke_sub_group.split(".")
 
@@ -72,7 +74,7 @@ def play_joke(joke_group=None):
         if "folder." in sound_file:
             _, sound_folder_path = sound_file.split(".")
 
-            sound_folder_path = base_folder + "/" + sound_folder_path + "/*"
+            sound_folder_path = base_folder + "/jokes/sounds/" + sound_folder_path + "/*"
             files = glob.glob(sound_folder_path)
 
             if len(files) == 0:

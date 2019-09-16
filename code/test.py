@@ -97,3 +97,6 @@ for pro_step in motor_pro_steps:
     time.sleep(sec_par_step)
 
 tank_drive.stop()
+
+
+sound.speak("Are you not entertained")

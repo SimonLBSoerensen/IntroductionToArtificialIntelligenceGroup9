@@ -83,7 +83,6 @@ def play_joke(joke_group=None):
             sound_file = random.choice(files)
         else:
             sound_file = base_folder + "/sounds/" + sound_file
-        print(sound_file)
         ext = sound_file.split(".")[-1]
 
         if ext != "wav":

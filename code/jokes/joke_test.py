@@ -74,7 +74,7 @@ def play_joke(joke_group=None):
         if "folder." in sound_file:
             _, sound_folder_path = sound_file.split(".")
 
-            sound_folder_path = base_folder + "/jokes/sounds/" + sound_folder_path + "/*"
+            sound_folder_path = base_folder + "/sounds/" + sound_folder_path + "/*"
             files = glob.glob(sound_folder_path)
 
             if len(files) == 0:

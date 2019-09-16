@@ -9,65 +9,76 @@ from ev3dev2.sensor import lego
 import ev3dev2.fonts as fonts
 from ev3dev2 import button
 
-from collections import deque
 import time
-import threading
-import socket
+
+def frange(start, end, step = 1, include_end = False):
+    nums = []
+    num = start
+    while num < end:
+        nums.append(num)
+        num += step
+    if include_end:
+        nums.append(end)
+    return nums
 
 
-udp_packet_recv = "None"
-udp_packet_send = "None"
+def morto_curve(time_step, start, end, std_slope = 10):
+    """
+    :param time_step is between 0 and 1 and resepent how fare the time is from 0=start to 1=end:
+    :param start:
+    :param end:
+    :return:
+    """
+    import math
+    if time_step < 0:
+        return start
+    elif time_step > 1:
+        return end
 
-def rec_UDP():
-    global udp_packet_recv
-    global udp_packet_send
+    def std_motor_cureve(x):
+        return 1 / (1 + math.exp(-1 * std_slope * (x - 0.5)))
 
-    while True:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind(('192.168.43.143', 5000))
-        data, addr = sock.recvfrom(1024)
-        udp_packet_recv = data
-        time.sleep(0.5)
-        sock.sendall(str.encode(udp_packet_send))
+    std_motor_pro = std_motor_cureve(time_step)
 
-listen_UDP = threading.Thread(target=rec_UDP)
-listen_UDP.start()
+    diff = end - start
+    diff *= std_motor_pro
 
-#tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
+    motor_pro = start + diff
 
-# drive in a turn for 5 rotations of the outer motor
-# the first two parameters can be unit classes or percentages.
-#tank_drive.on_for_rotations(SpeedPercent(50), SpeedPercent(75), 10)
+    return motor_pro
 
-# drive in a different turn for 3 seconds
-#tank_drive.on_for_seconds(SpeedPercent(60), SpeedPercent(30), 3)
+
+def motor_cheange_sec(start, end, sec, steps):
+    sec_par_step = sec / steps
+    sec_std = 1/sec
+
+    motor_pro = []
+
+    for step in range(steps):
+        sec_step = sec_par_step * step
+        sec_step_std = sec_std * sec_step
+        motor_pro.append(morto_curve(sec_step_std, start, end))
+
+    return motor_pro, sec_par_step
+
+
 
 infrared_sensor = lego.UltrasonicSensor()
 
-disp = display.Display()
-
-dists = deque(maxlen=5)
-
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
+motor_pro_steps, sec_par_step = motor_cheange_sec(0, 50, 5, 100)
 
-while True:
+
+for pro_step in motor_pro_steps:
     dist = infrared_sensor.distance_centimeters
-    dists.append(dist)
-    avg_dist = sum(dists)/len(dists)
+    print(dist)
 
-    avg_dist = min(avg_dist, 100)
-    avg_dist = max(avg_dist, 0)
-    avg_dist = -avg_dist
+    pro_step = SpeedPercent(pro_step)
 
-    tank_drive.on(avg_dist, avg_dist)
+    tank_drive.on(pro_step, pro_step)
 
-    print(avg_dist, udp_packet_recv)
+    time.sleep(sec_par_step)
 
-    if udp_packet_recv == b"exit":
-        break
-
-
-    time.sleep(0.1)
 
 tank_drive.stop()

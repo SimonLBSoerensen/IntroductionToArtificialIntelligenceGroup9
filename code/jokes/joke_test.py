@@ -10,7 +10,7 @@ ev3dev_user = "ai1"
 username = getpass.getuser()
 
 if username == ev3dev_user:
-    base_folder = "ai1/git/code/jokes"
+    base_folder = "/ai1/git/code/jokes"
 else:
     if username == "simon":
         base_folder = r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\jokes"

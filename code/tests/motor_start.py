@@ -52,7 +52,7 @@ def motor_cheange_sec(start, end, sec, steps):
 
     return motor_pro, sec_par_step
 
-motor_pro_steps, sec_par_step = motor_cheange_sec(100, 0, 5, 100)
+motor_pro_steps, sec_par_step = motor_cheange_sec(100, 0, 0.5, 100)
 
 
 secs = []

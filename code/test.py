@@ -8,6 +8,10 @@ from ev3dev2 import display
 from ev3dev2.sensor import lego
 import ev3dev2.fonts as fonts
 from ev3dev2 import button
+from ev3dev2.sound import Sound
+
+sound = Sound()
+sound.speak('I am alive!')
 
 import time
 

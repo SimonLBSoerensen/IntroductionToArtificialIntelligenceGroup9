@@ -8,22 +8,22 @@ import glob
 import os
 
 if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
-    base_folder = "code"
+    base_folder = "code/jokes"
 else:
     import getpass
 
     username = getpass.getuser()
     if username == "simon":
-        base_folder = r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code"
+        base_folder = r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\jokes"
 
 platform = platform.platform()
 
 sound = Sound()
 
-with open('code/jokes/overview.json') as json_file:
+with open(base_folder+'/overview.json') as json_file:
     overview = json.load(json_file)
 
-with open('code/jokes/sounds.json') as json_file:
+with open(base_folder+'/sounds.json') as json_file:
     sounds_overview = json.load(json_file)
 
 
@@ -82,7 +82,7 @@ def play_joke(joke_group=None):
                 return
             sound_file = random.choice(files)
         else:
-            sound_file = base_folder + "/" + sound_file
+            sound_file = base_folder + "/sounds/" + sound_file
         ext = sound_file.split(".")[-1]
 
         if ext != "wav":
@@ -91,7 +91,7 @@ def play_joke(joke_group=None):
         play_sound(sound_file)
 
     else:
-        with open(joke_sub_group) as fp:
+        with open(base_folder+"/"+joke_sub_group) as fp:
             jokes = fp.readlines()
 
         joke = random.choice(jokes)

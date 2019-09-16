@@ -6,7 +6,7 @@ from ev3dev2.sound import Sound
 import platform
 import glob
 import os
-base_folder = "code/jokes"
+platform = platform.platform()
 
 if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
     base_folder = "code/jokes"
@@ -17,7 +17,7 @@ else:
     if username == "simon":
         base_folder = r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\jokes"
 
-platform = platform.platform()
+
 
 sound = Sound()
 

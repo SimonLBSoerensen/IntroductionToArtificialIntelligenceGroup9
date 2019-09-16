@@ -52,7 +52,7 @@ def motor_cheange_sec(start, end, sec, steps):
 
     return motor_pro, sec_par_step
 
-motor_pro_steps, sec_par_step = motor_cheange_sec(0, 100, 5, 100)
+motor_pro_steps, sec_par_step = motor_cheange_sec(100, 0, 5, 100)
 
 
 secs = []
@@ -63,8 +63,8 @@ for pro_step in motor_pro_steps:
         secs.append(secs[-1] + sec_par_step)
 
 
-#plt.plot(secs, motor_pro_steps)
-#plt.show()
+plt.plot(secs, motor_pro_steps)
+plt.show()
 
 
 for pro_step in motor_pro_steps:

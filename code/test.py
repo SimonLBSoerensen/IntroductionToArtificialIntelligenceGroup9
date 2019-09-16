@@ -67,7 +67,7 @@ infrared_sensor = lego.UltrasonicSensor()
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
-motor_pro_steps, sec_par_step = motor_cheange_sec(0, 50, 5, 100)
+motor_pro_steps, sec_par_step = motor_cheange_sec(0, 100, 2, 100)
 
 
 for pro_step in motor_pro_steps:
@@ -80,5 +80,16 @@ for pro_step in motor_pro_steps:
 
     time.sleep(sec_par_step)
 
+motor_pro_steps, sec_par_step = motor_cheange_sec(100, 0, 2, 100)
+
+for pro_step in motor_pro_steps:
+    dist = infrared_sensor.distance_centimeters
+    print(dist)
+
+    pro_step = -1 * SpeedPercent(pro_step)
+
+    tank_drive.on(pro_step, pro_step)
+
+    time.sleep(sec_par_step)
 
 tank_drive.stop()

@@ -7,8 +7,9 @@ import platform
 import glob
 import os
 platform = platform.platform()
-
-if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
+print(platform)
+ev3dev_platform = 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5'
+if platform == ev3dev_platform:
     base_folder = "code/jokes"
 else:
     import getpass
@@ -29,7 +30,7 @@ with open(base_folder+'/sounds.json') as json_file:
 
 
 def play_sound(sound_file):
-    if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
+    if platform == ev3dev_platform:
         sound.play_file(sound_file, play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
     else:
         from playsound import playsound
@@ -38,7 +39,7 @@ def play_sound(sound_file):
 
 def speak(text):
     import pyttsx3
-    if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
+    if platform == ev3dev_platform:
         sound.speak(text, play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
     else:
         import pyttsx3

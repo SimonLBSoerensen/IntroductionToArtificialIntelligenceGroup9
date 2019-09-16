@@ -6,6 +6,7 @@ from ev3dev2.sound import Sound
 import platform
 import glob
 import os
+base_folder = "code/jokes"
 
 if platform == 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5':
     base_folder = "code/jokes"

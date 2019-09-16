@@ -37,7 +37,6 @@ def play_sound(sound_file):
 
 
 def speak(text):
-    import pyttsx3
     if username == ev3dev_user:
         sound.speak(text, play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
     else:

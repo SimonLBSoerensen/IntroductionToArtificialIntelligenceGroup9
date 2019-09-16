@@ -3,21 +3,20 @@ import random
 from dadjokes import Dadjoke
 import pyjokes
 from ev3dev2.sound import Sound
-import platform
+import getpass
 import glob
 import os
-platform = platform.platform()
-print(platform)
-ev3dev_platform = 'Linux-4.4.87-22-ev3dev-ev3-armv5tejl-with-debian-8.5'
-if platform == ev3dev_platform:
+ev3dev_user = "ai1"
+username = getpass.getuser()
+
+if username == ev3dev_user:
     base_folder = "code/jokes"
 else:
-    import getpass
-
-    username = getpass.getuser()
     if username == "simon":
         base_folder = r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\jokes"
-
+    else:
+        print("Define base_folder for the user:", username)
+        exit()
 
 
 sound = Sound()
@@ -30,7 +29,7 @@ with open(base_folder+'/sounds.json') as json_file:
 
 
 def play_sound(sound_file):
-    if platform == ev3dev_platform:
+    if username == ev3dev_user:
         sound.play_file(sound_file, play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
     else:
         from playsound import playsound
@@ -39,7 +38,7 @@ def play_sound(sound_file):
 
 def speak(text):
     import pyttsx3
-    if platform == ev3dev_platform:
+    if username == ev3dev_user:
         sound.speak(text, play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
     else:
         import pyttsx3

@@ -76,7 +76,7 @@ def play_joke(joke_group=None):
             files = glob.glob(sound_folder_path)
 
             if len(files) == 0:
-                print("No files found", f"Looking in {sound_folder_path}")
+                print("No files found", "Looking in ", sound_folder_path)
                 return
             sound_file = random.choice(files)
         else:
@@ -97,8 +97,8 @@ def play_joke(joke_group=None):
 
 
 if __name__ == "__main__":
-    #play_joke("start_up")
-    #play_joke("end")
-    #play_joke("sounds")
-    #play_joke("random")
+    play_joke("start_up")
+    play_joke("end")
+    play_joke("sounds")
+    play_joke("random")
     play_joke("test")

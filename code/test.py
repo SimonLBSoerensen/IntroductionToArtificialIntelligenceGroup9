@@ -28,6 +28,7 @@ color_sensor_r = lego.ColorSensor(sensor_overwie["r_color"])
 gyro_sensor = lego.GyroSensor(sensor_overwie["gryo"])
 
 gyro_sensor.mode = gyro_sensor.MODE_GYRO_G_A
+gyro_sensor.reset()
 
 def get_color():
     return [color_sensor_v.color_name, color_sensor_r.color_name]

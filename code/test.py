@@ -35,9 +35,9 @@ class gyro:
         return self.gyro_sensor.angle - self.offset
 
     def get_angel_and_rate(self):
-        gyro_values = self.gyro_sensor.angle_and_rate
-        gyro_values[0] -= self.offset
-        return gyro_values
+        gyro_angel, gyro_rate = self.gyro_sensor.angle_and_rate
+        gyro_angel -= self.offset
+        return [gyro_angel, gyro_rate]
 
 
 infrared_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])

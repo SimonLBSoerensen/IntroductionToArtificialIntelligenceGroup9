@@ -23,17 +23,20 @@ import motor
 
 
 infrared_sensor = lego.UltrasonicSensor()
+color_sensor = lego.ColorSensor()
 
 #tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 #tank_drive.stop()
 
 while True:
     dist = infrared_sensor.distance_centimeters
-
+    color = color_sensor.color_name
     if dist < 4:
-        print("Grep:", dist)
+        print("Grep:", dist, ". Color: ", color)
     else:
-        print("Not grep:", dist)
+        print("Not grep:", dist, ". Color: ", color)
+
+
 
     time.sleep(0.2)
 

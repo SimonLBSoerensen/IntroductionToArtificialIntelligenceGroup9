@@ -66,13 +66,16 @@ old_angel = angel
 print("Start angel:", angel)
 
 time.sleep(5)
-for to_angel in [90, 180, 270, 360]:
+for angel_diff in [90, 90, 90 ,90]:
     tank_drive.on(SpeedPercent(20), SpeedPercent(-20))
+    angel, angel_rate = gyro_sensor.get_angel_and_rate()
 
-    while angel < to_angel:
+    while angel-old_angel < angel_diff:
         angel, angel_rate = gyro_sensor.get_angel_and_rate()
-        if angel >= to_angel:
+
+        if angel-old_angel >= angel_diff:
             break
+
         print_sensor()
         time.sleep(0.2)
 

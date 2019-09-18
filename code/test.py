@@ -62,18 +62,22 @@ tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 gyro_sensor.reset()
 angel, angel_rate = gyro_sensor.get_angel_and_rate()
+old_angel = angel
 print("Start angel:", angel)
 
 time.sleep(5)
 for to_angel in [90, 180, 270, 360]:
     while angel < to_angel:
         angel, angel_rate = gyro_sensor.get_angel_and_rate()
+        if angel < to_angel:
+            break
+
         tank_drive.on(SpeedPercent(30), SpeedPercent(-30))
         print_sensor()
         time.sleep(0.2)
 
-    tank_drive.stop()
-    print_sensor("Pause at: ")
+    print("Pause angel:", angel, "diff:", angel-old_angel)
+    old_angel = angel
     time.sleep(5)
 
 tank_drive.stop()

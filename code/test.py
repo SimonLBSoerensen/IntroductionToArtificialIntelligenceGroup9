@@ -24,14 +24,13 @@ import motor
 
 infrared_sensor = lego.UltrasonicSensor()
 
-tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
+#tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
+#tank_drive.stop()
+
+while True:
+    print(infrared_sensor.distance_centimeters())
+    time.sleep(0.5)
 
 
-motor.do_motor(0, 100, 0.5, 100, tank_drive)
-
-motor.do_motor(100, 0, 0.5, 100, tank_drive)
-
-
-tank_drive.stop()
 
 joke.play_joke("end")

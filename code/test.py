@@ -19,37 +19,55 @@ import joke
 import time
 import motor
 
-sensor_overwie = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1}
+sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1}
 
 
-infrared_sensor = lego.UltrasonicSensor(sensor_overwie["ultra"])
-color_sensor_v = lego.ColorSensor(sensor_overwie["v_color"])
-color_sensor_r = lego.ColorSensor(sensor_overwie["r_color"])
-gyro_sensor = lego.GyroSensor(sensor_overwie["gryo"])
+class gyro:
+    def __init__(self, gyrosensor_pin, mode='GYRO-G&A'):
+        self.gyro_sensor = lego.GyroSensor(gyrosensor_pin)
+        self.gyro_sensor.mode = mode
+        self.offset = 0
 
-gyro_sensor.mode = gyro_sensor.MODE_GYRO_G_A
+    def reset(self):
+        self.offset = self.gyro_sensor.angle
+
+    def get_angel(self):
+        return self.gyro_sensor.angle - self.offset
+
+    def get_angel_and_rate(self):
+        gyro_values = self.gyro_sensor.angle_and_rate
+        gyro_values[0] -= self.offset
+        return gyro_values
+
+
+infrared_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
+color_sensor_v = lego.ColorSensor(sensor_overview["v_color"])
+color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
+gyro_sensor = gyro(sensor_overview["gryo"])
 
 
 def get_color():
     return [color_sensor_v.color_name, color_sensor_r.color_name]
 
-def print_sensor(komment = ""):
+
+def print_sensor(comment=""):
     dist = infrared_sensor.distance_centimeters
     color = get_color()
-    gyro = gyro_sensor.angle_and_rate
+    gyro = gyro_sensor.get_angel_and_rate()
 
-    print(komment, dist, color, gyro)
+    print(comment, dist, color, gyro)
+
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 gyro_sensor.reset()
-angel, angel_rate = gyro_sensor.angle_and_rate
+angel, angel_rate = gyro_sensor.get_angel_and_rate()
 print("Start angel:", angel)
 
 time.sleep(5)
 for to_angel in [90, 180, 270, 360]:
     while angel < to_angel:
-        angel, angel_rate = gyro_sensor.angle_and_rate
+        angel, angel_rate = gyro_sensor.get_angel_and_rate()
         tank_drive.on(SpeedPercent(30), SpeedPercent(-30))
         print_sensor()
         time.sleep(0.2)
@@ -58,18 +76,6 @@ for to_angel in [90, 180, 270, 360]:
     print_sensor("Pause at: ")
     time.sleep(5)
 
-
-#
-#tank_drive.stop()
-
-
-
-
-
-
-
-    time.sleep(0.2)
-
-
+tank_drive.stop()
 
 #joke.play_joke("end")

@@ -10,6 +10,12 @@ import ev3dev2.fonts as fonts
 from ev3dev2 import button
 from ev3dev2.sound import Sound
 
+import sys
+sys.path.insert(0, "/git/code/lib")
+
+
+
+
 sound = Sound()
 sound.speak('I am alive!')
 

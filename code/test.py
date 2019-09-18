@@ -11,13 +11,10 @@ from ev3dev2 import button
 from ev3dev2.sound import Sound
 
 import sys
-sys.path.insert(0, "/git/code/lib")
+sys.path.insert(0, "/home/ai1/git/code/lib")
+import joke
 
-
-
-
-sound = Sound()
-sound.speak('I am alive!')
+joke.play_joke("start_up")
 
 import time
 
@@ -104,5 +101,4 @@ for pro_step in motor_pro_steps:
 
 tank_drive.stop()
 
-
-sound.speak("Are you not entertained")
+joke.play_joke("end")

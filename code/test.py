@@ -25,7 +25,7 @@ sensor_overwie = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gry
 infrared_sensor = lego.UltrasonicSensor(sensor_overwie["ultra"])
 color_sensor_v = lego.ColorSensor(sensor_overwie["v_color"])
 color_sensor_r = lego.ColorSensor(sensor_overwie["r_color"])
-
+gyro_sensor = lego.GyroSensor(sensor_overwie["gryo"])
 
 def get_color():
     return [color_sensor_v.color_name, color_sensor_r.color_name]
@@ -37,10 +37,12 @@ def get_color():
 while True:
     dist = infrared_sensor.distance_centimeters
     color = get_color()
+    gyro = gyro_sensor.angle_and_rate
+
     if dist < 4:
-        print("Grep:", dist, ". Color: ", color)
+        print("Grep:", dist, ". Color: ", color, ". Gryo:", gyro)
     else:
-        print("Not grep:", dist, ". Color: ", color)
+        print("Not grep:", dist, ". Color: ", color, ". Gryo:", gyro)
 
 
 

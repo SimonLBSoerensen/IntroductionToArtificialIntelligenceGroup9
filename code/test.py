@@ -77,7 +77,7 @@ for angel_diff in [90, 90, 90, 90]:
             break
 
         print_sensor()
-        time.sleep(0.1)
+        #time.sleep(0.1)
 
     tank_drive.stop()
     print("Pause angel:", angel, "diff:", angel-old_angel)

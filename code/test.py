@@ -28,8 +28,14 @@ infrared_sensor = lego.UltrasonicSensor()
 #tank_drive.stop()
 
 while True:
-    print(infrared_sensor.distance_centimeters())
-    time.sleep(0.5)
+    dist = infrared_sensor.distance_centimeters
+
+    if dist < 4:
+        print("Grep:", dist)
+    else:
+        print("Not grep:", dist)
+
+    time.sleep(0.2)
 
 
 

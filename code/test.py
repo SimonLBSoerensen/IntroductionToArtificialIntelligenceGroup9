@@ -67,7 +67,7 @@ print("Start angel:", angel)
 
 time.sleep(5)
 for to_angel in [90, 180, 270, 360]:
-    tank_drive.on(SpeedPercent(30), SpeedPercent(-30))
+    tank_drive.on(SpeedPercent(20), SpeedPercent(-20))
 
     while angel < to_angel:
         angel, angel_rate = gyro_sensor.get_angel_and_rate()

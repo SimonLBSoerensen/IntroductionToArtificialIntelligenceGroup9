@@ -41,8 +41,12 @@ def print_sensor():
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
+angel, angel_rate = gyro_sensor.angle_and_rate
+print("Start angel", angel)
+time.sleep(5)
 for to_angel in [90, 180, 270, 360]:
-    while gyro_sensor.angle < to_angel:
+    while angel < to_angel:
+        angel, angel_rate = gyro_sensor.angle_and_rate
         tank_drive.on(SpeedPercent(30), SpeedPercent(-30))
         print_sensor()
         time.sleep(0.2)

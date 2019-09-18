@@ -28,22 +28,24 @@ color_sensor_r = lego.ColorSensor(sensor_overwie["r_color"])
 gyro_sensor = lego.GyroSensor(sensor_overwie["gryo"])
 
 gyro_sensor.mode = gyro_sensor.MODE_GYRO_G_A
-gyro_sensor.reset()
+
 
 def get_color():
     return [color_sensor_v.color_name, color_sensor_r.color_name]
 
-def print_sensor():
+def print_sensor(komment = ""):
     dist = infrared_sensor.distance_centimeters
     color = get_color()
     gyro = gyro_sensor.angle_and_rate
 
-    print(dist, color, gyro)
+    print(komment, dist, color, gyro)
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
+gyro_sensor.reset()
 angel, angel_rate = gyro_sensor.angle_and_rate
-print("Start angel", angel)
+print("Start angel:", angel)
+
 time.sleep(5)
 for to_angel in [90, 180, 270, 360]:
     while angel < to_angel:
@@ -53,6 +55,7 @@ for to_angel in [90, 180, 270, 360]:
         time.sleep(0.2)
 
     tank_drive.stop()
+    print_sensor("Pause at: ")
     time.sleep(5)
 
 

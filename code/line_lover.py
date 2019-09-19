@@ -101,5 +101,6 @@ while True:
 
         while touchSensor.is_pressed:
             if round(time.time() - touchtime) > 5:
+                print("Reset")
                 restart()
         break

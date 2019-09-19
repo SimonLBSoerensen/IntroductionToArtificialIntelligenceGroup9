@@ -141,8 +141,8 @@ ax.set_zlabel("Motor left")
 
 plt.show()
 
-np.save("motor_l_sampels.npy", motor_l_sampels)
-np.save("motor_r_sampels.npy", motor_r_sampels)
-np.save("angel_sampel_space.npy", angel_sampel_space)
+np.save("motor_l_samples.npy", motor_l_sampels)
+np.save("motor_r_samples.npy", motor_r_sampels)
+np.save("angel_sample_space.npy", angel_sampel_space)
 np.save("dist_sample_space.npy", dist_sample_space)
 

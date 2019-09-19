@@ -42,17 +42,21 @@ dist_sample_space = np.load("/home/ai1/git/code/dist_sample_space.npy")
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
+gyro_sensor.reset()
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 while True:
-    dist = ultrasonicSensor_sensor.distance_centimeters
     angel = gyro_sensor.get_angel()
+    dist = ultrasonicSensor_sensor.distance_centimeters
 
-    dist_idx = find_nearest(dist_sample_space, dist)
     angel_idx = find_nearest(angel_sampel_space, angel)
+    dist_idx = find_nearest(dist_sample_space, dist)
+
 
     motor_l_pro = motor_l_sampels[angel_idx, dist_idx]
     motor_r_pro = motor_r_sampels[angel_idx, dist_idx]
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
+
+    print(angel, dist, motor_l_pro, motor_r_pro)

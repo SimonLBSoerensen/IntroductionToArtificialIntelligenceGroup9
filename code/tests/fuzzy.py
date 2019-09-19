@@ -90,7 +90,7 @@ system.view()
 plt.show()
 
 
-angel_dist_pre = 40
+angel_dist_pre = 100
 
 sim = ctrl.ControlSystemSimulation(system, flush_after_run=angel_dist_pre * angel_dist_pre + 1)
 
@@ -116,24 +116,39 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # Required for 3D plotting
 
 fig = plt.figure(figsize=(8, 8))
-ax = fig.add_subplot(121, projection='3d')
+ax = fig.add_subplot(221, projection='3d')
 
 surf = ax.plot_surface(angel_sampel, dist_sample, motor_l_sampels, rstride=1, cstride=1, cmap='viridis',
                        linewidth=0.4, antialiased=True)
-
-#cset = ax.contourf(angel_sampel, dist_sample, motor_l_sampels, zdir='z', offset=np.min(motor_l_sampels), cmap='viridis', alpha=0.5)
-#cset = ax.contourf(angel_sampel, dist_sample, motor_l_sampels, zdir='x', offset=np.max(angel_sampel), cmap='viridis', alpha=0.5)
-#cset = ax.contourf(angel_sampel, dist_sample, motor_l_sampels, zdir='y', offset=np.max(dist_sample), cmap='viridis', alpha=0.5)
 
 ax.set_xlabel("Angel")
 ax.set_ylabel("Distance")
 ax.set_zlabel("Motor left")
 
 #fig = plt.figure(figsize=(8, 8))
-ax = fig.add_subplot(122, projection='3d')
+ax = fig.add_subplot(222, projection='3d')
 cset = ax.contourf(angel_sampel, dist_sample, motor_l_sampels, zdir='z', offset=np.min(motor_l_sampels), cmap='viridis', alpha=0.5)
 cset = ax.contourf(angel_sampel, dist_sample, motor_l_sampels, zdir='x', offset=np.max(angel_sampel), cmap='viridis', alpha=0.5)
 cset = ax.contourf(angel_sampel, dist_sample, motor_l_sampels, zdir='y', offset=np.max(dist_sample), cmap='viridis', alpha=0.5)
+
+ax.set_xlabel("Angel")
+ax.set_ylabel("Distance")
+ax.set_zlabel("Motor left")
+
+ax = fig.add_subplot(223, projection='3d')
+
+surf = ax.plot_surface(angel_sampel, dist_sample, motor_r_sampels, rstride=1, cstride=1, cmap='viridis',
+                       linewidth=0.4, antialiased=True)
+
+ax.set_xlabel("Angel")
+ax.set_ylabel("Distance")
+ax.set_zlabel("Motor left")
+
+#fig = plt.figure(figsize=(8, 8))
+ax = fig.add_subplot(224, projection='3d')
+cset = ax.contourf(angel_sampel, dist_sample, motor_r_sampels, zdir='z', offset=np.min(motor_r_sampels), cmap='viridis', alpha=0.5)
+cset = ax.contourf(angel_sampel, dist_sample, motor_r_sampels, zdir='x', offset=np.max(angel_sampel), cmap='viridis', alpha=0.5)
+cset = ax.contourf(angel_sampel, dist_sample, motor_r_sampels, zdir='y', offset=np.max(dist_sample), cmap='viridis', alpha=0.5)
 
 ax.set_xlabel("Angel")
 ax.set_ylabel("Distance")

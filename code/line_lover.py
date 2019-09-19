@@ -71,6 +71,7 @@ while True:
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
 
-    print([np.round(angel, 2), np.round(angel_round, 2)],
-          [np.round(dist, 2), np.round(dist_round, 2)],
-          [np.round(motor_l_pro, 2), np.round(motor_r_pro, 2)])
+
+    print(["{:.2f}".format(angel),       "{:.2f}".format(angel_round)],
+          ["{:.2f}".format(dist),        "{:.2f}".format(dist_round)],
+          ["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)])

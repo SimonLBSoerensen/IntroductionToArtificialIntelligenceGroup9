@@ -35,10 +35,10 @@ def find_nearest(array, value):
     return idx
 
 
-motor_l_samples = np.load("/home/ai1/git/code/test/motor_l_samples.npy")
-motor_r_samples = np.load("/home/ai1/git/code/test/motor_r_samples.npy")
-angel_sample_space = np.load("/home/ai1/git/code/test/angel_sample_space.npy")
-dist_sample_space = np.load("/home/ai1/git/code/test/dist_sample_space.npy")
+motor_l_samples = np.load("/home/ai1/git/code/tests/motor_l_samples.npy")
+motor_r_samples = np.load("/home/ai1/git/code/tests/motor_r_samples.npy")
+angel_sample_space = np.load("/home/ai1/git/code/tests/angel_sample_space.npy")
+dist_sample_space = np.load("/home/ai1/git/code/tests/dist_sample_space.npy")
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
@@ -59,10 +59,12 @@ while True:
     angel_idx = find_nearest(angel_sample_space, angel)
     dist_idx = find_nearest(dist_sample_space, dist)
 
+    angel_round = angel_sample_space[angel_idx]
+    dist_round = dist_sample_space[dist_idx]
 
     motor_l_pro = motor_l_samples[angel_idx, dist_idx]
     motor_r_pro = motor_r_samples[angel_idx, dist_idx]
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
 
-    print(angel, dist, motor_l_pro, motor_r_pro)
+    print([angel, angel_round], [dist, dist_round], [motor_l_pro, motor_r_pro])

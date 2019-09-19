@@ -102,7 +102,7 @@ while True:
         tank_drive.off()
 
         while touchSensor.is_pressed:
-            if round(time.time() - touchtime) > 5:
+            if round(time.time() - touchtime) > 1:
                 stop = False
 
         if stop:

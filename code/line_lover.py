@@ -65,7 +65,6 @@ dist_old = 255
 
 while True:
     angel = gyro_sensor.get_angel()
-    angel *= -1
 
     dist = ultrasonicSensor_sensor.distance_centimeters
 

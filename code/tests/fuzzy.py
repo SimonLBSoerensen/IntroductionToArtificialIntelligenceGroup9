@@ -101,7 +101,7 @@ system.view()
 plt.show()
 
 
-angel_dist_pre = 15
+angel_dist_pre = 100
 
 sim = ctrl.ControlSystemSimulation(system, flush_after_run=angel_dist_pre * angel_dist_pre + 1)
 
@@ -182,12 +182,12 @@ plt.title("Right motor")
 
 plt.show()
 
-np.save("motor_l_samples.npy", motor_l_sampels)
-np.save("motor_r_samples.npy", motor_r_sampels)
-np.save("angel_sample_space.npy", angel_sampel_space)
-np.save("dist_sample_space.npy", dist_sample_space)
+#np.save("motor_l_samples.npy", motor_l_sampels)
+#np.save("motor_r_samples.npy", motor_r_sampels)
+#np.save("angel_sample_space.npy", angel_sampel_space)
+#np.save("dist_sample_space.npy", dist_sample_space)
 
-motor_l_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_l_samples.npy")
-motor_r_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_r_samples.npy")
-angel_sample_space = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\angel_sample_space.npy")
-dist_sample_space = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\dist_sample_space.npy")
+#motor_l_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_l_samples.npy")
+#motor_r_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_r_samples.npy")
+#angel_sample_space = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\angel_sample_space.npy")
+#dist_sample_space = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\dist_sample_space.npy")

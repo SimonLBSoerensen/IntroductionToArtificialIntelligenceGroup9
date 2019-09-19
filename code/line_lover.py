@@ -94,6 +94,8 @@ while True:
           ["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)])
 
     if touchSensor.is_pressed:
+        stop = False
+
         touchtime = time.time()
 
         tank_drive.stop()
@@ -101,6 +103,7 @@ while True:
 
         while touchSensor.is_pressed:
             if round(time.time() - touchtime) > 5:
-                print("Reset")
-                restart()
-        break
+                stop = True
+
+        if stop:
+            break

@@ -94,7 +94,7 @@ while True:
           ["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)])
 
     if touchSensor.is_pressed:
-        stop = False
+        stop = True
 
         touchtime = time.time()
 
@@ -103,7 +103,9 @@ while True:
 
         while touchSensor.is_pressed:
             if round(time.time() - touchtime) > 5:
-                stop = True
+                stop = False
 
         if stop:
             break
+        else:
+            gyro_sensor.reset()

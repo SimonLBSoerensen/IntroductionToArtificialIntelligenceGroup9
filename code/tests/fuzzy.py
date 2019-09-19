@@ -15,6 +15,7 @@ def load_dict_from_file(filename):
     return dict
 
 plot_vars = False
+save_sampels = True
 
 # Sparse universe makes calculations faster, without sacrifice accuracy.
 # Only the critical points are included here; making it higher resolution is
@@ -62,7 +63,7 @@ if plot_vars:
 rules = []
 
 rule = ctrl.Rule(antecedent=(angle_var["left"]),
-                 consequent=(motor_l_var["fast"]),
+                 consequent=(motor_l_var["normal"]),
                  label="angel: left")
 rules.append(rule)
 
@@ -72,7 +73,7 @@ rule = ctrl.Rule(antecedent=(~angle_var["left"]),
 rules.append(rule)
 
 rule = ctrl.Rule(antecedent=(angle_var["right"]),
-                 consequent=(motor_r_var["fast"]),
+                 consequent=(motor_r_var["normal"]),
                  label="angel: right")
 rules.append(rule)
 
@@ -87,7 +88,7 @@ rule = ctrl.Rule(antecedent=(distance_var["close"]),
 rules.append(rule)
 
 rule = ctrl.Rule(antecedent=(distance_var["medium"]),
-                 consequent=(motor_l_var["slow"], motor_r_var["slow"]),
+                 consequent=(motor_l_var["normal"], motor_r_var["normal"]),
                  label="distance: medium")
 rules.append(rule)
 
@@ -131,7 +132,7 @@ for i_angle in range(len(angel_sampel_space)):
 
         index_dict[(angel, dist)] = [i_angle, j_dist]
 
-save_dict_to_file(index_dict, "index_dict.pkl")
+
 
 # Plot the result in pretty 3D with alpha blending
 import matplotlib.pyplot as plt
@@ -182,10 +183,12 @@ plt.title("Right motor")
 
 plt.show()
 
-#np.save("motor_l_samples.npy", motor_l_sampels)
-#np.save("motor_r_samples.npy", motor_r_sampels)
-#np.save("angel_sample_space.npy", angel_sampel_space)
-#np.save("dist_sample_space.npy", dist_sample_space)
+if save_sampels:
+    np.save("motor_l_samples.npy", motor_l_sampels)
+    np.save("motor_r_samples.npy", motor_r_sampels)
+    np.save("angel_sample_space.npy", angel_sampel_space)
+    np.save("dist_sample_space.npy", dist_sample_space)
+    save_dict_to_file(index_dict, "index_dict.pkl")
 
 #motor_l_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_l_samples.npy")
 #motor_r_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_r_samples.npy")

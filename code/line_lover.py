@@ -10,8 +10,14 @@ from ev3dev2.sensor import lego
 import ev3dev2.fonts as fonts
 from ev3dev2 import button
 from ev3dev2.sound import Sound
-
+import time
 sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1, "touch": INPUT_3}
+
+def restart():
+    import os
+    import sys
+    os.startfile(sys.argv[0])
+    sys.exit()
 
 class gyro:
     def __init__(self, gyrosensor_pin, mode='GYRO-G&A'):
@@ -88,7 +94,12 @@ while True:
           ["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)])
 
     if touchSensor.is_pressed:
-        break
+        touchtime = time.localtime()
 
-tank_drive.stop()
-tank_drive.off()
+        tank_drive.stop()
+        tank_drive.off()
+
+        while touchSensor.is_pressed:
+            if round(time.localtime() - touchtime) > 5:
+                restart()
+        break

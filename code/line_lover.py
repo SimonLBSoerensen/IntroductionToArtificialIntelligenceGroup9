@@ -48,8 +48,12 @@ tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 dist_old = 255
 
+
+
 while True:
     angel = gyro_sensor.get_angel()
+    angel *= -1
+
     dist = ultrasonicSensor_sensor.distance_centimeters
 
     if dist == 255:
@@ -67,4 +71,6 @@ while True:
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
 
-    print([angel, angel_round], [dist, dist_round], [motor_l_pro, motor_r_pro])
+    print([np.round(angel, 2), np.round(angel_round, 2)],
+          [np.round(dist, 2), np.round(dist_round, 2)],
+          [np.round(motor_l_pro, 2), np.round(motor_r_pro, 2)])

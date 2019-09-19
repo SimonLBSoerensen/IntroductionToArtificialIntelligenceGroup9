@@ -35,10 +35,10 @@ def find_nearest(array, value):
     return idx
 
 
-motor_l_sampels = np.load("motor_l_sampels.npy")
-motor_r_sampels = np.load("motor_r_sampels.npy")
-angel_sampel_space = np.load("angel_sampel_space.npy")
-dist_sample_space = np.load("dist_sample_space.npy")
+motor_l_sampels = np.load("/home/ai1/git/code/motor_l_sampels.npy")
+motor_r_sampels = np.load("/home/ai1/git/code/motor_r_sampels.npy")
+angel_sampel_space = np.load("/home/ai1/git/code/angel_sampel_space.npy")
+dist_sample_space = np.load("/home/ai1/git/code/dist_sample_space.npy")
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])

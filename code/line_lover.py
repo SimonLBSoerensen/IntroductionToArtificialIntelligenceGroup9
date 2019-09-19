@@ -53,11 +53,25 @@ def find_nearest(array, value):
     return array[idx]
 
 
-motor_l_samples = np.load("/home/ai1/git/code/tests/motor_l_samples.npy")
-motor_r_samples = np.load("/home/ai1/git/code/tests/motor_r_samples.npy")
-angel_sample_space = np.load("/home/ai1/git/code/tests/angel_sample_space.npy")
-dist_sample_space = np.load("/home/ai1/git/code/tests/dist_sample_space.npy")
-index_dict = load_dict_from_file("/home/ai1/git/code/tests/index_dict.pkl")
+class FuzzyStraight():
+    def __init__(self):
+        self.motor_l_samples = np.load("/home/ai1/git/code/tests/motor_l_samples.npy")
+        self.motor_r_samples = np.load("/home/ai1/git/code/tests/motor_r_samples.npy")
+        self.angel_sample_space = np.load("/home/ai1/git/code/tests/angel_sample_space.npy")
+        self.dist_sample_space = np.load("/home/ai1/git/code/tests/dist_sample_space.npy")
+        self.index_dict = load_dict_from_file("/home/ai1/git/code/tests/index_dict.pkl")
+
+    def cal(self, angel, dist):
+        angel_round = find_nearest(self.angel_sample_space, angel)
+        dist_round = find_nearest(self.dist_sample_space, dist)
+        motor_index = self.index_dict[(angel_round, dist_round)]
+
+        motor_l_pro = self.motor_l_samples[motor_index[0], motor_index[1]]
+        motor_r_pro = self.motor_r_samples[motor_index[0], motor_index[1]]
+
+        return motor_l_pro, motor_r_pro
+
+
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
@@ -69,7 +83,7 @@ tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 dist_old = 255
 
-
+fuzzyStraight = FuzzyStraight()
 
 while True:
     angel = gyro_sensor.get_angel()
@@ -80,18 +94,11 @@ while True:
         dist = dist_old
     dist_old = dist
 
-    angel_round = find_nearest(angel_sample_space, angel)
-    dist_round = find_nearest(dist_sample_space, dist)
-    motor_index = index_dict[(angel_round, dist_round)]
-
-    motor_l_pro = motor_l_samples[motor_index[0], motor_index[1]]
-    motor_r_pro = motor_r_samples[motor_index[0], motor_index[1]]
+    motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
 
-    print(["{:.2f}".format(angel),       "{:.2f}".format(angel_round)],
-          ["{:.2f}".format(dist),        "{:.2f}".format(dist_round)],
-          ["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)])
+    print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)])
 
     if touchSensor.is_pressed:
         stop = True

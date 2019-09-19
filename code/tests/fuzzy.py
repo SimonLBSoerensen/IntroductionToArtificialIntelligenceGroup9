@@ -3,6 +3,17 @@ import skfuzzy.control as ctrl
 import skfuzzy as fuzz
 import matplotlib.pyplot as plt
 
+def save_dict_to_file(dict , filename):
+    import pickle
+    with open(filename, 'wb') as handle:
+        pickle.dump(dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+def load_dict_from_file(filename):
+    import pickle
+    with open(filename, 'rb') as handle:
+        dict = pickle.load(handle)
+    return dict
+
 plot_vars = False
 
 # Sparse universe makes calculations faster, without sacrifice accuracy.
@@ -90,7 +101,7 @@ system.view()
 plt.show()
 
 
-angel_dist_pre = 100
+angel_dist_pre = 15
 
 sim = ctrl.ControlSystemSimulation(system, flush_after_run=angel_dist_pre * angel_dist_pre + 1)
 
@@ -102,14 +113,25 @@ motor_l_sampels = np.zeros_like(angel_sampel)
 motor_r_sampels = np.zeros_like(angel_sampel)
 
 # Loop through the system 21*21 times to collect the control surface
+
+
+
+index_dict = {}
+
 for i_angle in range(len(angel_sampel_space)):
     for j_dist in range(len(dist_sample_space)):
-        sim.input['angle'] = angel_sampel[i_angle, j_dist]
-        sim.input['distance'] = dist_sample[i_angle, j_dist]
+        angel = angel_sampel[i_angle, j_dist]
+        dist = dist_sample[i_angle, j_dist]
+        sim.input['angle'] = angel
+        sim.input['distance'] = dist
 
         sim.compute()
         motor_l_sampels[i_angle, j_dist] = sim.output['motor_l']
         motor_r_sampels[i_angle, j_dist] = sim.output['motor_r']
+
+        index_dict[(angel, dist)] = [i_angle, j_dist]
+
+save_dict_to_file(index_dict, "index_dict.pkl")
 
 # Plot the result in pretty 3D with alpha blending
 import matplotlib.pyplot as plt
@@ -123,7 +145,8 @@ surf = ax.plot_surface(angel_sampel, dist_sample, motor_l_sampels, rstride=1, cs
 
 ax.set_xlabel("Angel")
 ax.set_ylabel("Distance")
-ax.set_zlabel("Motor left")
+ax.set_zlabel("Motor pro")
+plt.title("Left motor")
 
 #fig = plt.figure(figsize=(8, 8))
 ax = fig.add_subplot(222, projection='3d')
@@ -133,7 +156,8 @@ cset = ax.contourf(angel_sampel, dist_sample, motor_l_sampels, zdir='y', offset=
 
 ax.set_xlabel("Angel")
 ax.set_ylabel("Distance")
-ax.set_zlabel("Motor left")
+ax.set_zlabel("Motor pro")
+plt.title("Left motor")
 
 ax = fig.add_subplot(223, projection='3d')
 
@@ -142,7 +166,8 @@ surf = ax.plot_surface(angel_sampel, dist_sample, motor_r_sampels, rstride=1, cs
 
 ax.set_xlabel("Angel")
 ax.set_ylabel("Distance")
-ax.set_zlabel("Motor left")
+ax.set_zlabel("Motor pro")
+plt.title("Right motor")
 
 #fig = plt.figure(figsize=(8, 8))
 ax = fig.add_subplot(224, projection='3d')
@@ -152,7 +177,8 @@ cset = ax.contourf(angel_sampel, dist_sample, motor_r_sampels, zdir='y', offset=
 
 ax.set_xlabel("Angel")
 ax.set_ylabel("Distance")
-ax.set_zlabel("Motor left")
+ax.set_zlabel("Motor pro")
+plt.title("Right motor")
 
 plt.show()
 
@@ -161,3 +187,7 @@ np.save("motor_r_samples.npy", motor_r_sampels)
 np.save("angel_sample_space.npy", angel_sampel_space)
 np.save("dist_sample_space.npy", dist_sample_space)
 
+motor_l_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_l_samples.npy")
+motor_r_sampels = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\motor_r_samples.npy")
+angel_sample_space = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\angel_sample_space.npy")
+dist_sample_space = np.load(r"C:\Users\simon\OneDrive - Syddansk Universitet\Studie\7 semester\AI\AIGit\code\tests\dist_sample_space.npy")

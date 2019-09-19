@@ -10,7 +10,9 @@ from ev3dev2.sensor import lego
 import ev3dev2.fonts as fonts
 from ev3dev2 import button
 from ev3dev2.sound import Sound
+
 sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1}
+
 class gyro:
     def __init__(self, gyrosensor_pin, mode='GYRO-G&A'):
         self.gyro_sensor = lego.GyroSensor(gyrosensor_pin)
@@ -28,17 +30,28 @@ class gyro:
         gyro_angel -= self.offset
         return [gyro_angel, gyro_rate]
 
+def save_dict_to_file(dict , filename):
+    import pickle
+    with open(filename, 'wb') as handle:
+        pickle.dump(dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+def load_dict_from_file(filename):
+    import pickle
+    with open(filename, 'rb') as handle:
+        dict = pickle.load(handle)
+    return dict
 
 def find_nearest(array, value):
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
-    return idx
+    return array[idx]
 
 
 motor_l_samples = np.load("/home/ai1/git/code/tests/motor_l_samples.npy")
 motor_r_samples = np.load("/home/ai1/git/code/tests/motor_r_samples.npy")
 angel_sample_space = np.load("/home/ai1/git/code/tests/angel_sample_space.npy")
 dist_sample_space = np.load("/home/ai1/git/code/tests/dist_sample_space.npy")
+index_dict = load_dict_from_file("/home/ai1/git/code/tests/index_dict.pkl")
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
@@ -60,17 +73,14 @@ while True:
         dist = dist_old
     dist_old = dist
 
-    angel_idx = find_nearest(angel_sample_space, angel)
-    dist_idx = find_nearest(dist_sample_space, dist)
+    angel_round = find_nearest(angel_sample_space, angel)
+    dist_round = find_nearest(dist_sample_space, dist)
+    motor_index = index_dict[(angel_round, dist_round)]
 
-    angel_round = angel_sample_space[angel_idx]
-    dist_round = dist_sample_space[dist_idx]
-
-    motor_l_pro = motor_l_samples[angel_idx, dist_idx]
-    motor_r_pro = motor_r_samples[angel_idx, dist_idx]
+    motor_l_pro = motor_l_samples[motor_index[0], motor_index[1]]
+    motor_r_pro = motor_r_samples[motor_index[0], motor_index[1]]
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
-
 
     print(["{:.2f}".format(angel),       "{:.2f}".format(angel_round)],
           ["{:.2f}".format(dist),        "{:.2f}".format(dist_round)],

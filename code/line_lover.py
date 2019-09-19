@@ -11,7 +11,7 @@ import ev3dev2.fonts as fonts
 from ev3dev2 import button
 from ev3dev2.sound import Sound
 
-sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1}
+sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1, "touch": INPUT_3}
 
 class gyro:
     def __init__(self, gyrosensor_pin, mode='GYRO-G&A'):
@@ -57,6 +57,8 @@ ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
 gyro_sensor.reset()
 
+touchSensor = lego.TouchSensor(sensor_overview["touch"])
+
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
 
 dist_old = 255
@@ -84,3 +86,9 @@ while True:
     print(["{:.2f}".format(angel),       "{:.2f}".format(angel_round)],
           ["{:.2f}".format(dist),        "{:.2f}".format(dist_round)],
           ["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)])
+
+    if touchSensor.is_pressed:
+        break
+
+tank_drive.stop()
+tank_drive.off()

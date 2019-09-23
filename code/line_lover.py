@@ -51,8 +51,8 @@ class LineDect:
     def on_line(self):
         r_l, r_r = self.get_ref()
 
-        line_r = self.hyst_r.cal(r_r)
-        line_l = self.hyst_r.cal(r_l)
+        line_r = not self.hyst_r.cal(r_r)
+        line_l = not self.hyst_r.cal(r_l)
 
         return [line_r, line_l]
 

@@ -100,7 +100,7 @@ class LineDect:
         r_l, r_r = self.get_ref()
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
-        #print([r_l, r_r], [line_l, line_r])
+        print([r_l, r_r], [line_l, line_r])
         return [line_l, line_r]
 
     def on_h_line(self, lines=None):
@@ -158,9 +158,9 @@ while True:
         line_l, line_r = ld.get_last_line()
 
         if line_r:
-            angel_offset = 0 #+= 1
+            angel_offset += 1
         elif line_l:
-            angel_offset = 0 #-= 1
+            angel_offset -= 1
         else:
             gyro_sensor.add_offset(angel_offset / 2)
             angel_offset = 0

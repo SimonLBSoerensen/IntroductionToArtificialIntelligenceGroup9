@@ -102,14 +102,15 @@ class Thread_runner(threading.Thread):
                 time.sleep(self.sleep)
 
 
-
-
-
-
 ld = LineDect()
 
+
+def run_line_th():
+    ld.on_h_line()
+
+
 kills = {}
-line_th = Thread_runner("line", kills, ld.on_h_line, 0)
+line_th = Thread_runner("line", kills, run_line_th, 0)
 line_th.start()
 
 angel_offset = 0
@@ -148,3 +149,6 @@ while True:
     #      "n_h_lines:", n_h_lines, "rli:", ld.get_ref())
 
     #time.sleep(0.01)
+
+for key in kills:
+    kills[key] = True

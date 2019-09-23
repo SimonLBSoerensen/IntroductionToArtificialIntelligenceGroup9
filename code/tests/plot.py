@@ -1,0 +1,9 @@
+array = [[[44, 44, 44, 44, 44, 44, 43, 40, 40, 39, 39, 37, 39, 37, 40, 40, 43, 39, 18, 42, 43, 45, 41, 42, 40, 40, 39, 41, 44, 44, 44, 43, 43, 43, 42, 42, 42, 42, 41, 7, 45, 44, 45, 45, 44, 45, 43, 43, 41, 42, 41, 42, 43, 42, 42, 42, 41, 41, 42, 42, 42, 27, 11, 40, 41, 42, 42, 42, 46, 50, 48, 44, 44, 41, 40, 14, 14, 14, 15, 15], [37, 37, 36, 36, 37, 37, 36, 34, 35, 34, 34, 33, 33, 34, 35, 36, 37, 24, 13, 37, 36, 38, 35, 36, 34, 36, 36, 37, 39, 37, 38, 37, 37, 37, 35, 35, 37, 38, 37, 11, 36, 37, 37, 35, 36, 37, 36, 36, 36, 37, 38, 39, 39, 38, 37, 37, 36, 36, 38, 36, 37, 28, 9, 28, 36, 37, 37, 38, 41, 40, 42, 39, 40, 36, 32, 21, 14, 14, 14, 14]], [[False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False], [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]]]
+import matplotlib.pyplot as plt
+
+plt.figure()
+plt.plot(array[0][0])
+plt.show()
+plt.figure()
+plt.plot(array[0][1])
+plt.show()

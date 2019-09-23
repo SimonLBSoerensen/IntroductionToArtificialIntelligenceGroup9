@@ -57,7 +57,7 @@ class Thread_runner(threading.Thread):
                 time.sleep(self.sleep)
 
 class LineDect:
-    def __init__(self, exitFlags, low = 10, high = 15, threadName="line", threadSleep=0.0):
+    def __init__(self, exitFlags, low = 25, high = 30, threadName="line", threadSleep=0.0):
         self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
         self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])

@@ -40,7 +40,7 @@ class LineDect:
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
 
     def on_line(self):
-        return [self.color_sensor_v.color == "Black", self.color_sensor_r.color == "Black"]
+        return [self.color_sensor_v.color_name == "Black", self.color_sensor_r.color_name == "Black"]
 
     def on_h_line(self):
         c_l, c_r = self.on_line()
@@ -74,12 +74,14 @@ while True:
         if n_h_lines <= 0:
             tank_drive.stop()
             tank_drive.off()
+            break
         else:
             n_h_lines -= 1
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
-    print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)], "Angel offset: {}".format(angel_offset))
+    print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
+          "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r])
 
     time.sleep(0.01)

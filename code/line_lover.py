@@ -12,6 +12,7 @@ from ev3dev2 import button
 from ev3dev2.sound import Sound
 import time
 import threading
+import signal
 
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
@@ -131,6 +132,15 @@ ld = LineDect(exitFlags, threadSleep=0.001)
 
 angel_offset = 0
 
+def keyboardInterruptHandler(signal, frame):
+    print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
+    for key in exitFlags:
+        exitFlags[key] = True
+    tank_drive.stop()
+    tank_drive.off()
+    exit(0)
+signal.signal(signal.SIGINT, keyboardInterruptHandler)
+
 while True:
     angel = gyro_sensor.get_angel()
 
@@ -147,9 +157,9 @@ while True:
         line_l, line_r = ld.get_last_line()
 
         if line_r:
-            angel_offset += 1
+            angel_offset = 0 #+= 1
         elif line_l:
-            angel_offset -= 1
+            angel_offset = 0 #-= 1
         else:
             gyro_sensor.add_offset(angel_offset / 2)
             angel_offset = 0
@@ -169,5 +179,3 @@ while True:
 
     time.sleep(0.01)
 
-for key in exitFlags:
-    exitFlags[key] = True

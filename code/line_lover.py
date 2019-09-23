@@ -96,9 +96,9 @@ class LineDect:
 
     def on_line(self):
         r_l, r_r = self.get_ref()
-
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
+        print([r_l, r_r], [line_l, line_r])
         return [line_l, line_r]
 
     def on_h_line(self, lines=None):
@@ -113,7 +113,8 @@ class LineDect:
         self.set_hist(lines=lines, online=online)
 
     def get_last_line(self):
-        return self.last_lines
+        lines, wasonline = self.get_hist()
+        return lines
 
     def was_line(self):
         lines, wasonline = self.get_hist()

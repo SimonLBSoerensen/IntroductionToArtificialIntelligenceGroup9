@@ -20,7 +20,7 @@ def find_nearest(array, value):
 
 
 class Hysteresis():
-    def __init__(self, low, high, init_val = 0):
+    def __init__(self, low, high, init_val = False):
         self.low = low
         self.high = high
         self.state = init_val

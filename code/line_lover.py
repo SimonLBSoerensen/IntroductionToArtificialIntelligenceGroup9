@@ -53,7 +53,7 @@ class LineDect:
 
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
-
+        print("r_l, r_r", [r_l, r_r], "[line_r, line_l]",[line_r, line_l])
         return [line_r, line_l]
 
     def on_h_line(self):
@@ -93,7 +93,7 @@ while True:
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
-    tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
+    #tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
     print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
           "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
           "n_h_lines:", n_h_lines, "rli:", ld.get_ref())

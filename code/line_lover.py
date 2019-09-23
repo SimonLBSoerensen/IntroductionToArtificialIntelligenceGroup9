@@ -109,7 +109,7 @@ class Thread_runner(threading.Thread):
 ld = LineDect()
 
 kills = {}
-line_th = Thread_runner("line", kills, ld.on_h_line(), 0)
+line_th = Thread_runner("line", kills, ld.on_h_line, 0)
 line_th.start()
 
 angel_offset = 0

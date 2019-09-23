@@ -11,7 +11,7 @@ import ev3dev2.fonts as fonts
 from ev3dev2 import button
 from ev3dev2.sound import Sound
 import time
-
+import threading
 
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
@@ -31,53 +31,7 @@ dist_old = 255
 
 fuzzyStraight = FuzzyStraight()
 
-n_h_lines = 3
 
-
-class LineDect:
-    def __init__(self, low = 10, high = 15):
-        self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
-        self.color_sensor_l.mode = 'REF-RAW'
-        self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
-        self.color_sensor_r.mode = 'REF-RAW'
-        self.hyst_r = Hysteresis(low, high)
-        self.hyst_l = Hysteresis(low, high)
-        self.wasOnLine = False
-        self.last_lines = None
-
-    def get_ref(self):
-        r_l = self.color_sensor_l.reflected_light_intensity
-        r_r = self.color_sensor_l.reflected_light_intensity
-        return r_l, r_r
-
-    def on_line(self):
-        r_l, r_r = self.get_ref()
-
-        line_r = not self.hyst_r.cal(r_r)
-        line_l = not self.hyst_r.cal(r_l)
-        self.last_lines = [line_r, line_l]
-        return [line_r, line_l]
-
-    def on_h_line(self):
-        c_l, c_r = self.on_line()
-        if not self.wasOnLine:
-            self.wasOnLine = c_l and c_r
-        return c_l and c_r
-
-    def get_last_line(self):
-        return self.last_lines
-
-    def was_line(self):
-        if self.wasOnLine:
-            self.wasOnLine = False
-            return True
-        else:
-            return False
-
-import threading
-import time
-
-exitFlags = {}
 class Thread_runner(threading.Thread):
     def __init__(self, thread_name, exitFlags, func, sleep):
         threading.Thread.__init__(self)
@@ -101,17 +55,77 @@ class Thread_runner(threading.Thread):
             if self.sleep > 0:
                 time.sleep(self.sleep)
 
+class LineDect:
+    def __init__(self, exitFlags, low = 10, high = 15, threadName="line", threadSleep = 0):
+        self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
+        self.color_sensor_l.mode = 'REF-RAW'
+        self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
+        self.color_sensor_r.mode = 'REF-RAW'
+        self.hyst_r = Hysteresis(low, high)
+        self.hyst_l = Hysteresis(low, high)
+        self.wasOnLine = False
+        self.last_lines = None
+        self.mutex = threading.Lock()
+        self.exitFlags = exitFlags
+        self.threadName = threadName
+        self.line_th = Thread_runner(self.threadName, self.exitFlags, self.update_hist, threadSleep)
+        self.line_th.start()
 
-ld = LineDect()
+    def kill(self):
+        self.line_th.kill()
 
+    def set_hist(self, lines = None, online = None):
+        self.mutex.acquire()
+        if lines is not None:
+            self.last_lines = lines
+        if online is not None:
+            self.wasOnLine = online
+        self.mutex.release()
 
-def run_line_th():
-    ld.on_h_line()
+    def get_hist(self):
+        self.mutex.acquire()
+        wasonline = self.wasOnLine
+        lines = self.last_lines
+        self.mutex.release()
+        return lines, wasonline
 
+    def get_ref(self):
+        r_l = self.color_sensor_l.reflected_light_intensity
+        r_r = self.color_sensor_l.reflected_light_intensity
+        return r_l, r_r
 
-kills = {}
-line_th = Thread_runner("line", kills, run_line_th, 0)
-line_th.start()
+    def on_line(self):
+        r_l, r_r = self.get_ref()
+
+        line_r = not self.hyst_r.cal(r_r)
+        line_l = not self.hyst_r.cal(r_l)
+        return [line_l, line_r]
+
+    def on_h_line(self, lines=None):
+        if lines is None:
+            lines = self.on_line()
+        online = lines[0] and lines[1]
+        return online
+
+    def update_hist(self):
+        lines = self.on_line()
+        online = self.on_h_line(lines=lines)
+        self.set_hist(lines=lines, online=online)
+
+    def get_last_line(self):
+        return self.last_lines
+
+    def was_line(self):
+        lines, wasonline = self.get_hist()
+        if wasonline:
+            self.set_hist(online=False)
+            return True
+        else:
+            return False
+
+n_h_lines = 3
+exitFlags = {}
+ld = LineDect(exitFlags)
 
 angel_offset = 0
 

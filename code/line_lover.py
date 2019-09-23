@@ -149,6 +149,7 @@ while True:
     else:
         gyro_sensor.add_offset(angel_offset/2)
         angel_offset = 0
+
     wasonline = ld.was_line()
     if wasonline:
         n_h_lines -= 1
@@ -159,14 +160,14 @@ while True:
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
-    print([line_l, line_r], wasonline)
+    print([line_l, line_r], wasonline, angel_offset)
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
     #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
     #      "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
     #      "n_h_lines:", n_h_lines, "rli:", ld.get_ref())
 
-    #time.sleep(0.01)
+    time.sleep(0.01)
 
-for key in kills:
-    kills[key] = True
+for key in exitFlags:
+    exitFlags[key] = True

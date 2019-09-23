@@ -42,6 +42,8 @@ class LineDect:
         self.color_sensor_r.mode = 'REF-RAW'
         self.hyst_r = Hysteresis(low, high)
         self.hyst_l = Hysteresis(low, high)
+        self.wasOnLine = False
+        self.last_lines = None
 
     def get_ref(self):
         r_l = self.color_sensor_l.reflected_light_intensity
@@ -53,15 +55,62 @@ class LineDect:
 
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
-        print("r_l, r_r", [r_l, r_r], "[line_r, line_l]",[line_r, line_l])
+        self.last_lines = [line_r, line_l]
         return [line_r, line_l]
 
     def on_h_line(self):
         c_l, c_r = self.on_line()
+        if not self.wasOnLine:
+            self.wasOnLine = c_l and c_r
         return c_l and c_r
+
+    def get_last_line(self):
+        return self.last_lines
+
+    def was_line(self):
+        if self.wasOnLine:
+            self.wasOnLine = False
+            return True
+        else:
+            return False
+
+import threading
+import time
+
+exitFlags = {}
+class Thread_runner(threading.Thread):
+    def __init__(self, thread_name, exitFlags, func, sleep):
+        threading.Thread.__init__(self)
+        self.thread_name = thread_name
+        self.exitFlags = exitFlags
+        self.exitFlags[self.thread_name] = False
+        self.func = func
+        self.sleep = sleep
+
+    def get_kill(self):
+        return self.exitFlags[self.thread_name]
+
+    def kill(self):
+        self.exitFlags[self.thread_name] = True
+
+    def run(self):
+        while True:
+            self.func()
+            if self.get_kill():
+                break
+            if self.sleep > 0:
+                time.sleep(self.sleep)
+
+
+
+
 
 
 ld = LineDect()
+
+kills = {}
+line_th = Thread_runner("line", kills, ld.on_h_line(), 0)
+line_th.start()
 
 angel_offset = 0
 
@@ -74,7 +123,7 @@ while True:
         dist = dist_old
     dist_old = dist
 
-    line_l, line_r = ld.on_line()
+    line_l, line_r = ld.get_last_line()
 
     if line_r:
         angel_offset += 1
@@ -84,12 +133,12 @@ while True:
         gyro_sensor.add_offset(angel_offset/2)
         angel_offset = 0
 
-    #if ld.on_h_line():
-    #    n_h_lines -= 1
-    #if n_h_lines <= 0:
-    #    tank_drive.stop()
-    #    tank_drive.off()
-    #    break
+    if ld.was_line():
+        n_h_lines -= 1
+    if n_h_lines <= 0:
+        tank_drive.stop()
+        tank_drive.off()
+        break
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 

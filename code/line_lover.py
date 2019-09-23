@@ -72,6 +72,7 @@ class LineDect:
         self.threadName = threadName
         self.line_th = Thread_runner(self.threadName, self.exitFlags, self.update_hist, threadSleep)
         self.line_th.start()
+        self.hist = [[[],[]],[[],[]]]
 
     def kill(self):
         self.line_th.kill()
@@ -94,12 +95,17 @@ class LineDect:
     def get_ref(self):
         r_l = self.color_sensor_l.reflected_light_intensity
         r_r = self.color_sensor_r.reflected_light_intensity
+
+        self.hist[0][0].append(r_l)
+        self.hist[0][1].append(r_r)
         return r_l, r_r
 
     def on_line(self):
         r_l, r_r = self.get_ref()
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
+        self.hist[1][0].append(line_l)
+        self.hist[1][1].append(line_r)
         print([r_l, r_r], [line_l, line_r])
         return [line_l, line_r]
 
@@ -138,6 +144,7 @@ def keyboardInterruptHandler(signal, frame):
         exitFlags[key] = True
     tank_drive.stop()
     tank_drive.off()
+    print(ld.hist)
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 

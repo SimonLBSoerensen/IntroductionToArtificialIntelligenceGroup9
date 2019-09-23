@@ -16,7 +16,7 @@ import time
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
-import gyro
+from gyro import gyro
 from fuzzy import FuzzyStraight
 from mics import sensor_overview
 

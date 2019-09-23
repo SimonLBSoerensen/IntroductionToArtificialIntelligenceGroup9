@@ -56,7 +56,7 @@ class Thread_runner(threading.Thread):
                 time.sleep(self.sleep)
 
 class LineDect:
-    def __init__(self, exitFlags, low = 10, high = 15, threadName="line", threadSleep = 0):
+    def __init__(self, exitFlags, low = 10, high = 15, threadName="line", threadSleep=0.0):
         self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
         self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
@@ -150,18 +150,18 @@ while True:
         gyro_sensor.add_offset(angel_offset/2)
         angel_offset = 0
     wasonline = ld.was_line()
-    #if wasonline:
-    #    n_h_lines -= 1
-    #if n_h_lines <= 0:
-    #    tank_drive.stop()
-    #    tank_drive.off()
-    #    break
+    if wasonline:
+        n_h_lines -= 1
+    if n_h_lines <= 0:
+        tank_drive.stop()
+        tank_drive.off()
+        break
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
     print([line_l, line_r], wasonline)
 
-    #tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
+    tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
     #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
     #      "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
     #      "n_h_lines:", n_h_lines, "rli:", ld.get_ref())

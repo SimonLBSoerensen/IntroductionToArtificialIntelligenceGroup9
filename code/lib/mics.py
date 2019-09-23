@@ -17,3 +17,21 @@ def find_nearest(array, value):
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
     return array[idx]
+
+
+class Hysteresis():
+    def __init__(self, low, high, init_val = 0):
+        self.low = low
+        self.high = high
+        self.state = init_val
+
+    def cal(self, val):
+        if val >= self.high:
+            self.state = True
+        elif val <= self.low:
+            self.state = False
+        elif self.state and val <= self.low:
+            self.state = False
+        elif not self.state and val >= self.high:
+            self.state = True
+        return self.state

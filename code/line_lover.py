@@ -18,7 +18,7 @@ sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
 from gyro import gyro
 from fuzzy import FuzzyStraight
-from mics import sensor_overview
+from mics import sensor_overview, Hysteresis
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
@@ -35,19 +35,26 @@ n_h_lines = 3
 
 
 class LineDect:
-    def __init__(self):
+    def __init__(self, low = 10, high = 15):
         self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
         self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
         self.color_sensor_r.mode = 'REF-RAW'
+        self.hyst_r = Hysteresis(low, high)
+        self.hyst_l = Hysteresis(low, high)
 
     def get_ref(self):
         r_l = self.color_sensor_l.reflected_light_intensity
         r_r = self.color_sensor_l.reflected_light_intensity
-        return [r_l, r_r]
+        return r_l, r_r
 
     def on_line(self):
-        return [self.color_sensor_l.color_name == "Black", self.color_sensor_r.color_name == "Black"]
+        r_l, r_r = self.get_ref()
+
+        line_r = self.hyst_r.cal(r_r)
+        line_l = self.hyst_r.cal(r_l)
+
+        return [line_r, line_l]
 
     def on_h_line(self):
         c_l, c_r = self.on_line()

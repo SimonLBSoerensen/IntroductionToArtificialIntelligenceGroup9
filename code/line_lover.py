@@ -170,7 +170,7 @@ while True:
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
-    print([line_l, line_r], wasonline, angel_offset, [motor_l_pro, motor_r_pro])
+    print([line_l, line_r], wasonline, angel, angel_offset, [motor_l_pro, motor_r_pro])
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
     #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],

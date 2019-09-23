@@ -65,7 +65,7 @@ class LineDect:
         self.hyst_r = Hysteresis(low, high)
         self.hyst_l = Hysteresis(low, high)
         self.wasOnLine = False
-        self.last_lines = None
+        self.last_lines = [False, False]
         self.mutex = threading.Lock()
         self.exitFlags = exitFlags
         self.threadName = threadName

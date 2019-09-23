@@ -61,6 +61,7 @@ class LineDect:
         self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
         self.color_sensor_r.mode = 'REF-RAW'
+
         self.hyst_r = Hysteresis(low, high)
         self.hyst_l = Hysteresis(low, high)
         self.wasOnLine = False
@@ -91,14 +92,14 @@ class LineDect:
 
     def get_ref(self):
         r_l = self.color_sensor_l.reflected_light_intensity
-        r_r = self.color_sensor_l.reflected_light_intensity
+        r_r = self.color_sensor_r.reflected_light_intensity
         return r_l, r_r
 
     def on_line(self):
         r_l, r_r = self.get_ref()
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
-        print([r_l, r_r], [line_l, line_r])
+        #print([r_l, r_r], [line_l, line_r])
         return [line_l, line_r]
 
     def on_h_line(self, lines=None):
@@ -126,7 +127,7 @@ class LineDect:
 
 n_h_lines = 3
 exitFlags = {}
-ld = LineDect(exitFlags)
+ld = LineDect(exitFlags, threadSleep=0.001)
 
 angel_offset = 0
 

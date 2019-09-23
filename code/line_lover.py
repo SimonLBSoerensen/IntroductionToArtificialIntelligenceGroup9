@@ -74,32 +74,28 @@ while True:
         dist = dist_old
     dist_old = dist
 
-    #line_l, line_r = ld.on_line()
+    line_l, line_r = ld.on_line()
 
-    #if line_r:
-    #    angel_offset += 1
-    #elif line_l:
-    #    angel_offset -= 1
-    #else:
-    #    gyro_sensor.add_offset(angel_offset/2)
-    #    angel_offset = 0
+    if line_r:
+        angel_offset += 1
+    elif line_l:
+        angel_offset -= 1
+    else:
+        gyro_sensor.add_offset(angel_offset/2)
+        angel_offset = 0
 
-    print(ld.get_ref())
-
-    #if ld.on_h_line():
-    #    n_h_lines -= 1
-    #if n_h_lines <= 0:
-    #    tank_drive.stop()
-    #    tank_drive.off()
-    #    break
+    if ld.on_h_line():
+        n_h_lines -= 1
+    if n_h_lines <= 0:
+        tank_drive.stop()
+        tank_drive.off()
+        break
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
-    motor_l_pro = 20
-    motor_r_pro = 20
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
-    #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
-    #      "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
-    #      "n_h_lines:", n_h_lines)
+    print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
+          "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
+          "n_h_lines:", n_h_lines, "rli:", ld.get_ref())
 
     #time.sleep(0.01)

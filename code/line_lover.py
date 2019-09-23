@@ -23,7 +23,7 @@ from mics import sensor_overview, Hysteresis
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
-gyro_sensor.reset()
+
 
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
@@ -141,6 +141,7 @@ def keyboardInterruptHandler(signal, frame):
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
+gyro_sensor.reset()
 while True:
     angel = gyro_sensor.get_angel()
 

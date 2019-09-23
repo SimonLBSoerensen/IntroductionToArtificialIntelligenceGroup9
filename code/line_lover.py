@@ -94,8 +94,8 @@ while True:
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
     #tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
-    print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
-          "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
-          "n_h_lines:", n_h_lines, "rli:", ld.get_ref())
+    #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
+    #      "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
+    #      "n_h_lines:", n_h_lines, "rli:", ld.get_ref())
 
     #time.sleep(0.01)

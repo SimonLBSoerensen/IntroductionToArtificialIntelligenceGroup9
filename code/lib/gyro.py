@@ -11,6 +11,9 @@ class gyro:
     def get_angel(self):
         return self.gyro_sensor.angle - self.offset
 
+    def add_offset(self, offset_to_add):
+        self.offset += offset_to_add
+
     def get_angel_and_rate(self):
         gyro_angel, gyro_rate = self.gyro_sensor.angle_and_rate
         gyro_angel -= self.offset

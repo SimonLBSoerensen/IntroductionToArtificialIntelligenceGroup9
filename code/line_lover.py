@@ -57,7 +57,7 @@ class Thread_runner(threading.Thread):
                 time.sleep(self.sleep)
 
 class LineDect:
-    def __init__(self, exitFlags, low = 25, high = 30, threadName="line", threadSleep=0.0):
+    def __init__(self, exitFlags, low = 25, high = 30, threadName="line", threadSleep=0.0, makeHist = False):
         self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
         self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
@@ -72,6 +72,7 @@ class LineDect:
         self.threadName = threadName
         self.line_th = Thread_runner(self.threadName, self.exitFlags, self.update_hist, threadSleep)
         self.line_th.start()
+        self.makeHist = makeHist
         self.hist = [[[],[]],[[],[]]]
 
     def kill(self):
@@ -96,16 +97,18 @@ class LineDect:
         r_l = self.color_sensor_l.reflected_light_intensity
         r_r = self.color_sensor_r.reflected_light_intensity
 
-        self.hist[0][0].append(r_l)
-        self.hist[0][1].append(r_r)
+        if self.makeHist:
+            self.hist[0][0].append(r_l)
+            self.hist[0][1].append(r_r)
         return r_l, r_r
 
     def on_line(self):
         r_l, r_r = self.get_ref()
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
-        self.hist[1][0].append(line_l)
-        self.hist[1][1].append(line_r)
+        if self.makeHist:
+            self.hist[1][0].append(line_l)
+            self.hist[1][1].append(line_r)
         print([r_l, r_r], [line_l, line_r])
         return [line_l, line_r]
 
@@ -134,7 +137,7 @@ class LineDect:
 
 n_h_lines = 3
 exitFlags = {}
-ld = LineDect(exitFlags, threadSleep=0.001)
+ld = LineDect(exitFlags, threadSleep=0.001, makeHist=True)
 
 angel_offset = 0
 

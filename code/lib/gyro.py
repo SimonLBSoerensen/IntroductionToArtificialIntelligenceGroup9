@@ -1,3 +1,4 @@
+from ev3dev2.sensor import lego
 class gyro:
     def __init__(self, gyrosensor_pin, mode='GYRO-G&A'):
         self.gyro_sensor = lego.GyroSensor(gyrosensor_pin)

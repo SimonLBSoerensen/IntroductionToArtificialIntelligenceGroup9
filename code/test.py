@@ -13,7 +13,7 @@ from ev3dev2.sound import Sound
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
-import gyro
+from gyro import gyro
 
 #joke.play_joke("start_up")
 

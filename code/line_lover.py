@@ -82,6 +82,7 @@ while True:
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
     print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
-          "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r])
+          "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
+          "n_h_lines:", n_h_lines)
 
-    time.sleep(0.01)
+    #time.sleep(0.01)

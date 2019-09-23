@@ -13,6 +13,7 @@ from ev3dev2.sound import Sound
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
+import gyro
 
 #joke.play_joke("start_up")
 
@@ -22,22 +23,7 @@ import motor
 sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1}
 
 
-class gyro:
-    def __init__(self, gyrosensor_pin, mode='GYRO-G&A'):
-        self.gyro_sensor = lego.GyroSensor(gyrosensor_pin)
-        self.gyro_sensor.mode = mode
-        self.offset = 0
 
-    def reset(self):
-        self.offset = self.gyro_sensor.angle
-
-    def get_angel(self):
-        return self.gyro_sensor.angle - self.offset
-
-    def get_angel_and_rate(self):
-        gyro_angel, gyro_rate = self.gyro_sensor.angle_and_rate
-        gyro_angel -= self.offset
-        return [gyro_angel, gyro_rate]
 
 
 infrared_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])

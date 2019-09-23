@@ -11,66 +11,14 @@ import ev3dev2.fonts as fonts
 from ev3dev2 import button
 from ev3dev2.sound import Sound
 import time
-sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1, "touch": INPUT_3}
-
-def restart():
-    import os
-    import sys
-    os.startfile(sys.argv[0])
-    sys.exit()
-
-class gyro:
-    def __init__(self, gyrosensor_pin, mode='GYRO-G&A'):
-        self.gyro_sensor = lego.GyroSensor(gyrosensor_pin)
-        self.gyro_sensor.mode = mode
-        self.offset = 0
-
-    def reset(self):
-        self.offset = self.gyro_sensor.angle
-
-    def get_angel(self):
-        return self.gyro_sensor.angle - self.offset
-
-    def get_angel_and_rate(self):
-        gyro_angel, gyro_rate = self.gyro_sensor.angle_and_rate
-        gyro_angel -= self.offset
-        return [gyro_angel, gyro_rate]
-
-def save_dict_to_file(dict , filename):
-    import pickle
-    with open(filename, 'wb') as handle:
-        pickle.dump(dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-def load_dict_from_file(filename):
-    import pickle
-    with open(filename, 'rb') as handle:
-        dict = pickle.load(handle)
-    return dict
-
-def find_nearest(array, value):
-    array = np.asarray(array)
-    idx = (np.abs(array - value)).argmin()
-    return array[idx]
 
 
-class FuzzyStraight():
-    def __init__(self):
-        self.motor_l_samples = np.load("/home/ai1/git/code/tests/motor_l_samples.npy")
-        self.motor_r_samples = np.load("/home/ai1/git/code/tests/motor_r_samples.npy")
-        self.angel_sample_space = np.load("/home/ai1/git/code/tests/angel_sample_space.npy")
-        self.dist_sample_space = np.load("/home/ai1/git/code/tests/dist_sample_space.npy")
-        self.index_dict = load_dict_from_file("/home/ai1/git/code/tests/index_dict.pkl")
-
-    def cal(self, angel, dist):
-        angel_round = find_nearest(self.angel_sample_space, angel)
-        dist_round = find_nearest(self.dist_sample_space, dist)
-        motor_index = self.index_dict[(angel_round, dist_round)]
-
-        motor_l_pro = self.motor_l_samples[motor_index[0], motor_index[1]]
-        motor_r_pro = self.motor_r_samples[motor_index[0], motor_index[1]]
-
-        return motor_l_pro, motor_r_pro
-
+import sys
+sys.path.insert(0, "/home/ai1/git/code/lib")
+import joke
+import gyro
+from fuzzy import FuzzyStraight
+from mics import sensor_overview
 
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])

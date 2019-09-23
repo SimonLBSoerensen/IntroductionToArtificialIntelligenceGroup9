@@ -36,11 +36,18 @@ n_h_lines = 3
 
 class LineDect:
     def __init__(self):
-        self.color_sensor_v = lego.ColorSensor(sensor_overview["v_color"])
+        self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
+        self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
+        self.color_sensor_r.mode = 'REF-RAW'
+
+    def get_ref(self):
+        r_l = self.color_sensor_l.reflected_light_intensity
+        r_r = self.color_sensor_l.reflected_light_intensity
+        return [r_l, r_r]
 
     def on_line(self):
-        return [self.color_sensor_v.color_name == "Black", self.color_sensor_r.color_name == "Black"]
+        return [self.color_sensor_l.color_name == "Black", self.color_sensor_r.color_name == "Black"]
 
     def on_h_line(self):
         c_l, c_r = self.on_line()
@@ -60,29 +67,30 @@ while True:
         dist = dist_old
     dist_old = dist
 
-    line_l, line_r = ld.on_line()
+    #line_l, line_r = ld.on_line()
 
-    if line_r:
-        angel_offset += 1
-    elif line_l:
-        angel_offset -= 1
-    else:
-        gyro_sensor.add_offset(angel_offset/2)
-        angel_offset = 0
+    #if line_r:
+    #    angel_offset += 1
+    #elif line_l:
+    #    angel_offset -= 1
+    #else:
+    #    gyro_sensor.add_offset(angel_offset/2)
+    #    angel_offset = 0
 
-    if ld.on_h_line():
-        if n_h_lines <= 0:
-            tank_drive.stop()
-            tank_drive.off()
-            break
-        else:
-            n_h_lines -= 1
+    print(ld.get_ref())
+
+    #if ld.on_h_line():
+    #    n_h_lines -= 1
+    #if n_h_lines <= 0:
+    #    tank_drive.stop()
+    #    tank_drive.off()
+    #    break
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
-    print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
-          "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
-          "n_h_lines:", n_h_lines)
+    #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
+    #      "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
+    #      "n_h_lines:", n_h_lines)
 
     #time.sleep(0.01)

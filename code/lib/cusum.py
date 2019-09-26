@@ -37,7 +37,7 @@ class cusum:
             if k <= 1:
                 sub_SHi = 0
             else:
-                sub_SHi = -1*max(0,(sub_z-k)+self.subgroups_SHi[-1])
+                sub_SHi = max(0,(sub_z-k)+self.subgroups_SHi[-1])
             self.subgroups_SHi.append(sub_SHi)
 
             self.current_subgroup = []

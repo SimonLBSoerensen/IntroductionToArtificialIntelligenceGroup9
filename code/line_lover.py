@@ -13,7 +13,7 @@ from ev3dev2.sound import Sound
 import time
 import threading
 import signal
-
+import pickle
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
@@ -154,7 +154,9 @@ def keyboardInterruptHandler(signal, frame):
         exitFlags[key] = True
     tank_drive.stop()
     tank_drive.off()
-    print(histDict)
+    print("Saving hist to hist.pck")
+    with open('hist.pck', 'wb') as handle:
+        pickle.dump(histDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 

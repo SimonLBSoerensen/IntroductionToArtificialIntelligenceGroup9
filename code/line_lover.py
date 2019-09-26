@@ -23,7 +23,7 @@ from mics import sensor_overview, Hysteresis
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
-
+histDict = {}
 
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
@@ -57,7 +57,7 @@ class Thread_runner(threading.Thread):
                 time.sleep(self.sleep)
 
 class LineDect:
-    def __init__(self, exitFlags, low = 25, high = 30, threadName="line", threadSleep=0.0, makeHist = False):
+    def __init__(self, exitFlags, low = 25, high = 30, threadName="line", threadSleep=0.0, makeHist = False, histDict = {}, histKey = "LineDect"):
         self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
         self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
@@ -65,7 +65,7 @@ class LineDect:
 
         self.hyst_r = Hysteresis(low, high)
         self.hyst_l = Hysteresis(low, high)
-        self.wasOnLine = False
+        self.was_on_line = False
         self.last_lines = [False, False]
         self.mutex = threading.Lock()
         self.exitFlags = exitFlags
@@ -73,7 +73,14 @@ class LineDect:
         self.line_th = Thread_runner(self.threadName, self.exitFlags, self.update_hist, threadSleep)
         self.line_th.start()
         self.makeHist = makeHist
-        self.hist = [[[],[]],[[],[]]]
+        if makeHist:
+            histDict[histKey] = {}
+            self.histDict = histDict[histKey]
+
+            self.histDict["r_l"] = []
+            self.histDict["r_r"] = []
+            self.histDict["line_l"] = []
+            self.histDict["line_r"] = []
 
     def kill(self):
         self.line_th.kill()
@@ -83,23 +90,23 @@ class LineDect:
         if lines is not None:
             self.last_lines = lines
         if online is not None:
-            self.wasOnLine = online
+            self.was_on_line = online
         self.mutex.release()
 
     def get_hist(self):
         self.mutex.acquire()
-        wasonline = self.wasOnLine
+        was_on_line = self.was_on_line
         lines = self.last_lines
         self.mutex.release()
-        return lines, wasonline
+        return lines, was_on_line
 
     def get_ref(self):
         r_l = self.color_sensor_l.reflected_light_intensity
         r_r = self.color_sensor_r.reflected_light_intensity
 
         if self.makeHist:
-            self.hist[0][0].append(r_l)
-            self.hist[0][1].append(r_r)
+            self.histDict["r_l"].append(r_l)
+            self.histDict["r_r"].append(r_r)
         return r_l, r_r
 
     def on_line(self):
@@ -107,8 +114,8 @@ class LineDect:
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
         if self.makeHist:
-            self.hist[1][0].append(line_l)
-            self.hist[1][1].append(line_r)
+            self.histDict["line_l"].append(line_l)
+            self.histDict["line_r"].append(line_r)
         print([r_l, r_r], [line_l, line_r])
         return [line_l, line_r]
 
@@ -147,7 +154,7 @@ def keyboardInterruptHandler(signal, frame):
         exitFlags[key] = True
     tank_drive.stop()
     tank_drive.off()
-    print(ld.hist)
+    print(histDict)
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
@@ -161,8 +168,8 @@ while True:
         dist = dist_old
     dist_old = dist
 
-    wasonline = ld.was_line()
-    if wasonline:
+    was_on_line = ld.was_line()
+    if was_on_line:
         n_h_lines -= 1
     else:
         line_l, line_r = ld.get_last_line()
@@ -181,7 +188,7 @@ while True:
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
 
-    print([line_l, line_r], wasonline, angel, angel_offset, [motor_l_pro, motor_r_pro])
+    print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro])
 
     tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
     #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],

@@ -86,6 +86,8 @@ class LineDect:
             self.histDict["r_r"] = []
             self.histDict["line_l"] = []
             self.histDict["line_r"] = []
+            self.histDict["change_l"] = []
+            self.histDict["change_r"] = []
 
     def kill(self):
         self.line_th.kill()

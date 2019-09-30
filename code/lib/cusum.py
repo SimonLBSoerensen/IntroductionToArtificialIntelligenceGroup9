@@ -15,6 +15,23 @@ class cusum:
         self.z_hist = []
         self.k = k
 
+    def reset(self, subgroupmax=None, subgrouspmax=None, k = 0.5):
+        self.subgroups = deque(maxlen=subgrouspmax)
+        self.subgroups_mean = deque(maxlen=subgrouspmax)
+        self.subgroups_std = deque(maxlen=subgrouspmax)
+        self.subgroups_z = deque(maxlen=subgrouspmax)
+        self.subgroups_SLi = deque(maxlen=subgrouspmax)
+        self.subgroups_SHi = deque(maxlen=subgrouspmax)
+
+        if subgroupmax is not None:
+            self.subgroupmax = subgroupmax
+        if subgrouspmax is not None:
+            self.subgrouspmax = subgrouspmax
+
+        self.current_subgroup = []
+        self.z_hist = []
+        self.k = k
+
     def append(self, x):
         if len(self.current_subgroup) >= self.subgroupmax:
             sub_mean = np.mean(self.current_subgroup)
@@ -30,19 +47,19 @@ class cusum:
             self.subgroups_z.append(sub_z)
             k = len(self.subgroups)
             if k <= 1:
-                sub_SLi = 0#x
+                sub_SLi = 0
             else:
                 last_sli = self.subgroups_SLi[-1]
                 a = -1*sub_z-self.k
-                sub_SLi = -1*max(0, (a)+last_sli)
+                sub_SLi = -1*max(0, a + last_sli)
             self.subgroups_SLi.append(sub_SLi)
 
             if k <= 1:
-                sub_SHi = 0#x
+                sub_SHi = 0
             else:
                 last_shi = self.subgroups_SHi[-1]
                 b = sub_z-self.k
-                sub_SHi = max(0, (b)+last_shi)
+                sub_SHi = max(0, b + last_shi)
             self.subgroups_SHi.append(sub_SHi)
 
             self.current_subgroup = []
@@ -131,8 +148,14 @@ if __name__ == '__main__':
     plt.show()
 
 
-    #plt.figure()
-    #plt.plot(cs.z_hist)
-    #plt.hlines(y=[2.5,3,3.5, -2.5,-3,-3.5], xmin=0, xmax=len(cs.z_hist))
-    #plt.show()
+    plt.figure()
+    plt.subplot2grid((2, 1), (0, 0))
+    plt.plot(hist["LineDect"]["r_r"], label="r_r")
+    plt.legend()
+    plt.grid(True)
+    plt.subplot2grid((2, 1), (1, 0))
+    plt.plot(hist["LineDect"]["r_l"], label="r_l")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 

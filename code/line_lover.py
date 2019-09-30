@@ -20,6 +20,7 @@ import joke
 from gyro import gyro
 from fuzzy import FuzzyStraight
 from mics import sensor_overview, Hysteresis
+from cusum import cusum
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
@@ -73,6 +74,10 @@ class LineDect:
         self.line_th = Thread_runner(self.threadName, self.exitFlags, self.update_hist, threadSleep)
         self.line_th.start()
         self.makeHist = makeHist
+
+        self.cs_l = cusum(3,9999)
+        self.cs_r = cusum(3,9999)
+
         if makeHist:
             histDict[histKey] = {}
             self.histDict = histDict[histKey]
@@ -111,13 +116,24 @@ class LineDect:
 
     def on_line(self):
         r_l, r_r = self.get_ref()
+
+        self.cs_l.append(r_l)
+        change_l, _ = self.cs_l.change(low_t=-1, high_t=0)
+        self.cs_r.append(r_r)
+        change_r, _ = self.cs_r.change(low_t=-1, high_t=0)
+
+
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)
+
         if self.makeHist:
             self.histDict["line_l"].append(line_l)
             self.histDict["line_r"].append(line_r)
-        print([r_l, r_r], [line_l, line_r])
-        return [line_l, line_r]
+            self.histDict["change_l"].append(change_l)
+            self.histDict["change_r"].append(change_r)
+
+        print([r_l, r_r], [line_l, line_r], [change_l, change_r])
+        return [change_l, change_r]
 
     def on_h_line(self, lines=None):
         if lines is None:

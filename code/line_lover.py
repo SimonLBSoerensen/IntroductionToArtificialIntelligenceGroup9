@@ -117,11 +117,15 @@ class LineDect:
     def on_line(self):
         r_l, r_r = self.get_ref()
 
+        print("1")
         self.cs_l.append(r_l)
+        print("2")
         change_l, _ = self.cs_l.change(low_t=-1, high_t=0)
+        print("3")
         self.cs_r.append(r_r)
+        print("4")
         change_r, _ = self.cs_r.change(low_t=-1, high_t=0)
-
+        print("5")
 
         line_r = not self.hyst_r.cal(r_r)
         line_l = not self.hyst_r.cal(r_l)

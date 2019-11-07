@@ -14,6 +14,7 @@ import time
 import threading
 import signal
 import pickle
+
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
@@ -56,6 +57,7 @@ class Thread_runner(threading.Thread):
                 break
             if self.sleep > 0:
                 time.sleep(self.sleep)
+
 
 class LineDect:
     def __init__(self, exitFlags, low = 25, high = 30, threadName="line", threadSleep=0.0, makeHist = False, histDict = {}, histKey = "LineDect"):
@@ -170,6 +172,7 @@ ld = LineDect(exitFlags, threadSleep=0.001, makeHist=True, histDict=histDict)
 
 angel_offset = 0
 
+
 def keyboardInterruptHandler(signal, frame):
     print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
     for key in exitFlags:
@@ -211,10 +214,12 @@ while True:
         break
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
+    motor_l_pro *= 0.5
+    motor_r_pro *= 0.5
 
     print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro], n_h_lines)
 
-    tank_drive.on(SpeedPercent(motor_l_pro),SpeedPercent(motor_r_pro))
+    tank_drive.on(SpeedPercent(motor_l_pro), SpeedPercent(motor_r_pro))
     #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],
     #      "Angel offset: {}".format(angel_offset), "Lines:", [line_l, line_r],
     #      "n_h_lines:", n_h_lines, "rli:", ld.get_ref())

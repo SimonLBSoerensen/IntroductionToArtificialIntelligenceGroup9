@@ -15,7 +15,7 @@ def load_dict_from_file(filename):
     return dict
 
 plot_vars = False
-save_sampels = True
+save_sampels = False
 
 # Sparse universe makes calculations faster, without sacrifice accuracy.
 # Only the critical points are included here; making it higher resolution is

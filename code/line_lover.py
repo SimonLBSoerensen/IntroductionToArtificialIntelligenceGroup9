@@ -189,6 +189,12 @@ r_line_hist = deque(maxlen=5)
 was_on_line = False
 
 histDict["LineDect"] = {}
+histDict["r_l"] = []
+histDict["r_r"] = []
+histDict["line_l"] = []
+histDict["line_r"] = []
+histDict["angel"] = []
+
 n_h_lines = 3
 makeHist = True
 while True:

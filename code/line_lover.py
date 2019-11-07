@@ -216,20 +216,13 @@ while True:
     r_line_hist.append(line_r)
     r_has_been_line = np.sum(r_line_hist) > 0
 
-    if makeHist:
-        histDict["r_l"].append(r_l)
-        histDict["r_r"].append(r_r)
-        histDict["line_l"].append(line_l)
-        histDict["line_r"].append(line_r)
-        histDict["angel"].append(angel)
+
 
     on_line = l_has_been_line and r_has_been_line
 
     if on_line and not was_on_line:
         n_h_lines -= 1
-        #Sound.play_song()
-        #.play_tone(1500, 2)
-        #Sound.beep()
+        Sound.speak('Line', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
 
     if n_h_lines <= 0:
         tank_drive.stop()
@@ -252,6 +245,13 @@ while True:
         was_on_line = False
 
     print(on_line, was_on_line, n_h_lines)
+    if makeHist:
+        histDict["r_l"].append(r_l)
+        histDict["r_r"].append(r_r)
+        histDict["line_l"].append(line_l)
+        histDict["line_r"].append(line_r)
+        histDict["angel"].append(angel)
+        histDict["angel_offset"].append(angel)
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
     motor_l_pro *= 0.7

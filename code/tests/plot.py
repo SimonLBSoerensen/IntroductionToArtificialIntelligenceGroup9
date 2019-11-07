@@ -16,6 +16,11 @@ hys_min_max = [25,30]
 
 hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist.pck")
 print(hist)
+
+plt.figure()
+plt.plot(hist["angel"], label="r_l")
+plt.plot(hist["angel_offset"], label="r_l")
+
 plt.figure()
 plt.subplot2grid((2,2),(0,0))
 plt.plot(hist["r_l"], label="r_l")

@@ -198,6 +198,14 @@ histDict["angel_offset"] = []
 
 sound = Sound()
 
+sound.speak(text='calibrate white in 3', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
+time.sleep(3)
+sound.speak(text='calibrate white now', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
+color_sensor_l.calibrate_white()
+color_sensor_r.calibrate_white()
+sound.speak(text='calibrate white done. Running in 3', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
+time.sleep(3)
+
 n_h_lines = 3
 makeHist = True
 while True:
@@ -257,8 +265,8 @@ while True:
         histDict["angel_offset"].append(angel_offset)
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
-    motor_l_pro *= 0.7
-    motor_r_pro *= 0.7
+    motor_l_pro *= 0.3
+    motor_r_pro *= 0.3
 
     #print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro], n_h_lines)
 

@@ -254,7 +254,7 @@ while True:
         histDict["line_l"].append(line_l)
         histDict["line_r"].append(line_r)
         histDict["angel"].append(angel)
-        histDict["angel_offset"].append(angel)
+        histDict["angel_offset"].append(angel_offset)
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
     motor_l_pro *= 0.7

@@ -1,6 +1,6 @@
 import numpy as np
 import ev3dev2
-from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_D, SpeedPercent, MoveTank
+from ev3dev2.motor import LargeMotor, OUTPUT_B, OUTPUT_D, SpeedPercent, MoveTank
 from ev3dev2.sensor import INPUT_1, INPUT_4, INPUT_2, INPUT_3
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.led import Leds
@@ -29,7 +29,7 @@ gyro_sensor = gyro(sensor_overview["gryo"])
 histDict = {}
 
 
-tank_drive = MoveTank(OUTPUT_A, OUTPUT_D)
+tank_drive = MoveTank(OUTPUT_B, OUTPUT_D)
 
 dist_old = 255
 

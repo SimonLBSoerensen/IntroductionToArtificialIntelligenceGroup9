@@ -198,13 +198,13 @@ histDict["angel_offset"] = []
 
 sound = Sound()
 
-sound.speak(text='calibrate white in 3', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
+sound.speak(text='calibrate white in 3', volume=50)
 time.sleep(3)
-sound.speak(text='calibrate white now', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
+sound.speak(text='calibrate white now', volume=50)
 color_sensor_l.calibrate_white()
 color_sensor_r.calibrate_white()
-sound.speak(text='calibrate white done. Running in 3', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
-time.sleep(3)
+sound.speak(text='calibrate white done. Running in 10', volume=50)
+time.sleep(10)
 
 n_h_lines = 3
 makeHist = True

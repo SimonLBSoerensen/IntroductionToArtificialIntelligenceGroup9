@@ -75,7 +75,7 @@ class LineDect:
         self.mutex = threading.Lock()
         self.exitFlags = exitFlags
         self.threadName = threadName
-        self.line_th = Thread_runner(self.threadName, self.exitFlags, self.update_hist, threadSleep)
+        #self.line_th = Thread_runner(self.threadName, self.exitFlags, self.update_hist, threadSleep)
         self.line_th.start()
         self.makeHist = makeHist
 
@@ -156,7 +156,7 @@ class LineDect:
 
 n_h_lines = 3
 exitFlags = {}
-ld = LineDect(exitFlags, threadSleep=0.001, makeHist=True, histDict=histDict)
+#ld = LineDect(exitFlags, threadSleep=0.001, makeHist=True, histDict=histDict)
 
 angel_offset = 0
 
@@ -173,7 +173,17 @@ def keyboardInterruptHandler(signal, frame):
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
+color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
+color_sensor_l.mode = 'REF-RAW'
+color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
+color_sensor_r.mode = 'REF-RAW'
 gyro_sensor.reset()
+
+smart_line_left = SmartLine()
+smart_line_right = SmartLine()
+
+was_on_line = False
+
 while True:
     angel = gyro_sensor.get_angel()
 
@@ -183,24 +193,36 @@ while True:
         dist = dist_old
     dist_old = dist
 
-    was_on_line = ld.was_line()
-    if was_on_line:
-        n_h_lines -= 1
-    else:
-        line_l, line_r = ld.get_last_line()
+    r_l = color_sensor_l.reflected_light_intensity
+    r_r = color_sensor_r.reflected_light_intensity
+    line_l = smart_line_left.cal_on_line(r_l)
+    line_r = smart_line_right.cal_on_line(r_r)
+    on_line = line_l and line_r
 
+    if on_line and not was_on_line:
+        n_h_lines -= 1
+
+    if n_h_lines <= 0:
+        tank_drive.stop()
+        tank_drive.off()
+        break
+
+    if not on_line:
         if line_r:
             angel_offset += 1
         elif line_l:
             angel_offset -= 1
         else:
-            gyro_sensor.add_offset(angel_offset / 2)
+            if angel_offset != 0:
+                gyro_sensor.add_offset(angel_offset / 2)
             angel_offset = 0
+
+    if on_line:
+        was_on_line = True
+    else:
+        was_on_line = False
+
     print(was_on_line, n_h_lines)
-    if n_h_lines <= 0:
-        tank_drive.stop()
-        tank_drive.off()
-        break
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
     motor_l_pro *= 0.4

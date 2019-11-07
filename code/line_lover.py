@@ -196,6 +196,8 @@ histDict["line_r"] = []
 histDict["angel"] = []
 histDict["angel_offset"] = []
 
+sound = Sound()
+
 n_h_lines = 3
 makeHist = True
 while True:
@@ -223,7 +225,7 @@ while True:
 
     if on_line and not was_on_line:
         n_h_lines -= 1
-        Sound.speak(text='Line', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
+        sound.speak(text='Line', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
 
     if n_h_lines <= 0:
         tank_drive.stop()

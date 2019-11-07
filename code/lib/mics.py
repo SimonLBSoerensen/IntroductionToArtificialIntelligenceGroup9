@@ -1,6 +1,6 @@
 import numpy as np
 from ev3dev2.sensor import INPUT_1, INPUT_4, INPUT_2, INPUT_3
-sensor_overview = {"v_color": INPUT_2, "r_color": INPUT_3, "ultra": INPUT_4, "gryo": INPUT_1, "touch": INPUT_3}
+sensor_overview = {"v_color": INPUT_1, "r_color": INPUT_4, "ultra": INPUT_4, "gryo": INPUT_3, "touch": INPUT_3}
 
 def save_dict_to_file(dict , filename):
     import pickle

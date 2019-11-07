@@ -270,3 +270,5 @@ while True:
     time.sleep(0.01)
 
 save_data()
+tank_drive.stop()
+tank_drive.off()

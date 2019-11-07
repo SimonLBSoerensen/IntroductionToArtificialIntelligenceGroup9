@@ -18,8 +18,8 @@ hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist.pck")
 print(hist)
 
 plt.figure()
-plt.plot(hist["angel"], label="r_l")
-plt.plot(hist["angel_offset"], label="r_l")
+plt.plot(hist["angel"], label="r_l", c="g")
+plt.plot(hist["angel_offset"], label="angel_offset", c="r")
 
 plt.figure()
 plt.subplot2grid((2,2),(0,0))

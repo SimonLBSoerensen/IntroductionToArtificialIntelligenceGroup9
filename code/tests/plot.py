@@ -6,7 +6,7 @@ def load_dict_from_file(filename):
         dict = pickle.load(handle)
     return dict
 
-hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist_fullSpeed.pck")
+hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist.pck")
 print(hist)
 plt.figure()
 plt.subplot2grid((3,2),(0,0))

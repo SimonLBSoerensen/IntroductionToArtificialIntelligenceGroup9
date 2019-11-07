@@ -181,6 +181,8 @@ gyro_sensor.reset()
 
 smart_line_left = SmartLine()
 smart_line_right = SmartLine()
+l_line_hist = deque(maxlen=5)
+r_line_hist = deque(maxlen=5)
 
 was_on_line = False
 
@@ -197,8 +199,15 @@ while True:
     r_l = color_sensor_l.reflected_light_intensity
     r_r = color_sensor_r.reflected_light_intensity
     line_l = smart_line_left.cal_on_line(r_l)
+    l_line_hist.append(line_l)
+    l_has_been_line = np.sum(l_line_hist) > 0
+
     line_r = smart_line_right.cal_on_line(r_r)
-    on_line = line_l and line_r
+    r_line_hist.append(line_r)
+    r_has_been_line = np.sum(r_line_hist) > 0
+
+
+    on_line = l_has_been_line and r_has_been_line
 
     if on_line and not was_on_line:
         n_h_lines -= 1

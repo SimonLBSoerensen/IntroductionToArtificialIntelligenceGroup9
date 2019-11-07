@@ -223,7 +223,7 @@ while True:
 
     if on_line and not was_on_line:
         n_h_lines -= 1
-        Sound.speak('Line', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
+        Sound.speak(text='Line', volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
 
     if n_h_lines <= 0:
         tank_drive.stop()

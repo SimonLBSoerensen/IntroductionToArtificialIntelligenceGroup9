@@ -14,13 +14,14 @@ import time
 import threading
 import signal
 import pickle
+from collections import deque
 
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
 from gyro import gyro
 from fuzzy import FuzzyStraight
-from mics import sensor_overview, Hysteresis
+from mics import sensor_overview, Hysteresis, SmartLine
 from cusum import cusum
 
 ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
@@ -60,14 +61,15 @@ class Thread_runner(threading.Thread):
 
 
 class LineDect:
-    def __init__(self, exitFlags, low = 25, high = 30, threadName="line", threadSleep=0.0, makeHist = False, histDict = {}, histKey = "LineDect"):
+    def __init__(self, exitFlags, low = 25, high = 30, hist_length=100, threadName="line", threadSleep=0.0, makeHist = False, histDict = {}, histKey = "LineDect"):
         self.color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
         self.color_sensor_l.mode = 'REF-RAW'
         self.color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
         self.color_sensor_r.mode = 'REF-RAW'
 
-        self.hyst_r = Hysteresis(low, high)
-        self.hyst_l = Hysteresis(low, high)
+        self.sensor_left_hist = deque(maxlen=hist_length)
+        self.sensor_right_hist = deque(maxlen=hist_length)
+
         self.was_on_line = False
         self.last_lines = [False, False]
         self.mutex = threading.Lock()
@@ -77,8 +79,8 @@ class LineDect:
         self.line_th.start()
         self.makeHist = makeHist
 
-        self.cs_l = cusum(1,100)
-        self.cs_r = cusum(1,100)
+        self.smart_line_left = SmartLine()
+        self.smart_line_right = SmartLine()
 
         if makeHist:
             histDict[histKey] = {}
@@ -88,8 +90,6 @@ class LineDect:
             self.histDict["r_r"] = []
             self.histDict["line_l"] = []
             self.histDict["line_r"] = []
-            self.histDict["change_l"] = []
-            self.histDict["change_r"] = []
 
     def kill(self):
         self.line_th.kill()
@@ -121,22 +121,15 @@ class LineDect:
     def on_line(self):
         r_l, r_r = self.get_ref()
 
-        self.cs_l.append(r_l)
-        change_l, _ = self.cs_l.change(low_t=-1, high_t=0)
-        self.cs_r.append(r_r)
-        change_r, _ = self.cs_r.change(low_t=-1, high_t=0)
-
-        line_r = not self.hyst_r.cal(r_r)
-        line_l = not self.hyst_r.cal(r_l)
+        line_r = self.smart_line_right.cal_on_line(r_r)
+        line_l = self.smart_line_left.cal_on_line(r_l)
 
         if self.makeHist:
             self.histDict["line_l"].append(line_l)
             self.histDict["line_r"].append(line_r)
-            self.histDict["change_l"].append(change_l)
-            self.histDict["change_r"].append(change_r)
 
         #print([r_l, r_r], [line_l, line_r], [change_l, change_r])
-        return [change_l, change_r]
+        return [line_l, line_r]
 
     def on_h_line(self, lines=None):
         if lines is None:

@@ -202,8 +202,8 @@ while True:
         break
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
-    motor_l_pro *= 0.25
-    motor_r_pro *= 0.25
+    motor_l_pro *= 1
+    motor_r_pro *= 1
 
     print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro], n_h_lines)
 

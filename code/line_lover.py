@@ -231,9 +231,9 @@ while True:
 
     if not on_line:
         if line_r:
-            angel_offset += 1
+            angel_offset += 5
         elif line_l:
-            angel_offset -= 1
+            angel_offset -= 5
         else:
             if angel_offset != 0:
                 gyro_sensor.add_offset(angel_offset / 2)

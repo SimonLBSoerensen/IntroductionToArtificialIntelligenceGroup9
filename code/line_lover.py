@@ -196,6 +196,7 @@ while True:
         else:
             gyro_sensor.add_offset(angel_offset / 2)
             angel_offset = 0
+    print(was_on_line, n_h_lines)
     if n_h_lines <= 0:
         tank_drive.stop()
         tank_drive.off()
@@ -205,7 +206,7 @@ while True:
     motor_l_pro *= 0.4
     motor_r_pro *= 0.4
 
-    print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro], n_h_lines)
+    #print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro], n_h_lines)
 
     tank_drive.on(SpeedPercent(motor_l_pro), SpeedPercent(motor_r_pro))
     #print(["{:.2f}".format(motor_l_pro), "{:.2f}".format(motor_r_pro)],

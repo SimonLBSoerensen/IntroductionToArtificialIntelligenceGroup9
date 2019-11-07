@@ -24,7 +24,7 @@ from fuzzy import FuzzyStraight
 from mics import sensor_overview, Hysteresis, SmartLine
 from cusum import cusum
 
-ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
+#ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 gyro_sensor = gyro(sensor_overview["gryo"])
 histDict = {}
 
@@ -154,7 +154,7 @@ class LineDect:
         else:
             return False
 
-n_h_lines = 3
+
 exitFlags = {}
 #ld = LineDect(exitFlags, threadSleep=0.001, makeHist=True, histDict=histDict)
 
@@ -184,10 +184,11 @@ smart_line_right = SmartLine()
 
 was_on_line = False
 
+n_h_lines = 3
 while True:
     angel = gyro_sensor.get_angel()
 
-    dist = ultrasonicSensor_sensor.distance_centimeters
+    dist = 254
 
     if dist == 255:
         dist = dist_old

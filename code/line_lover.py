@@ -227,6 +227,9 @@ while True:
 
     if on_line and not was_on_line:
         n_h_lines -= 1
+        #Sound.play_song()
+        #.play_tone(1500, 2)
+        #Sound.beep()
 
     if n_h_lines <= 0:
         tank_drive.stop()
@@ -251,8 +254,8 @@ while True:
     print(on_line, was_on_line, n_h_lines)
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
-    motor_l_pro *= 1
-    motor_r_pro *= 1
+    motor_l_pro *= 0.7
+    motor_r_pro *= 0.7
 
     #print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro], n_h_lines)
 

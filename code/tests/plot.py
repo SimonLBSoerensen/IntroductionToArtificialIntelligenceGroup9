@@ -60,31 +60,32 @@ plt.ylabel("Intensity")
 plt.grid(True)
 
 
+def plot_SL(data):
+    sl = SmartLine(save_hist=True)
+    for i, sensor_data in enumerate(data):
+        sl.cal_on_line(sensor_data)
+
+    sl_hist = sl.get_hist()
+    sensor = np.array(sl_hist["sensor"])
+    sensor_mean = np.array(sl_hist["sensor_mean"])
+    std_sensor = np.array(sl_hist["std_sensor"])
+
+    plt.figure()
+    plt.plot(sensor[:,0], sensor[:,1], label="Sensor")
+    plt.errorbar(sensor_mean[:,0], sensor_mean[:,1], yerr=std_sensor[:,1], label='mean with std_hist', uplims=True)
+
+    if "line_dect" in sl_hist:
+        line_dect = np.array(sl_hist["line_dect"])
+        plt.plot(line_dect[:, 0], line_dect[:, 1], label="line_dect")
+
+    if "line_start" in sl_hist:
+        line_start = np.array(sl_hist["line_start"])
+        plt.vlines(x=line_start[:, 0], ymin=0, ymax=np.max(sensor[:, 1]), color="g")
+    if "line_end" in sl_hist:
+        line_end = np.array(sl_hist["line_end"])
+        plt.vlines(x=line_end[:,0], ymin=0, ymax=np.max(sensor[:,1]), color="r")
 
 
-
-sl = SmartLine(save_hist=True)
-for i, sensor_data in enumerate(hist["LineDect"]["r_l"]):
-    sl.cal_on_line(sensor_data)
-
-sl_hist = sl.get_hist()
-sensor = np.array(sl_hist["sensor"])
-sensor_mean = np.array(sl_hist["sensor_mean"])
-std_sensor = np.array(sl_hist["std_sensor"])
-
-plt.figure()
-plt.plot(sensor[:,0], sensor[:,1], label="Sensor")
-plt.errorbar(sensor_mean[:,0], sensor_mean[:,1], yerr=std_sensor[:,1], label='mean with std_hist', uplims=True)
-
-if "line_dect" in sl_hist:
-    line_dect = np.array(sl_hist["line_dect"])
-    plt.plot(line_dect[:, 0], line_dect[:, 1], label="line_dect")
-
-if "line_start" in sl_hist:
-    line_start = np.array(sl_hist["line_start"])
-    plt.vlines(x=line_start[:, 0], ymin=0, ymax=np.max(sensor[:, 1]), color="g")
-if "line_end" in sl_hist:
-    line_end = np.array(sl_hist["line_end"])
-    plt.vlines(x=line_end[:,0], ymin=0, ymax=np.max(sensor[:,1]), color="r")
-
+plot_SL(hist["LineDect"]["r_l"])
+plot_SL(hist["LineDect"]["r_r"])
 plt.show()

@@ -188,7 +188,9 @@ r_line_hist = deque(maxlen=5)
 
 was_on_line = False
 
+histDict["LineDect"] = {}
 n_h_lines = 3
+makeHist = True
 while True:
     angel = gyro_sensor.get_angel()
 
@@ -208,6 +210,12 @@ while True:
     r_line_hist.append(line_r)
     r_has_been_line = np.sum(r_line_hist) > 0
 
+    if makeHist:
+        histDict["r_l"].append(r_l)
+        histDict["r_r"].append(r_r)
+        histDict["line_l"].append(line_l)
+        histDict["line_r"].append(line_r)
+        histDict["angel"].append(angel)
 
     on_line = l_has_been_line and r_has_been_line
 
@@ -234,11 +242,11 @@ while True:
     else:
         was_on_line = False
 
-    print(was_on_line, n_h_lines)
+    print(on_line, was_on_line, n_h_lines)
 
     motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
-    motor_l_pro *= 0.4
-    motor_r_pro *= 0.4
+    motor_l_pro *= 1
+    motor_r_pro *= 1
 
     #print([line_l, line_r], was_on_line, angel, angel_offset, [motor_l_pro, motor_r_pro], n_h_lines)
 

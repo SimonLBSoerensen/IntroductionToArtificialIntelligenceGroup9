@@ -160,6 +160,10 @@ exitFlags = {}
 
 angel_offset = 0
 
+def save_data():
+    print("Saving hist to hist.pck")
+    with open('hist.pck', 'wb') as handle:
+        pickle.dump(histDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 def keyboardInterruptHandler(signal, frame):
     print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
@@ -167,9 +171,7 @@ def keyboardInterruptHandler(signal, frame):
         exitFlags[key] = True
     tank_drive.stop()
     tank_drive.off()
-    print("Saving hist to hist.pck")
-    with open('hist.pck', 'wb') as handle:
-        pickle.dump(histDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    save_data()
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
@@ -247,3 +249,4 @@ while True:
 
     time.sleep(0.01)
 
+save_data()

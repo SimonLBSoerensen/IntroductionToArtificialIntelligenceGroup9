@@ -146,15 +146,15 @@ class lineDect:
         while not self.kill:
             self.r_l = self.color_sensor_left.reflected_light_intensity
 
-            if self.r_l < self.r_l_mean-(self.r_l_std*7):
+            if self.r_l < self.r_l_mean-(self.r_l_std*5):
                 self.line_l = True
                 if self.r_l_N < 5:
                     self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
                                                                              self.r_l_mean, self.r_l_std)
-                else:
-                    self.line_l = False
-                    self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
-                                                                         self.r_l_mean, self.r_l_std)
+            else:
+                self.line_l = False
+                self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
+                                                                     self.r_l_mean, self.r_l_std)
 
 
             #self.line_l = self.smart_line_left.cal_on_line(self.r_l)

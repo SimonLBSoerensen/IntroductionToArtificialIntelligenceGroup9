@@ -44,6 +44,13 @@ print(hist)
 
 plt.figure()
 plt.plot(hist["t_line_l"], hist["r_l"], label="r_l")
+
+plt.figure()
+plt.plot(hist["t_line_l"], hist["r_l_std"], label="r_l_std")
+
+plt.figure()
+plt.plot(hist["t_line_l"], hist["r_l_mean"], label="r_l_mean")
+
 plt.show()
 
 plot_SL(hist["r_r"])

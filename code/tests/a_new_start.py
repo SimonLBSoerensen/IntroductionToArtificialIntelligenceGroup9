@@ -27,6 +27,12 @@ from cusum import cusum
 #ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 
 histDict = {}
+histDict["t"] = []
+#histDict["r_l"] = []
+histDict["r_r"] = []
+#histDict["line_l"] = []
+histDict["line_r"] = []
+write_data = True
 
 exitFlags = {}
 angel_offset = 0
@@ -42,12 +48,13 @@ def keyboardInterruptHandler(signal, frame):
         exitFlags[key] = True
     tank_drive.stop()
     tank_drive.off()
-    save_data()
+    if write_data:
+        save_data()
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
-color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
-color_sensor_l.mode = 'REF-RAW'
+#color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
+#color_sensor_l.mode = 'REF-RAW'
 color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
 color_sensor_r.mode = 'REF-RAW'
 
@@ -64,7 +71,7 @@ sound = Sound()
 sound.speak(text='calibrate white in 3', volume=50)
 time.sleep(3)
 sound.speak(text='calibrate white now', volume=50)
-color_sensor_l.calibrate_white()
+#color_sensor_l.calibrate_white()
 color_sensor_r.calibrate_white()
 sound.speak(text='calibrate white done. Running in 10', volume=50)
 time.sleep(10)
@@ -88,7 +95,7 @@ class lineFllow:
 
 class lineDect:
     def __init__(self, color_sensor_left, color_sensor_right, hist_length = 5):
-        self.color_sensor_left = color_sensor_left
+        #self.color_sensor_left = color_sensor_left
         self.color_sensor_right = color_sensor_right
 
         self.smart_line_left = SmartLine()
@@ -99,16 +106,24 @@ class lineDect:
         self.right_has_been_line = 0
 
     def cal_lines(self):
-        r_l = self.color_sensor_left.reflected_light_intensity
+        #r_l = self.color_sensor_left.reflected_light_intensity
         r_r = self.color_sensor_right.reflected_light_intensity
 
-        line_l = self.smart_line_left.cal_on_line(r_l)
-        self.left_line_hist.append(line_l)
-        self.left_has_been_line = np.sum(self.left_line_hist) > 0
+        #line_l = self.smart_line_left.cal_on_line(r_l)
+        line_l = 0
+        #self.left_line_hist.append(line_l)
+        #self.left_has_been_line = np.sum(self.left_line_hist) > 0
 
         line_r = self.smart_line_right.cal_on_line(r_r)
         self.right_line_hist.append(line_r)
         self.right_has_been_line = np.sum(self.right_line_hist) > 0
+
+        if write_data:
+            histDict["t"].append(time.process_time_ns())
+            #histDict["r_l"].append(r_l)
+            histDict["r_r"].append(r_r)
+            #histDict["line_l"].append(line_l)
+            histDict["line_r"] .append(line_r)
 
         return line_l, line_r
 
@@ -116,29 +131,29 @@ class lineDect:
         return self.left_has_been_line and self.right_has_been_line
 
 
-def motor(pro_times):
+def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
     dist = 255
     angel = gyro_sensor.get_angel()
-    motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
-    motor_l_pro *= pro_times
-    motor_r_pro *= pro_times
+    if do_fuz:
+        motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
+        motor_l_pro *= pro_times
+        motor_r_pro *= pro_times
+
     tank_drive.on(SpeedPercent(motor_l_pro), SpeedPercent(motor_r_pro))
 
 
-ld = lineDect(color_sensor_l, color_sensor_r)
+ld = lineDect(None, color_sensor_r)
 lf = lineFllow(gyro_sensor)
-
-histDict["r_l"] = []
-histDict["r_r"] = []
 
 while True:
     line_l, line_r = ld.cal_lines()
-    lf.cal(line_l, line_r)
 
-    motor(0.3)
+    #lf.cal(line_l, line_r)
+    motor(0, 30, 30, do_fuz=False)
 
     #time.sleep(0.01)
 
-save_data()
+if write_data:
+    save_data()
 tank_drive.stop()
 tank_drive.off()

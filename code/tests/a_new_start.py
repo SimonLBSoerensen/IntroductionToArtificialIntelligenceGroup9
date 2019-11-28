@@ -152,8 +152,8 @@ class lineDect:
                     self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
                                                                              self.r_l_mean, self.r_l_std)
                 else:
-                self.line_l = False
-                self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
+                    self.line_l = False
+                    self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
                                                                          self.r_l_mean, self.r_l_std)
 
 

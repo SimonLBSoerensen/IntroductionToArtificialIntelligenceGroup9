@@ -144,7 +144,7 @@ def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
     tank_drive.on(SpeedPercent(motor_l_pro), SpeedPercent(motor_r_pro))
 
 
-ld = lineDect(None, color_sensor_r)
+ld = lineDect(color_sensor_l, color_sensor_r)
 lf = lineFllow(gyro_sensor)
 
 test_name += "_withlinecal_"

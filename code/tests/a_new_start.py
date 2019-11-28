@@ -115,6 +115,7 @@ class lineDect:
         #self.left_has_been_line = np.sum(self.left_line_hist) > 0
 
         #line_r = self.smart_line_right.cal_on_line(r_r)
+        line_r = 0
         #self.right_line_hist.append(line_r)
         #self.right_has_been_line = np.sum(self.right_line_hist) > 0
 

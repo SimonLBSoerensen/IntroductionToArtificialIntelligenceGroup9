@@ -120,8 +120,10 @@ class lineDect:
         self.r_l_hist = deque(maxlen=100)
 
     def update_line_r(self):
+        self.r_l_hist.append(self.color_sensor_left.reflected_light_intensity)
         while not self.kill:
             self.r_l = self.color_sensor_left.reflected_light_intensity
+
 
             r_l_mean = np.mean(self.r_l_hist)
             r_l_std = np.std(self.r_l_hist)

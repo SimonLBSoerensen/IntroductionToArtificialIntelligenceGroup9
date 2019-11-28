@@ -99,6 +99,21 @@ class lineFllow:
                 self.gyro_sensor.add_offset(self.angel_offset / 2)
             self.angel_offset = 0
 
+def running_update(x, N, mu, var):
+    '''
+        @arg x: the current data sample
+        @arg N : the number of previous samples
+        @arg mu: the mean of the previous samples
+        @arg var : the variance over the previous samples
+        @retval (N+1, mu', var') -- updated mean, variance and count
+        From: https://stackoverflow.com/questions/1174984/how-to-efficiently-calculate-a-running-standard-deviation
+    '''
+    N = N + 1
+    rho = 1.0/N
+    d = x - mu
+    mu += rho*d
+    var += rho*((1-rho)*d**2 - var)
+    return (N, mu, var)
 
 class lineDect:
     def __init__(self, color_sensor_left, color_sensor_right, hist_length = 5):
@@ -120,19 +135,21 @@ class lineDect:
 
 
     def update_line_r(self):
-        self.r_l_hist.append(self.color_sensor_left.reflected_light_intensity)
+        self.r_l = self.color_sensor_left.reflected_light_intensity
         self.line_l = False
+        self.r_l_N = 1
+        self.r_l_mean = self.r_l
+        self.r_l_std = 0
+
         while not self.kill:
             self.r_l = self.color_sensor_left.reflected_light_intensity
 
-
-            #r_l_mean = np.mean(self.r_l_hist)
-            #r_l_std = np.std(self.r_l_hist)
-
-            #if self.r_l < r_l_mean-(r_l_std*7):
-            #    self.line_l = True
-            #else:
-            #    self.r_l_hist.append(self.r_l)
+            if self.r_l < self.r_l_mean-(self.r_l_std*7):
+                self.line_l = True
+            else:
+                self.line_l = False
+                self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
+                                                                         self.r_l_mean, self.r_l_std)
 
 
             #self.line_l = self.smart_line_left.cal_on_line(self.r_l)
@@ -140,7 +157,7 @@ class lineDect:
             #self.left_has_been_line = np.sum(self.left_line_hist) > 0
             if write_data:
                 histDict["t_line_l"].append(pytime.process_time())
-                #histDict["line_l"].append(self.line_l)
+                histDict["line_l"].append(self.line_l)
                 histDict["r_l"].append(self.r_l)
 
     def update_line_l(self):

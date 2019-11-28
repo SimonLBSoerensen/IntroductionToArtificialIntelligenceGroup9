@@ -114,16 +114,16 @@ class lineDect:
         #self.left_line_hist.append(line_l)
         #self.left_has_been_line = np.sum(self.left_line_hist) > 0
 
-        line_r = self.smart_line_right.cal_on_line(r_r)
-        self.right_line_hist.append(line_r)
-        self.right_has_been_line = np.sum(self.right_line_hist) > 0
+        #line_r = self.smart_line_right.cal_on_line(r_r)
+        #self.right_line_hist.append(line_r)
+        #self.right_has_been_line = np.sum(self.right_line_hist) > 0
 
         if write_data:
             histDict["t"].append(pytime.process_time())
             #histDict["r_l"].append(r_l)
             histDict["r_r"].append(r_r)
             #histDict["line_l"].append(line_l)
-            histDict["line_r"] .append(line_r)
+            #histDict["line_r"] .append(line_r)
 
         return line_l, line_r
 
@@ -132,9 +132,9 @@ class lineDect:
 
 
 def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
-    dist = 255
-    angel = gyro_sensor.get_angel()
     if do_fuz:
+        dist = 255
+        angel = gyro_sensor.get_angel()
         motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
         motor_l_pro *= pro_times
         motor_r_pro *= pro_times
@@ -144,12 +144,12 @@ def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
 
 ld = lineDect(None, color_sensor_r)
 lf = lineFllow(gyro_sensor)
-
+motor(0, 30, 30, do_fuz=False)
 while True:
     line_l, line_r = ld.cal_lines()
 
     #lf.cal(line_l, line_r)
-    motor(0, 30, 30, do_fuz=False)
+
 
     #time.sleep(0.01)
 

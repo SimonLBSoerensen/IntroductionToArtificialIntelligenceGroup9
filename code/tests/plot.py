@@ -18,6 +18,10 @@ hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist.pck")
 print(hist)
 
 plt.figure()
+plt.plot(hist["r_r"], label="r_r")
+plt.show()
+
+plt.figure()
 plt.plot(hist["angel"], label="angel", c="g")
 plt.plot(hist["angel_offset"], label="angel_offset", c="r")
 plt.legend()
@@ -41,7 +45,7 @@ plt.plot(hist["line_r"], label="line_r")
 plt.legend()
 plt.grid(True)
 
-#plt.show()
+plt.show()
 
 
 plt.figure()

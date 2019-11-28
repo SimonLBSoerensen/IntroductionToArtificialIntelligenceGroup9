@@ -121,6 +121,7 @@ class lineDect:
 
     def update_line_r(self):
         self.r_l_hist.append(self.color_sensor_left.reflected_light_intensity)
+        self.line_l = False
         while not self.kill:
             self.r_l = self.color_sensor_left.reflected_light_intensity
 

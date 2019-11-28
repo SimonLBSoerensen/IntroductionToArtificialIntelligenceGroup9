@@ -68,13 +68,13 @@ dist_old = 255
 was_on_line = False
 
 sound = Sound()
-sound.speak(text='calibrate white in 3', volume=50)
+print("calibrate white in 3")
 time.sleep(3)
-sound.speak(text='calibrate white now', volume=50)
+print("calibrate white now")
 #color_sensor_l.calibrate_white()
 color_sensor_r.calibrate_white()
-sound.speak(text='calibrate white done. Running in 10', volume=50)
-time.sleep(10)
+print("calibrate white done. Running in 3")
+time.sleep(3)
 
 
 class lineFllow:

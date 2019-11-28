@@ -123,7 +123,7 @@ class lineDect:
             self.left_has_been_line = np.sum(self.left_line_hist) > 0
             if write_data:
                 histDict["t_line_l"].append(pytime.process_time())
-                histDict["line_l"].append(line_l)
+                histDict["line_l"].append(self.line_l)
                 histDict["r_l"].append(self.r_l)
 
     def update_line_l(self):
@@ -134,7 +134,7 @@ class lineDect:
             self.right_has_been_line = np.sum(self.right_line_hist) > 0
             if write_data:
                 histDict["t_line_r"].append(pytime.process_time())
-                histDict["line_r"].append(line_r)
+                histDict["line_r"].append(self.line_r)
                 histDict["r_r"].append(self.r_r)
 
     def get_lines(self):

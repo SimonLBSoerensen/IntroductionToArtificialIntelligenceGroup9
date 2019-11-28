@@ -43,7 +43,7 @@ hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist\hist_withlinecal_100.pc
 print(hist)
 
 plt.figure()
-plt.plot(hist["t"], hist["r_r"], label="r_r")
+plt.plot(hist["t_line_r"], hist["r_r"], label="r_r")
 plt.show()
 
 plot_SL(hist["r_r"])

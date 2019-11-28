@@ -112,17 +112,29 @@ class lineDect:
         self.left_has_been_line = 0
         self.right_has_been_line = 0
         self.kill = False
-        tl = threading.Thread(target=self.update_line_l)
+        tl = threading.Thread(target=self.update_line_l, daemon=True)
         tl.start()
-        tr = threading.Thread(target=self.update_line_r)
+        tr = threading.Thread(target=self.update_line_r, daemon=True)
         tr.start()
+
+        self.r_l_hist = deque(maxlen=100)
 
     def update_line_r(self):
         while not self.kill:
             self.r_l = self.color_sensor_left.reflected_light_intensity
-            self.line_l = self.smart_line_left.cal_on_line(self.r_l)
-            self.left_line_hist.append(self.line_l)
-            self.left_has_been_line = np.sum(self.left_line_hist) > 0
+
+            r_l_mean = np.mean(self.r_l_hist)
+            r_l_std = np.std(self.r_l_hist)
+
+            if self.r_l < r_l_mean-(r_l_std*7):
+                self.line_l = True
+            else:
+                self.r_l_hist.append(self.r_l)
+
+
+            #self.line_l = self.smart_line_left.cal_on_line(self.r_l)
+            #self.left_line_hist.append(self.line_l)
+            #self.left_has_been_line = np.sum(self.left_line_hist) > 0
             if write_data:
                 histDict["t_line_l"].append(pytime.process_time())
                 histDict["line_l"].append(self.line_l)

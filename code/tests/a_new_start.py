@@ -46,9 +46,11 @@ def save_data():
     print("Saving hist to "+filename)
     with open(filename, 'wb') as handle:
         pickle.dump(histDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    print("Saving hist done")
 
 def keyboardInterruptHandler(signal, frame):
     print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
+    ld.kill = True
     for key in exitFlags:
         exitFlags[key] = True
     tank_drive.stop()
@@ -180,3 +182,4 @@ if write_data:
     save_data()
 tank_drive.stop()
 tank_drive.off()
+ld.kill = True

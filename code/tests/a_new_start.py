@@ -28,9 +28,9 @@ from cusum import cusum
 
 histDict = {}
 histDict["t"] = []
-#histDict["r_l"] = []
+histDict["r_l"] = []
 histDict["r_r"] = []
-#histDict["line_l"] = []
+histDict["line_l"] = []
 histDict["line_r"] = []
 write_data = True
 
@@ -56,8 +56,8 @@ def keyboardInterruptHandler(signal, frame):
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
-#color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
-#color_sensor_l.mode = 'REF-RAW'
+color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
+color_sensor_l.mode = 'REF-RAW'
 color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
 color_sensor_r.mode = 'REF-RAW'
 
@@ -74,7 +74,7 @@ sound = Sound()
 print("calibrate white in 3")
 pytime.sleep(3)
 print("calibrate white now")
-#color_sensor_l.calibrate_white()
+color_sensor_l.calibrate_white()
 color_sensor_r.calibrate_white()
 print("calibrate white done. Running in 3")
 pytime.sleep(3)
@@ -98,7 +98,7 @@ class lineFllow:
 
 class lineDect:
     def __init__(self, color_sensor_left, color_sensor_right, hist_length = 5):
-        #self.color_sensor_left = color_sensor_left
+        self.color_sensor_left = color_sensor_left
         self.color_sensor_right = color_sensor_right
 
         self.smart_line_left = SmartLine()
@@ -109,25 +109,23 @@ class lineDect:
         self.right_has_been_line = 0
 
     def cal_lines(self):
-        #r_l = self.color_sensor_left.reflected_light_intensity
+        r_l = self.color_sensor_left.reflected_light_intensity
         r_r = self.color_sensor_right.reflected_light_intensity
 
-        #line_l = self.smart_line_left.cal_on_line(r_l)
-        line_l = 0
-        #self.left_line_hist.append(line_l)
-        #self.left_has_been_line = np.sum(self.left_line_hist) > 0
+        line_l = self.smart_line_left.cal_on_line(r_l)
+        self.left_line_hist.append(line_l)
+        self.left_has_been_line = np.sum(self.left_line_hist) > 0
 
-        #line_r = self.smart_line_right.cal_on_line(r_r)
-        line_r = 0
-        #self.right_line_hist.append(line_r)
-        #self.right_has_been_line = np.sum(self.right_line_hist) > 0
+        line_r = self.smart_line_right.cal_on_line(r_r)
+        self.right_line_hist.append(line_r)
+        self.right_has_been_line = np.sum(self.right_line_hist) > 0
 
         if write_data:
             histDict["t"].append(pytime.process_time())
-            #histDict["r_l"].append(r_l)
+            histDict["r_l"].append(r_l)
             histDict["r_r"].append(r_r)
-            #histDict["line_l"].append(line_l)
-            #histDict["line_r"] .append(line_r)
+            histDict["line_l"].append(line_l)
+            histDict["line_r"] .append(line_r)
 
         return line_l, line_r
 
@@ -148,6 +146,8 @@ def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
 
 ld = lineDect(None, color_sensor_r)
 lf = lineFllow(gyro_sensor)
+
+test_name += "_withlinecal_"
 
 if len(sys.argv) > 1:
     test_name += sys.argv[1]

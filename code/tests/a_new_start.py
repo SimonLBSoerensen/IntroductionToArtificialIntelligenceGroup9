@@ -27,11 +27,13 @@ from cusum import cusum
 #ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
 
 histDict = {}
-histDict["t"] = []
+histDict["t_r_lr"] = []
 histDict["r_l"] = []
 histDict["r_r"] = []
 histDict["line_l"] = []
 histDict["line_r"] = []
+histDict["t_line_r"] = []
+histDict["t_line_l"] = []
 write_data = True
 
 exitFlags = {}
@@ -107,27 +109,36 @@ class lineDect:
         self.right_line_hist = deque(maxlen=hist_length)
         self.left_has_been_line = 0
         self.right_has_been_line = 0
+        self.kill = False
+        tl = threading.Thread(target=self.update_line_l)
+        tl.start()
+        tr = threading.Thread(target=self.update_line_r)
+        tr.start()
 
-    def cal_lines(self):
-        r_l = self.color_sensor_left.reflected_light_intensity
-        r_r = self.color_sensor_right.reflected_light_intensity
+    def update_line_r(self):
+        while not self.kill:
+            self.r_l = self.color_sensor_left.reflected_light_intensity
+            self.line_l = self.smart_line_left.cal_on_line(self.r_l)
+            self.left_line_hist.append(self.line_l)
+            self.left_has_been_line = np.sum(self.left_line_hist) > 0
+            if write_data:
+                histDict["t_line_l"].append(pytime.process_time())
+                histDict["line_l"].append(line_l)
+                histDict["r_l"].append(self.r_l)
 
-        line_l = self.smart_line_left.cal_on_line(r_l)
-        self.left_line_hist.append(line_l)
-        self.left_has_been_line = np.sum(self.left_line_hist) > 0
+    def update_line_l(self):
+        while not self.kill:
+            self.r_r = self.color_sensor_right.reflected_light_intensity
+            self.line_r = self.smart_line_right.cal_on_line(self.r_r)
+            self.right_line_hist.append(self.line_r)
+            self.right_has_been_line = np.sum(self.right_line_hist) > 0
+            if write_data:
+                histDict["t_line_r"].append(pytime.process_time())
+                histDict["line_r"].append(line_r)
+                histDict["r_r"].append(self.r_r)
 
-        line_r = self.smart_line_right.cal_on_line(r_r)
-        self.right_line_hist.append(line_r)
-        self.right_has_been_line = np.sum(self.right_line_hist) > 0
-
-        if write_data:
-            histDict["t"].append(pytime.process_time())
-            histDict["r_l"].append(r_l)
-            histDict["r_r"].append(r_r)
-            histDict["line_l"].append(line_l)
-            histDict["line_r"] .append(line_r)
-
-        return line_l, line_r
+    def get_lines(self):
+        return self.line_l, self.line_r
 
     def h_line(self):
         return self.left_has_been_line and self.right_has_been_line

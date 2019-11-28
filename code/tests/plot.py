@@ -39,7 +39,7 @@ def plot_SL(data):
 
 hys_min_max = [25,30]
 
-hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist\hist100.pck")
+hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist\hist_withlinecal_100.pck")
 print(hist)
 
 plt.figure()

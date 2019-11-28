@@ -40,8 +40,9 @@ angel_offset = 0
 test_name = "hist"
 
 def save_data():
-    print("Saving hist to hist.pck")
-    with open('hists/'+test_name+'.pck', 'wb') as handle:
+    filename = 'hists/'+test_name+'.pck'
+    print("Saving hist to "+filename)
+    with open(filename, 'wb') as handle:
         pickle.dump(histDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 def keyboardInterruptHandler(signal, frame):

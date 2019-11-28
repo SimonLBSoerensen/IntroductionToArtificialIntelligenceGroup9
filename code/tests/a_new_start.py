@@ -112,12 +112,12 @@ class lineDect:
         self.left_has_been_line = 0
         self.right_has_been_line = 0
         self.kill = False
+        self.r_l_hist = deque(maxlen=100)
         tl = threading.Thread(target=self.update_line_l, daemon=True)
         tl.start()
         tr = threading.Thread(target=self.update_line_r, daemon=True)
         tr.start()
 
-        self.r_l_hist = deque(maxlen=100)
 
     def update_line_r(self):
         self.r_l_hist.append(self.color_sensor_left.reflected_light_intensity)

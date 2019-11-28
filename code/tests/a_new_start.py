@@ -169,7 +169,7 @@ histDict["motor_pro"] = motor_pro
 
 motor(0, motor_pro, motor_pro, do_fuz=False)
 while True:
-    line_l, line_r = ld.cal_lines()
+    line_l, line_r = ld.get_lines()
 
     #lf.cal(line_l, line_r)
 

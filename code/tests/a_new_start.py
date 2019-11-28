@@ -145,7 +145,7 @@ def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
 
 ld = lineDect(None, color_sensor_r)
 lf = lineFllow(gyro_sensor)
-motor(0, 30, 30, do_fuz=False)
+motor(0, 100, 100, do_fuz=False)
 while True:
     line_l, line_r = ld.cal_lines()
 

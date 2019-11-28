@@ -37,9 +37,11 @@ write_data = True
 exitFlags = {}
 angel_offset = 0
 
+test_name = "hist"
+
 def save_data():
     print("Saving hist to hist.pck")
-    with open('hist.pck', 'wb') as handle:
+    with open('hists/'+test_name+'.pck', 'wb') as handle:
         pickle.dump(histDict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 def keyboardInterruptHandler(signal, frame):
@@ -147,7 +149,8 @@ ld = lineDect(None, color_sensor_r)
 lf = lineFllow(gyro_sensor)
 
 if len(sys.argv) > 1:
-    motor_pro = sys.argv[1]
+    test_name += sys.argv[1]
+    motor_pro = int(sys.argv[1])
 else:
     motor_pro = 0
 histDict["motor_pro"] = motor_pro

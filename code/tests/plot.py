@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, "../lib")
-from mics import SmartLine
+from mics import SmartLine, running_update
 
 
 import matplotlib.pyplot as plt
@@ -11,6 +11,54 @@ def load_dict_from_file(filename):
     with open(filename, 'rb') as handle:
         dict = pickle.load(handle)
     return dict
+
+def plot_run(data, std_scale, alpha):
+    n = 1
+    mean = data[0]
+    std = np.std(data[0] + np.random.choice([1, -1, 2, -2], 4))
+    line = False
+    means = [mean]
+    stds = [std]
+    lines = []
+    border = []
+
+
+
+    for d in data:
+        border.append(mean - (std * std_scale))
+        if d < mean - (std * std_scale):
+            line = True
+        else:
+            line = False
+            _, mean, std = running_update(d, n, mean, std, alpha)
+        n+=1
+        means.append(mean)
+        stds.append(std)
+        lines.append(line)
+    lines = np.array(lines)
+
+    plt.figure()
+    plt.subplot2grid((2, 2), (0, 0))
+    plt.title("Data")
+    plt.plot(data)
+
+    plt.subplot2grid((2, 2), (0, 1))
+    plt.title("Mean")
+    plt.plot(means)
+
+    plt.subplot2grid((2, 2), (1, 1))
+    plt.title("std")
+    plt.plot(stds)
+
+    plt.subplot2grid((2, 2), (1, 0))
+    plt.title("lines")
+    plt.plot(data, c="g", label="Data")
+    plt.plot(border, c="r", label="Border")
+    plt.plot(lines, c="b", label="Lines")
+    plt.legend()
+
+    plt.show()
+
 
 def plot_SL(data):
     sl = SmartLine(save_hist=True, std_scale=7)
@@ -41,6 +89,9 @@ hys_min_max = [25,30]
 
 hist = load_dict_from_file(r"C:\Users\simon\Desktop\hist\hist_withlinecal_100.pck")
 print(hist)
+
+plot_run(hist["r_l"], std_scale=5, alpha=0.7)
+exit(1)
 
 plt.figure()
 plt.plot(hist["t_line_l"], hist["r_l"], label="r_l")

@@ -21,7 +21,7 @@ sys.path.insert(0, "/home/ai1/git/code/lib")
 import joke
 from gyro import gyro
 from fuzzy import FuzzyStraight
-from mics import sensor_overview, Hysteresis, SmartLine
+from mics import sensor_overview, Hysteresis, SmartLine, running_update
 from cusum import cusum
 
 #ultrasonicSensor_sensor = lego.UltrasonicSensor(sensor_overview["ultra"])
@@ -100,22 +100,6 @@ class lineFllow:
             if self.angel_offset != 0:
                 self.gyro_sensor.add_offset(self.angel_offset / 2)
             self.angel_offset = 0
-
-def running_update(x, N, mu, var):
-    '''
-        @arg x: the current data sample
-        @arg N : the number of previous samples
-        @arg mu: the mean of the previous samples
-        @arg var : the variance over the previous samples
-        @retval (N+1, mu', var') -- updated mean, variance and count
-        From: https://stackoverflow.com/questions/1174984/how-to-efficiently-calculate-a-running-standard-deviation
-    '''
-    N = N + 1
-    rho = 1.0/N
-    d = x - mu
-    mu += rho*d
-    var += rho*((1-rho)*d**2 - var)
-    return (N, mu, var)
 
 class lineDect:
     def __init__(self, color_sensor_left, color_sensor_right, hist_length = 5):

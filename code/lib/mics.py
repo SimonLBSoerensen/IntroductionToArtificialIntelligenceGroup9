@@ -2,6 +2,24 @@ import numpy as np
 from ev3dev2.sensor import INPUT_1, INPUT_4, INPUT_2, INPUT_3
 sensor_overview = {"v_color": INPUT_1, "r_color": INPUT_4, "ultra": INPUT_4, "gryo": INPUT_3, "touch": INPUT_3}
 
+def running_update(x, N, mu, var, alpha):
+    '''
+        @arg x: the current data sample
+        @arg N : the number of previous samples
+        @arg mu: the mean of the previous samples
+        @arg var : the variance over the previous samples
+        @retval (N+1, mu', var') -- updated mean, variance and count
+        From: https://stackoverflow.com/questions/1174984/how-to-efficiently-calculate-a-running-standard-deviation
+    '''
+    N = N + 1
+    rho = 1.0/N
+    d = x - mu
+
+    mu = alpha * d + (1-alpha) * mu
+
+    var += rho*((1-rho)*d**2 - var)
+    return (N, mu, var)
+
 def save_dict_to_file(dict , filename):
     import pickle
     with open(filename, 'wb') as handle:

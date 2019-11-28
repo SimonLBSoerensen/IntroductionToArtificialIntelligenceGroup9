@@ -10,7 +10,7 @@ from ev3dev2.sensor import lego
 import ev3dev2.fonts as fonts
 from ev3dev2 import button
 from ev3dev2.sound import Sound
-import time
+import time as pytime
 import threading
 import signal
 import pickle
@@ -69,12 +69,12 @@ was_on_line = False
 
 sound = Sound()
 print("calibrate white in 3")
-time.sleep(3)
+pytime.sleep(3)
 print("calibrate white now")
 #color_sensor_l.calibrate_white()
 color_sensor_r.calibrate_white()
 print("calibrate white done. Running in 3")
-time.sleep(3)
+pytime.sleep(3)
 
 
 class lineFllow:
@@ -119,7 +119,7 @@ class lineDect:
         self.right_has_been_line = np.sum(self.right_line_hist) > 0
 
         if write_data:
-            histDict["t"].append(time.process_time_ns())
+            histDict["t"].append(pytime.process_time())
             #histDict["r_l"].append(r_l)
             histDict["r_r"].append(r_r)
             #histDict["line_l"].append(line_l)

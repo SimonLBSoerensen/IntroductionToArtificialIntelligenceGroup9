@@ -29,6 +29,8 @@ from cusum import cusum
 histDict = {}
 histDict["t_r_lr"] = []
 histDict["r_l"] = []
+histDict["r_l_std"] = []
+histDict["r_l_mean"] = []
 histDict["r_r"] = []
 histDict["line_l"] = []
 histDict["line_r"] = []
@@ -146,7 +148,10 @@ class lineDect:
 
             if self.r_l < self.r_l_mean-(self.r_l_std*7):
                 self.line_l = True
-            else:
+                if self.r_l_N < 5:
+                    self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
+                                                                             self.r_l_mean, self.r_l_std)
+                else:
                 self.line_l = False
                 self.r_l_N, self.r_l_mean, self.r_l_std = running_update(self.r_l, self.r_l_N,
                                                                          self.r_l_mean, self.r_l_std)
@@ -159,6 +164,8 @@ class lineDect:
                 histDict["t_line_l"].append(pytime.process_time())
                 histDict["line_l"].append(self.line_l)
                 histDict["r_l"].append(self.r_l)
+                histDict["r_l_std"].append(self.r_l_std)
+                histDict["r_l_mean"].append(self.r_l_mean)
 
     def update_line_l(self):
         while not self.kill:

@@ -65,8 +65,8 @@ def append_to_hist(rli_left, rli_right):
     if rli_right is not None:
         rli_hist[1].append(rli_right)
 
-def get_avg_hist():
-    return sum(rli_hist[0])/len(rli_hist[0]), sum(rli_hist[1])/len(rli_hist[1])
+def get_sum_hist():
+    return sum(rli_hist[0]), sum(rli_hist[1])
 
 def get_rli():
     rli_left = color_sensor_l.reflected_light_intensity
@@ -74,11 +74,11 @@ def get_rli():
     return rli_left, rli_right
 
 def get_lines(rli_left, rli_right, pro = 0.2):
-    rli_avg_left, rli_avg_right = get_avg_hist()
+    rli_sum_left, rli_sum_right = get_sum_hist()
 
 
-    line_left = True if rli_left < rli_avg_left*pro else False
-    line_right = True if rli_right < rli_avg_right*pro else False
+    line_left = True if rli_left*len(rli_hist[0]) < rli_sum_left*pro else False
+    line_right = True if rli_right*len(rli_hist[1]) < rli_sum_right*pro else False
 
     return line_left, line_right
 

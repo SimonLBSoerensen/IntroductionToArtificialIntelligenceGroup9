@@ -85,6 +85,7 @@ for _ in range(hist_length):
     rli_left, rli_right = get_rli()
     append_to_hist(rli_left, rli_right)
 
+tank_drive.on(SpeedPercent(30), SpeedPercent(30))
 while True:
     rli_left, rli_right = get_rli()
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
@@ -92,6 +93,7 @@ while True:
         append_to_hist(rli_left, None)
     if not line_right:
         append_to_hist(rli_right, None)
+
 
     print(line_left, line_right)
 
@@ -102,4 +104,3 @@ while True:
 
 
 
-tank_drive.on(SpeedPercent(motor_l_pro), SpeedPercent(motor_r_pro))

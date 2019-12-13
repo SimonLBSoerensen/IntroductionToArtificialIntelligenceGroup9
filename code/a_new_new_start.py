@@ -114,7 +114,7 @@ while True:
 
     print(line_left, line_right)
 
-    if bnt.is_pressed():
+    if bnt.is_pressed:
         killProcs()
         break
 

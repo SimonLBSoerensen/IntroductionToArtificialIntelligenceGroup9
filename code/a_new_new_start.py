@@ -64,7 +64,7 @@ gyro_sensor.reset()
 
 # Motor drive
 tank_drive = MoveTank(OUTPUT_B, OUTPUT_D)
-fuzzyStraight = FuzzyStraight()
+#fuzzyStraight = FuzzyStraight()
 dist_old = 255
 def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
     if do_fuz:
@@ -159,7 +159,7 @@ while True:
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
     #lf.cal(line_left, line_right)
-    motor(0.8, do_fuz=True)
+    #motor(0.8, do_fuz=True)
 
 
     histDict["rli_left"].append(rli_left)

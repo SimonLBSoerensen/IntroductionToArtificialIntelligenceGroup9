@@ -24,6 +24,7 @@ histDict["rli_left"] = []
 histDict["rli_right"] = []
 histDict["line_left"] = []
 histDict["line_right"] = []
+histDict["h_line"] = []
 
 def killProcs():
     save_data()
@@ -111,7 +112,7 @@ while True:
     histDict["rli_right"].append(rli_right)
     histDict["line_left"].append(line_left)
     histDict["line_right"].append(line_right)
-
+    histDict["h_line"].append(line_left and line_right)
     #print(line_left, line_right)
 
     if bnt.is_pressed:

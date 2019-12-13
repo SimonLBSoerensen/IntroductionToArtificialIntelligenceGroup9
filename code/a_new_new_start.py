@@ -98,7 +98,7 @@ for _ in range(hist_length):
 
 print("Done calibrate white")
 
-tank_drive.on(SpeedPercent(30), SpeedPercent(30))
+tank_drive.on(SpeedPercent(60), SpeedPercent(60))
 while True:
     rli_left, rli_right = get_rli()
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)

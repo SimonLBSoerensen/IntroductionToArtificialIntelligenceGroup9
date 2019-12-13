@@ -32,7 +32,7 @@ def killProcs():
 
 def save_data():
     d = datetime.now()
-    timestring = d.strftime("%D-%H-%M-%S")
+    timestring = d.strftime("%d-%m-%y-%H-%M-%S")
     filename = 'hists/'+timestring+'.pck'
     print("Saving hist to "+filename)
     with open(filename, 'wb') as handle:

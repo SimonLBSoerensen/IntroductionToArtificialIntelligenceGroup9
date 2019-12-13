@@ -84,12 +84,15 @@ def get_lines(rli_left, rli_right, pro = 0.2):
     return line_left, line_right
 
 #Calibrate light sensor
+print("Sensor calibrate white")
 color_sensor_l.calibrate_white()
 color_sensor_r.calibrate_white()
 
 for _ in range(hist_length):
     rli_left, rli_right = get_rli()
     append_to_hist(rli_left, rli_right)
+
+print("Done calibrate white")
 
 tank_drive.on(SpeedPercent(30), SpeedPercent(30))
 while True:

@@ -25,6 +25,7 @@ histDict["rli_right"] = []
 histDict["line_left"] = []
 histDict["line_right"] = []
 histDict["h_line"] = []
+histDict["start_on_hline"] = []
 
 def killProcs():
     save_data()

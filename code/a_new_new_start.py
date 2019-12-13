@@ -19,6 +19,11 @@ from gyro import gyro
 
 # Handling of kill signal
 histDict = {}
+histDict["rli_left"] = []
+histDict["rli_right"] = []
+histDict["line_left"] = []
+histDict["line_right"] = []
+
 def save_data():
     d = datetime.now()
     timestring = d.strftime("%D-%H-%M-%S")
@@ -94,6 +99,10 @@ while True:
     if not line_right:
         append_to_hist(rli_right, None)
 
+    histDict["rli_left"].append(rli_left)
+    histDict["rli_right"].append(rli_right)
+    histDict["line_left"].append(line_left)
+    histDict["line_right"].append(line_right)
 
     print(line_left, line_right)
 

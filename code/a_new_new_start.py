@@ -59,8 +59,8 @@ color_sensor_r.mode = 'REF-RAW'
 bnt = TouchSensor(sensor_overview["touch"])
 
 #Gyro sensor
-gyro_sensor = gyro(sensor_overview["gryo"])
-gyro_sensor.reset()
+#gyro_sensor = gyro(sensor_overview["gryo"])
+#gyro_sensor.reset()
 
 # Motor drive
 tank_drive = MoveTank(OUTPUT_B, OUTPUT_D)
@@ -91,7 +91,7 @@ class lineFllow:
             if self.angel_offset != 0:
                 self.gyro_sensor.add_offset(self.angel_offset / 2)
             self.angel_offset = 0
-lf = lineFllow(gyro_sensor)
+#lf = lineFllow(gyro_sensor)
 
 
 #Hist for ligth intensiti
@@ -161,8 +161,8 @@ while True:
     #lf.cal(line_left, line_right)
     #motor(0.8, do_fuz=True)
 
-    angel = gyro_sensor.get_angel()
-    histDict["angel"].append(angel)
+    #angel = gyro_sensor.get_angel()
+    #histDict["angel"].append(angel)
 
     histDict["rli_left"].append(rli_left)
     histDict["rli_right"].append(rli_right)

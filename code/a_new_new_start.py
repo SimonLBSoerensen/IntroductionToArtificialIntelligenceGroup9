@@ -161,6 +161,8 @@ while True:
     #lf.cal(line_left, line_right)
     #motor(0.8, do_fuz=True)
 
+    angel = gyro_sensor.get_angel()
+    histDict["angel"].append(angel)
 
     histDict["rli_left"].append(rli_left)
     histDict["rli_right"].append(rli_right)

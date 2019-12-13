@@ -14,7 +14,7 @@ import signal
 from collections import deque
 import pickle
 import sys
-sys.path.insert(0, "/home/ai1/git/code/lib")
+sys.path.insert(0, "/home/ai1/git/IntroductionToArtificialIntelligenceGroup9/code/lib")
 from mics import sensor_overview
 from gyro import gyro
 from fuzzy import FuzzyStraight

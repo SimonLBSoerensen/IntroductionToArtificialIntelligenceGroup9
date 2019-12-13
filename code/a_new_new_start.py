@@ -112,7 +112,7 @@ while True:
     histDict["line_left"].append(line_left)
     histDict["line_right"].append(line_right)
 
-    print(line_left, line_right)
+    #print(line_left, line_right)
 
     if bnt.is_pressed:
         killProcs()

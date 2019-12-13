@@ -64,34 +64,6 @@ bnt = TouchSensor(sensor_overview["touch"])
 
 # Motor drive
 tank_drive = MoveTank(OUTPUT_B, OUTPUT_D)
-#fuzzyStraight = FuzzyStraight()
-dist_old = 255
-def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
-    if do_fuz:
-        dist = 255
-        angel = 0 #gyro_sensor.get_angel()
-        histDict["angel"].append(angel)
-        motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
-        motor_l_pro *= pro_times
-        motor_r_pro *= pro_times
-
-    tank_drive.on(SpeedPercent(motor_l_pro), SpeedPercent(motor_r_pro))
-
-class lineFllow:
-    def __init__(self, gyro_sensor):
-        self.angel_offset = 0
-        self.gyro_sensor = gyro_sensor
-
-    def cal(self, line_left, line_right):
-        if line_left:
-            self.angel_offset += 5
-        elif line_right:
-            self.angel_offset -= 5
-        else:
-            if self.angel_offset != 0:
-                self.gyro_sensor.add_offset(self.angel_offset / 2)
-            self.angel_offset = 0
-#lf = lineFllow(gyro_sensor)
 
 
 #Hist for ligth intensiti
@@ -153,16 +125,19 @@ for _ in range(hist_length):
 
 print("Done calibrate white")
 
-tank_drive.on(SpeedPercent(60), SpeedPercent(60))
+base_drive_pro = 60
+tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
 while True:
     rli_left, rli_right = get_rli()
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
-    #lf.cal(line_left, line_right)
-    #motor(0.8, do_fuz=True)
 
-    #angel = gyro_sensor.get_angel()
-    #histDict["angel"].append(angel)
+    if line_left and not line_right:
+        tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro)*1.2)
+    elif line_right and not line_left:
+        tank_drive.on(SpeedPercent(base_drive_pro)*1.2, SpeedPercent(base_drive_pro))
+    else:
+        tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
 
     histDict["rli_left"].append(rli_left)
     histDict["rli_right"].append(rli_right)

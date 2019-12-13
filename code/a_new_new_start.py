@@ -88,6 +88,32 @@ def get_lines(rli_left, rli_right, pro = 0.2):
 
     return line_left, line_right
 
+
+def get_hline(line_left, line_right, pro=0.2):
+
+    if not line_left:
+        append_to_hist(rli_left, None)
+    if not line_right:
+        append_to_hist(rli_right, None)
+
+    h_line = line_left and line_right
+
+    start_on_hline = False
+    if get_hline.on_hline and h_line:
+        start_on_hline = False
+    elif h_line:
+        start_on_hline = True
+        get_hline.on_hline = True
+    elif not h_line:
+        get_hline.on_hline = False
+
+    return h_line, start_on_hline
+get_hline.on_hline = False
+
+
+
+
+
 #Calibrate light sensor
 print("Sensor calibrate white")
 color_sensor_l.calibrate_white()
@@ -102,17 +128,18 @@ print("Done calibrate white")
 tank_drive.on(SpeedPercent(60), SpeedPercent(60))
 while True:
     rli_left, rli_right = get_rli()
-    line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
-    if not line_left:
-        append_to_hist(rli_left, None)
-    if not line_right:
-        append_to_hist(rli_right, None)
+    line_left, line_right = get_lines(rli_left, rli_right, pro=pro)
+    h_line, start_on_hline = get_hline(line_left, line_right)
+
+
+
 
     histDict["rli_left"].append(rli_left)
     histDict["rli_right"].append(rli_right)
     histDict["line_left"].append(line_left)
     histDict["line_right"].append(line_right)
-    histDict["h_line"].append(line_left and line_right)
+    histDict["h_line"].append(h_line)
+    histDict["start_on_hline"].append(start_on_hline)
     #print(line_left, line_right)
 
     if bnt.is_pressed:

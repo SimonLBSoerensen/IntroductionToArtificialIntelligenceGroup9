@@ -6,6 +6,7 @@ class gyro:
         self.offset = 0
 
     def reset(self):
+        self.gyro_sensor.reset()
         self.offset = self.gyro_sensor.angle
 
     def get_angel(self):

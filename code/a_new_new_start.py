@@ -25,6 +25,11 @@ histDict["rli_right"] = []
 histDict["line_left"] = []
 histDict["line_right"] = []
 
+def killProcs():
+    save_data()
+    tank_drive.stop()
+    tank_drive.off()
+
 def save_data():
     d = datetime.now()
     timestring = d.strftime("%D-%H-%M-%S")
@@ -36,11 +41,7 @@ def save_data():
 
 def keyboardInterruptHandler(signal, frame):
     print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
-    ld.kill = True
-    for key in exitFlags:
-        exitFlags[key] = True
-    tank_drive.stop()
-    tank_drive.off()
+    killProcs()
     exit(0)
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
@@ -49,6 +50,9 @@ color_sensor_l = lego.ColorSensor(sensor_overview["v_color"])
 color_sensor_l.mode = 'REF-RAW'
 color_sensor_r = lego.ColorSensor(sensor_overview["r_color"])
 color_sensor_r.mode = 'REF-RAW'
+
+#Button
+bnt = TouchSensor(sensor_overview["touch"])
 
 #Gyro sensor
 gyro_sensor = gyro(sensor_overview["gryo"])
@@ -109,6 +113,10 @@ while True:
     histDict["line_right"].append(line_right)
 
     print(line_left, line_right)
+
+    if bnt.is_pressed():
+        killProcs()
+        break
 
 
 

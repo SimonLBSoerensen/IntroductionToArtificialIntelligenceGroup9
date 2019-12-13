@@ -15,6 +15,7 @@ from collections import deque
 import pickle
 import sys
 sys.path.insert(0, "/home/ai1/git/code/lib")
+from mics import sensor_overview
 from gyro import gyro
 
 # Handling of kill signal

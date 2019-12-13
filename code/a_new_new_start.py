@@ -129,7 +129,7 @@ print("Done calibrate white")
 tank_drive.on(SpeedPercent(60), SpeedPercent(60))
 while True:
     rli_left, rli_right = get_rli()
-    line_left, line_right = get_lines(rli_left, rli_right, pro=pro)
+    line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
 
 

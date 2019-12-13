@@ -27,6 +27,7 @@ histDict["line_left"] = []
 histDict["line_right"] = []
 histDict["h_line"] = []
 histDict["start_on_hline"] = []
+histDict["angel"] = []
 
 def killProcs():
     save_data()
@@ -71,6 +72,7 @@ def motor(pro_times, motor_l_pro = 0, motor_r_pro = 0, do_fuz = True):
     if do_fuz:
         dist = 255
         angel = gyro_sensor.get_angel()
+        histDict["angel"].append(angel)
         motor_l_pro, motor_r_pro = fuzzyStraight.cal(angel, dist)
         motor_l_pro *= pro_times
         motor_r_pro *= pro_times
@@ -161,7 +163,7 @@ while True:
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
     lf.cal(line_left, line_right)
-    motor(0.5, do_fuz=True)
+    motor(0.8, do_fuz=True)
 
 
     histDict["rli_left"].append(rli_left)

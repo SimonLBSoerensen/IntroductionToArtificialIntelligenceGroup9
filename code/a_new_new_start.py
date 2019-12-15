@@ -206,7 +206,6 @@ states = [
     ["F", 2],
     ["R", None],
     ["F", 2],
-    ["B", 2],
 ]
 states_index = 0
 
@@ -258,29 +257,25 @@ while True:
                 state_memory = ["start_turn"]
                 print(datetime.now(), state, "to", state_memory)
 
-        elif state_memory[0] == "start_turn" and line_left and not line_right:
+        elif state_memory[0] == "start_turn" and line_left and (not line_right):
             print(datetime.now(), state, state_memory)
             state_memory = ["mid_turn"]
             print(datetime.now(), state, "to", state_memory)
         elif state_memory[0] == "start_turn":
             left_pro, right_pro = (turn_speed, -turn_speed)
 
-        elif state_memory[0] == "mid_turn" and not (line_left and line_right):
+        elif state_memory[0] == "mid_turn" and (not line_left) and line_right:
             print(datetime.now(), state, state_memory)
-            state_memory = ["preend_turn"]
+            state_memory = ["end_turn"]
             print(datetime.now(), state, "to", state_memory)
         elif state_memory[0] == "mid_turn":
             left_pro, right_pro = (turn_speed, -turn_speed)
 
-        elif state_memory[0] == "preend_turn" and not line_right:
+        elif state_memory[0] == "end_turn" and (not line_right):
             print(datetime.now(), state, state_memory)
-            state_memory = ["end_turn"]
-        elif state_memory[0] == "preend_turn":
-            left_pro, right_pro = (turn_speed, -turn_speed)
-
-        elif state_memory[0] == "end_turn" and not (line_left and line_right):
             stop_drive(drive_off=False)
             go_to_next_state = True
+            print(datetime.now(), state, "done", state_memory)
         elif state_memory[0] == "end_turn":
             left_pro, right_pro = (turn_speed, -turn_speed)
 

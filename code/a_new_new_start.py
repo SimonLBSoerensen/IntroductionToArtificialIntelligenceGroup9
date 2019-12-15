@@ -198,8 +198,8 @@ def upstart_predsiters():
 
 #Run time
 
-base_drive_pro = 60
-turn_speed = 40
+base_drive_pro = 40
+turn_speed = 30
 upstart_predsiters()
 
 states = [

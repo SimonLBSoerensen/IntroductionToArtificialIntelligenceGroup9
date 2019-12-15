@@ -237,14 +237,11 @@ while True:
 
     elif state == "R":
         if state_memory is None:
-            state_memory = "start"
-
-
-        if state_memory == "start":
             print(datetime.now(), state, state_memory)
             left_pro, right_pro = (turn_speed, -turn_speed)
+            state_memory = "start"
 
-        elif line_left and not line_right:
+        elif state_memory == "start" and line_left and not line_right:
             print(datetime.now(), state, state_memory)
             state_memory = "mid_turn"
 

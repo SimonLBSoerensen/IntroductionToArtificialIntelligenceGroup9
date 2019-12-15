@@ -198,10 +198,9 @@ def upstart_predsiters():
 
 
 #Run time
-
 base_drive_pro = 30
 turn_speed = 20
-upstart_predsiters()
+
 
 
 
@@ -220,6 +219,14 @@ state_arg = states[states_index][1]
 state_memory = None
 
 while True:
+    print("Press to calibrate")
+    while not bnt.is_pressed:
+        time.sleep(0.1)
+    upstart_predsiters()
+    print("Press to start")
+    while not bnt.is_pressed:
+        time.sleep(0.1)
+
     while True:
         go_to_next_state = False
         left_pro, right_pro = (0, 0)

@@ -225,6 +225,7 @@ while True:
 
     print("Calibrateing")
     upstart_predsiters()
+    time.sleep(1)
     if bnt.is_pressed:
         print("Release button")
     while bnt.is_pressed:

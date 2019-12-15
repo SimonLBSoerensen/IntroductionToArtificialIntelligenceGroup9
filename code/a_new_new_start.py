@@ -221,10 +221,15 @@ states = [
     ["P"],
     ["F", 3]
 ]
+
+for i in range(len(states)):
+    if len(states[i]) < 2:
+        states[i].append(None)
+
 states_index = 0
 
 state = states[states_index][0]
-state_arg = states[states_index][1] if len(states[states_index]) else None
+state_arg = states[states_index][1]
 state_memory = None
 
 while True:
@@ -324,7 +329,7 @@ while True:
             #Load new state
             print("Loading new state")
             state = states[states_index][0]
-            state_arg = states[states_index][1] if len(states[states_index]) else None
+            state_arg = states[states_index][1]
             state_memory = None
 
             print("New state is:", state, state_arg)
@@ -353,7 +358,7 @@ while True:
             states_index = 0
 
             state = states[states_index][0]
-            state_arg = states[states_index][1] if len(states[states_index]) else None
+            state_arg = states[states_index][1]
             state_memory = None
     while not bnt.is_pressed:
         time.sleep(0.1)
@@ -362,7 +367,7 @@ while True:
     states_index = 0
 
     state = states[states_index][0]
-    state_arg = states[states_index][1] if len(states[states_index]) else None
+    state_arg = states[states_index][1]
     state_memory = None
 
 

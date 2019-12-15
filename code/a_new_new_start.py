@@ -140,24 +140,6 @@ def lineflwoere_B(line_left, line_right, base_pro, change, lower_pro):
         return base_pro, base_pro
 
 
-def upstart_predsiters():
-    get_hline.on_hline = False
-
-    #Calibrate light sensor
-    print("Sensor calibrate white")
-    color_sensor_l.calibrate_white()
-    color_sensor_r.calibrate_white()
-
-    for _ in range(hist_length):
-        rli_left, rli_right = get_rli()
-        append_to_hist(rli_left, rli_right)
-
-    print("Done calibrate white")
-
-    base_drive_pro = 60
-    tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
-
-
 def buttonHandle():
     # None = 0
     # exit = 1
@@ -171,10 +153,11 @@ def buttonHandle():
     while bnt.is_pressed:
         time.sleep(0.1)
 
-    print("Press witin 2 sec for ready for reset else exit will hapen")
+    wait_max_time = 20
+    print("Press witin {} sec for ready for reset else exit will hapen".format(wait_max_time))
     hasBeenPreds = False
     now = datetime.now()
-    while (datetime.now() - now).seconds < 20:
+    while (datetime.now() - now).seconds < wait_max_time:
         if bnt.is_pressed:
             hasBeenPreds = True
             print("Reset pressed")
@@ -196,6 +179,22 @@ def trim(val, min, max):
         return min
 
 
+def upstart_predsiters():
+    get_hline.on_hline = False
+
+    #Calibrate light sensor
+    print("Sensor calibrate white")
+    color_sensor_l.calibrate_white()
+    color_sensor_r.calibrate_white()
+
+    for _ in range(hist_length):
+        rli_left, rli_right = get_rli()
+        append_to_hist(rli_left, rli_right)
+
+    print("Done calibrate white")
+
+    base_drive_pro = 60
+    tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
 
 #Run time
 
@@ -281,7 +280,7 @@ while True:
             stop_drive(drive_off=False)
             go_to_next_state = True
         elif state_memory[0] == "end_turn":
-            left_pro, right_pro = (turn_speed * (1 - 0.2), -turn_speed * (1 - 0.2))
+            left_pro, right_pro = (turn_speed, -turn_speed)
 
 
     if go_to_next_state:
@@ -317,6 +316,11 @@ while True:
         break
     elif event == 2:
         upstart_predsiters()
+        states_index = 0
+
+        state = states[states_index][0]
+        state_arg = states[states_index][1]
+        state_memory = None
 
 
 

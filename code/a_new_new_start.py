@@ -245,6 +245,9 @@ while True:
             print(datetime.now(), state, state_memory)
             state_memory = "mid_turn"
 
+        elif state_memory == "start":
+            left_pro, right_pro = (turn_speed, -turn_speed)
+
         elif state_memory == "mid_turn" and not line_left and line_right:
             print(datetime.now(), state, state_memory)
             state_memory = "end_turn"

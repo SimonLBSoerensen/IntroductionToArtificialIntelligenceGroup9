@@ -125,17 +125,17 @@ get_hline.on_hline = False
 
 def lineflwoere_F(line_left, line_right, base_pro, change, lower_pro):
     if line_left and not line_right:
-        return base_pro * (1-lower_pro), change
+        return base_pro * (1-lower_pro), base_pro * change
     elif not line_left and line_right:
-        return change, base_pro * (1-lower_pro)
+        return base_pro * change, base_pro * (1-lower_pro)
     else:
         return base_pro, base_pro
 
 def lineflwoere_B(line_left, line_right, base_pro, change, lower_pro):
     if line_left and not line_right:
-        return base_pro * (1 - lower_pro), change
+        return base_pro * (1 - lower_pro), base_pro * change
     elif not line_left and line_right:
-        return change, base_pro * (1 - lower_pro)
+        return base_pro*change, base_pro * (1 - lower_pro)
     else:
         return base_pro, base_pro
 
@@ -197,9 +197,9 @@ while True:
     h_line, start_on_hline = get_hline(line_left, line_right)
 
     if base_drive_pro > 0:
-        left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change = 100, lower_pro=0.05)
+        left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change = 1.9, lower_pro=0.05)
     else:
-        left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = -100, lower_pro=0.05)
+        left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.3, lower_pro=0.05)
 
     tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 

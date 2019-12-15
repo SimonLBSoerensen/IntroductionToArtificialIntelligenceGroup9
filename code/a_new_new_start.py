@@ -205,7 +205,7 @@ upstart_predsiters()
 states = [
     ["F", 2],
     ["R", None],
-    ["F", 2],
+    #["F", 2],
 ]
 states_index = 0
 

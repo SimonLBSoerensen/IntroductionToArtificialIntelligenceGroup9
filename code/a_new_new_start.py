@@ -203,7 +203,7 @@ turn_speed = 30
 upstart_predsiters()
 
 states = [
-    ["F", 2],
+    ["F", 1],
     ["R", None],
     #["F", 2],
 ]
@@ -229,7 +229,7 @@ while True:
             stop_drive(drive_off=False)
             go_to_next_state = True
         else:
-            left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.05)
+            left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.1)
 
     elif state == "B":
         if start_on_hline:

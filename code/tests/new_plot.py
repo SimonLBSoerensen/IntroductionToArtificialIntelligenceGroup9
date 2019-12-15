@@ -25,17 +25,18 @@ for key in plot_dict:
     print(key)
     if key in pass_plots:
         continue
-    for side in obs_side:
-        if side in key:
-            plt.figure()
-            plt.subplot2grid((2,1), (0, 0))
-            plt.plot(plot_dict[key])
-            plt.title(key)
-            plt.subplot2grid((2, 1), (1, 0))
-            other_key = key.replace(side, obs_side[side])
-            plt.plot(plot_dict[other_key])
-            plt.title(other_key)
-            pass_plots.append(other_key)
+    else:
+        for side in obs_side:
+            if side in key:
+                plt.figure()
+                plt.subplot2grid((2,1), (0, 0))
+                plt.plot(plot_dict[key])
+                plt.title(key)
+                plt.subplot2grid((2, 1), (1, 0))
+                other_key = key.replace(side, obs_side[side])
+                plt.plot(plot_dict[other_key])
+                plt.title(other_key)
+                pass_plots.append(other_key)
 
 
 

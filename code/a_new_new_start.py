@@ -98,7 +98,7 @@ def get_hline(line_left, line_right, pro=0.2):
     if not line_left:
         append_to_hist(rli_left, None)
     if not line_right:
-        append_to_hist(rli_right, None)
+        append_to_hist(None, rli_right)
 
     h_line = line_left and line_right
 
@@ -118,9 +118,9 @@ get_hline.on_hline = False
 
 def lineflwoere(line_left, line_right, base_pro, change = 0.5):
     if line_left and not line_right:
-        return base_pro * change, base_pro * (1-change)
+        return base_pro, base_pro * (1+change)
     elif not line_left and line_right:
-        return base_pro * (1-change), base_pro * change
+        return base_pro * (1+change), base_pro
     else:
         return base_pro, base_pro
 
@@ -143,7 +143,7 @@ while True:
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
 
-    left_pro, right_pro = lineflwoere(line_left, line_right, base_drive_pro)
+    left_pro, right_pro = lineflwoere(line_left, line_right, base_drive_pro, change = 0.5)
 
     tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 

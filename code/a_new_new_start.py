@@ -348,7 +348,7 @@ while True:
             states_index = 0
 
             state = states[states_index][0]
-            state_arg = states[states_index][1]
+            state_arg = states[states_index][1] if len(states[states_index]) else None
             state_memory = None
     while not bnt.is_pressed:
         time.sleep(0.1)
@@ -357,7 +357,7 @@ while True:
     states_index = 0
 
     state = states[states_index][0]
-    state_arg = states[states_index][1]
+    state_arg = states[states_index][1] if len(states[states_index]) else None
     state_memory = None
 
 

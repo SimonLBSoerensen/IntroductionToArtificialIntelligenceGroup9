@@ -251,7 +251,7 @@ def trun(state_memory, line_left, line_right, turn_type):
     elif turn_type == "L":
         right_pro, left_pro = (pro_1, pro_2)
 
-    return left_pro, right_pro, go_to_next_state
+    return left_pro, right_pro, state_memory, go_to_next_state
 
 
 #Run time
@@ -318,10 +318,10 @@ while True:
                 left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.05, lower_pro=0.02)
 
         elif state == "R":
-            left_pro, right_pro, go_to_next_state = trun(state_memory, line_left, line_right, "R")
+            left_pro, right_pro, state_memory, go_to_next_state = trun(state_memory, line_left, line_right, "R")
 
         elif state == "L":
-            left_pro, right_pro, go_to_next_state = trun(state_memory, line_left, line_right, "L")
+            left_pro, right_pro, state_memory, go_to_next_state = trun(state_memory, line_left, line_right, "L")
 
 
         if go_to_next_state:

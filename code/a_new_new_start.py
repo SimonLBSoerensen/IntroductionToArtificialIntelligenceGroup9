@@ -256,12 +256,15 @@ while True:
             state_memory = "end_turn"
             print(datetime.now(), state, "to", state_memory)
             left_pro, right_pro = (turn_speed * (1-0.2), -turn_speed * (1-0.2))
+        elif state_memory == "mid_turn":
+            left_pro, right_pro = (turn_speed, -turn_speed)
 
         elif state_memory == "end_turn" and not line_right:
             print(datetime.now(), state, state_memory)
             stop_drive(drive_off=False)
             go_to_next_state = True
-
+        elif state_memory == "end_turn":
+            left_pro, right_pro = (turn_speed * (1 - 0.2), -turn_speed * (1 - 0.2))
 
 
     if go_to_next_state:

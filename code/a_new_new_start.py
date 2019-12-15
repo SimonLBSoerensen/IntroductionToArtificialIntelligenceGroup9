@@ -199,7 +199,7 @@ while True:
     if base_drive_pro > 0:
         left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change = 100, lower_pro=0.05)
     else:
-        left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change=100, lower_pro=0.05)
+        left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = -100, lower_pro=0.05)
 
     tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 

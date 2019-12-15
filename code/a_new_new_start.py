@@ -165,23 +165,28 @@ def buttonHandle():
 
     if not bnt.is_pressed:
         return 0
-
+    print("Button press")
     stop_drive(drive_off=False)
+    print("Release button")
+    while bnt.is_pressed:
+        time.sleep(0.1)
 
+    print("Press witin 2 sec for ready for reset else exit will hapen")
+    hasBeenPreds = False
     now = datetime.now()
     while (datetime.now() - now).seconds < 2:
-        time.sleep(0.1)
-
-    now = datetime.now()
-    while True:
-        if bnt.is_pressed and (datetime.now() - now).seconds < 2:
-            return 1
-        elif (datetime.now() - now).seconds > 2:
+        if bnt.is_pressed:
+            hasBeenPreds = True
+            print("Reset pressed")
             break
-
-    while not bnt.is_pressed:
         time.sleep(0.1)
-    return 2
+
+    if hasBeenPreds:
+        return 2
+
+    print("No pressd exit will happen")
+    return 1
+
 
 
 
@@ -199,7 +204,7 @@ while True:
     if base_drive_pro > 0:
         left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change = 1.9, lower_pro=0.05)
     else:
-        left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.3, lower_pro=0.05)
+        left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.2, lower_pro=0.02)
 
     tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 

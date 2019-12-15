@@ -146,8 +146,12 @@ def upstart_predsiters():
 
 
 def buttonHandle():
+    # None = 0
+    # exit = 1
+    # restart = 2
+
     if not bnt.is_pressed:
-        return "None"
+        return 0
 
     now = datetime.now()
     while (datetime.now() - now).seconds < 2:
@@ -156,13 +160,13 @@ def buttonHandle():
     now = datetime.now()
     while True:
         if bnt.is_pressed and (datetime.now() - now).seconds < 2:
-            return "exit"
+            return 1
         elif (datetime.now() - now).seconds > 2:
             break
 
     while not bnt.is_pressed:
         time.sleep(0.1)
-    return "restart"
+    return 2
 
 
 
@@ -192,10 +196,10 @@ while True:
 
 
 
-    if buttonHandle() == "exit":
+    if buttonHandle() == 1:
         killProcs()
         break
-    elif buttonHandle() == "restart":
+    elif buttonHandle() == 2:
         upstart_predsiters()
 
 

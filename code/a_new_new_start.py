@@ -19,6 +19,8 @@ from mics import sensor_overview
 from gyro import gyro
 from fuzzy import FuzzyStraight
 
+import time
+
 # Handling of kill signal
 histDict = {}
 
@@ -125,19 +127,51 @@ def lineflwoere(line_left, line_right, base_pro, change):
         return base_pro, base_pro
 
 
-#Calibrate light sensor
-print("Sensor calibrate white")
-color_sensor_l.calibrate_white()
-color_sensor_r.calibrate_white()
+def upstart_predsiters():
+    get_hline.on_hline = False
 
-for _ in range(hist_length):
-    rli_left, rli_right = get_rli()
-    append_to_hist(rli_left, rli_right)
+    #Calibrate light sensor
+    print("Sensor calibrate white")
+    color_sensor_l.calibrate_white()
+    color_sensor_r.calibrate_white()
 
-print("Done calibrate white")
+    for _ in range(hist_length):
+        rli_left, rli_right = get_rli()
+        append_to_hist(rli_left, rli_right)
 
-base_drive_pro = 60
-tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
+    print("Done calibrate white")
+
+    base_drive_pro = 60
+    tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
+
+
+def buttonHandle():
+    if not bnt.is_pressed:
+        return "None"
+
+    now = datetime.now()
+    while (datetime.now() - now).seconds < 2:
+        time.sleep(0.1)
+
+    now = datetime.now()
+    while True:
+        if bnt.is_pressed and (datetime.now() - now).seconds < 2:
+            return "exit"
+        elif (datetime.now() - now).seconds > 2:
+            break
+
+    while not bnt.is_pressed:
+        time.sleep(0.1)
+    return "restart"
+
+
+
+
+#Run time
+
+
+upstart_predsiters()
+
 while True:
     rli_left, rli_right = get_rli()
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
@@ -158,10 +192,11 @@ while True:
 
 
 
-    if bnt.is_pressed:
+    if buttonHandle() == "exit":
         killProcs()
         break
-
+    elif buttonHandle() == "restart":
+        upstart_predsiters()
 
 
 

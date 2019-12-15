@@ -196,17 +196,41 @@ def buttonHandle():
 base_drive_pro = -60
 upstart_predsiters()
 
+state = "F"
+state_arg = 3
+
 while True:
+    go_to_next_state = False
+    left_pro, right_pro = (0, 0)
+
     rli_left, rli_right = get_rli()
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
 
-    if base_drive_pro > 0:
-        left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change = 1.9, lower_pro=0.05)
-    else:
-        left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.05, lower_pro=0.02)
+    if state == "F":
+        if start_on_hline:
+            state_arg -= 1
 
-    tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
+        if state_arg == 0:
+            stop_drive(drive_off=False)
+            go_to_next_state = True
+        else:
+            left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.05)
+    elif state == "B":
+        if start_on_hline:
+            state_arg -= 1
+
+        if state_arg == 0:
+            stop_drive(drive_off=False)
+            go_to_next_state = True
+        else:
+            left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.05, lower_pro=0.02)
+
+
+    if go_to_next_state:
+        pass
+    else:
+        tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 
     add_to_hist("rli_left", rli_left)
     add_to_hist("rli_right", rli_right)
@@ -218,11 +242,11 @@ while True:
     add_to_hist("right_pro", right_pro)
 
 
-
-    if buttonHandle() == 1:
+    event = buttonHandle()
+    if event == 1:
         killProcs()
         break
-    elif buttonHandle() == 2:
+    elif event == 2:
         upstart_predsiters()
 
 

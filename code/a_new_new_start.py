@@ -204,7 +204,7 @@ turn_speed = 40
 upstart_predsiters()
 
 states = [
-    ["F", 4],
+    ["F", 2],
     ["R", None],
     ["F", 2],
     ["B", 2],
@@ -251,11 +251,13 @@ while True:
             print(datetime.now(), state, "to", state_memory)
 
         elif state_memory[0] == "pre_turn":
+            print(datetime.now(), state, state_memory)
             if state_memory[1] > 0:
                 state_memory[1] -= 1
                 left_pro, right_pro = (turn_speed, turn_speed)
             else:
                 state_memory = ["start_turn"]
+                print(datetime.now(), state, "to", state_memory)
 
         elif state_memory[0] == "start_turn" and line_left and not line_right:
             print(datetime.now(), state, state_memory)

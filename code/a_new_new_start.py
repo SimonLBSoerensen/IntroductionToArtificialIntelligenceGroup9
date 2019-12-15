@@ -205,7 +205,14 @@ upstart_predsiters()
 states = [
     ["F", 1],
     ["R", None],
+    ["P", None],
     ["F", 1],
+    ["R", None],
+    ["P", None],
+    ["F", 1],
+    ["R", None],
+    ["P", None],
+    ["Rep", None]
 ]
 states_index = 0
 
@@ -221,8 +228,17 @@ while True:
         rli_left, rli_right = get_rli()
         line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
         h_line, start_on_hline = get_hline(line_left, line_right)
+        if state == "P":
+            if not h_line:
+                stop_drive(drive_off=False)
+                go_to_next_state = True
+            else:
+                left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.1)
 
-        if state == "F":
+        elif state == "Rep":
+            states_index = -1
+
+        elif state == "F":
             if start_on_hline:
                 state_arg -= 1
 
@@ -286,6 +302,7 @@ while True:
             if states_index >= len(states):
                 #End of states
                 break
+
             #Load new state
             print("Loading new state")
             state = states[states_index][0]
@@ -293,6 +310,7 @@ while True:
             state_memory = None
 
             print("New state is:", state, state_arg)
+
 
         else:
             left_pro = trim(left_pro, -100, 100)

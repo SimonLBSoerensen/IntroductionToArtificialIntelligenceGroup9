@@ -118,11 +118,11 @@ get_hline.on_hline = False
 
 # Line flowere state mashine
 
-def lineflwoere(line_left, line_right, base_pro, change):
+def lineflwoere(line_left, line_right, base_pro, change, lower_pro):
     if line_left and not line_right:
-        return base_pro, change
+        return base_pro * (1-lower_pro), change
     elif not line_left and line_right:
-        return change, base_pro
+        return change, base_pro * (1-lower_pro)
     else:
         return base_pro, base_pro
 
@@ -177,7 +177,7 @@ while True:
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
 
-    left_pro, right_pro = lineflwoere(line_left, line_right, base_drive_pro, change = 100)
+    left_pro, right_pro = lineflwoere(line_left, line_right, base_drive_pro, change = 100, lower_pro=0.2)
 
     tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 

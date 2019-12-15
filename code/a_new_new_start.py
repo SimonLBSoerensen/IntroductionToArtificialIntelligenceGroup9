@@ -239,17 +239,22 @@ while True:
         if state_memory is None:
             state_memory = "start"
 
+
         if state_memory == "start":
+            print(state, state_memory)
             left_pro, right_pro = (turn_speed, -turn_speed)
 
-        if line_left and not line_right:
+        elif line_left and not line_right:
+            print(state, state_memory)
             state_memory = "mid_turn"
 
-        if state_memory == "mid_turn" and not line_left and line_right:
+        elif state_memory == "mid_turn" and not line_left and line_right:
+            print(state, state_memory)
             state_memory = "end_turn"
             left_pro, right_pro = (turn_speed * (1-0.2), -turn_speed * (1-0.2))
 
-        if state_memory == "end_turn" and not line_right:
+        elif state_memory == "end_turn" and not line_right:
+            print(state, state_memory)
             stop_drive(drive_off=False)
             go_to_next_state = True
 

@@ -269,7 +269,7 @@ while True:
 
     if go_to_next_state:
         state_memory = None
-        pass
+        break
     else:
         left_pro = trim(left_pro, -100, 100)
         right_pro = trim(right_pro, -100, 100)
@@ -287,7 +287,6 @@ while True:
 
     event = buttonHandle()
     if event == 1:
-        killProcs()
         break
     elif event == 2:
         upstart_predsiters()
@@ -297,4 +296,4 @@ while True:
 
 
 
-
+killProcs()

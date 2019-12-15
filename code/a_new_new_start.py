@@ -226,11 +226,13 @@ while True:
     print("Calibrateing")
     upstart_predsiters()
     time.sleep(1)
+
     if bnt.is_pressed:
         print("Release button")
-    while bnt.is_pressed:
-        time.sleep(0.1)
 
+        while bnt.is_pressed:
+            time.sleep(0.1)
+    time.sleep(1)
     print("Press to start")
     while not bnt.is_pressed:
         time.sleep(0.1)

@@ -204,8 +204,10 @@ turn_speed = 40
 upstart_predsiters()
 
 states = [
-    ["F", 3],
-    ["R", None]
+    ["F", 4],
+    ["R", None],
+    ["F", 2],
+    ["B", 2],
 ]
 states_index = 0
 
@@ -279,9 +281,12 @@ while True:
             #End of states
             break
         #Load new state
+        print("Loading new state")
         state = states[states_index][0]
         state_arg = states[states_index][1]
         state_memory = None
+
+        print("New state is:", state, state_arg)
 
     else:
         left_pro = trim(left_pro, -100, 100)

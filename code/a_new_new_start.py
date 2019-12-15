@@ -21,13 +21,13 @@ from fuzzy import FuzzyStraight
 
 # Handling of kill signal
 histDict = {}
-histDict["rli_left"] = []
-histDict["rli_right"] = []
-histDict["line_left"] = []
-histDict["line_right"] = []
-histDict["h_line"] = []
-histDict["start_on_hline"] = []
-histDict["angel"] = []
+
+def add_to_hist(name, data):
+    if name in histDict:
+        histDict[name].append(data)
+    else:
+        histDict[name] = [data]
+
 
 def killProcs():
     save_data()
@@ -114,6 +114,17 @@ def get_hline(line_left, line_right, pro=0.2):
     return h_line, start_on_hline
 get_hline.on_hline = False
 
+# Line flowere state mashine
+
+def lineflwoere(line_left, line_right, base_pro, change = 0.5):
+    if line_left and not line_right:
+        return base_pro * change, base_pro * (1-change)
+    elif not line_left and line_right:
+        return base_pro * (1-change), base_pro * change
+    else:
+        return base_pro, base_pro
+
+
 #Calibrate light sensor
 print("Sensor calibrate white")
 color_sensor_l.calibrate_white()
@@ -132,20 +143,20 @@ while True:
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
 
-    if line_left and not line_right:
-        tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro)*1.2)
-    elif line_right and not line_left:
-        tank_drive.on(SpeedPercent(base_drive_pro)*1.2, SpeedPercent(base_drive_pro))
-    else:
-        tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
+    left_pro, right_pro = lineflwoere(line_left, line_right, base_drive_pro)
 
-    histDict["rli_left"].append(rli_left)
-    histDict["rli_right"].append(rli_right)
-    histDict["line_left"].append(line_left)
-    histDict["line_right"].append(line_right)
-    histDict["h_line"].append(h_line)
-    histDict["start_on_hline"].append(start_on_hline)
-    #print(line_left, line_right)
+    tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
+
+    add_to_hist("rli_left", rli_left)
+    add_to_hist("rli_right", rli_right)
+    add_to_hist("line_left", line_left)
+    add_to_hist("line_right", line_right)
+    add_to_hist("h_line", h_line)
+    add_to_hist("start_on_hline", start_on_hline)
+    add_to_hist("left_pro", left_pro)
+    add_to_hist("right_pro", right_pro)
+
+
 
     if bnt.is_pressed:
         killProcs()

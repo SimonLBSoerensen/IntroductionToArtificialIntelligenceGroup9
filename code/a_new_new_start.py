@@ -203,8 +203,14 @@ base_drive_pro = 60
 turn_speed = 40
 upstart_predsiters()
 
-state = "R"
-state_arg = 3
+states = [
+    ["F", 3],
+    ["R", None]
+]
+states_index = 0
+
+state = states[states_index][0]
+state_arg = states[states_index][1]
 state_memory = None
 
 while True:
@@ -268,8 +274,15 @@ while True:
 
 
     if go_to_next_state:
+        states_index += 1
+        if states_index >= len(states):
+            #End of states
+            break
+        #Load new state
+        state = states[states_index][0]
+        state_arg = states[states_index][1]
         state_memory = None
-        break
+
     else:
         left_pro = trim(left_pro, -100, 100)
         right_pro = trim(right_pro, -100, 100)

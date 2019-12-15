@@ -237,6 +237,7 @@ while True:
 
         elif state == "Rep":
             states_index = -1
+            go_to_next_state = True
 
         elif state == "F":
             if start_on_hline:

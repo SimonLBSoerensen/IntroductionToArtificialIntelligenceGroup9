@@ -214,110 +214,121 @@ state_arg = states[states_index][1]
 state_memory = None
 
 while True:
-    go_to_next_state = False
-    left_pro, right_pro = (0, 0)
+    while True:
+        go_to_next_state = False
+        left_pro, right_pro = (0, 0)
 
-    rli_left, rli_right = get_rli()
-    line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
-    h_line, start_on_hline = get_hline(line_left, line_right)
+        rli_left, rli_right = get_rli()
+        line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
+        h_line, start_on_hline = get_hline(line_left, line_right)
 
-    if state == "F":
-        if start_on_hline:
-            state_arg -= 1
+        if state == "F":
+            if start_on_hline:
+                state_arg -= 1
 
-        if state_arg == 0:
-            stop_drive(drive_off=False)
-            go_to_next_state = True
-        else:
-            left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.1)
-
-    elif state == "B":
-        if start_on_hline:
-            state_arg -= 1
-
-        if state_arg == 0:
-            stop_drive(drive_off=False)
-            go_to_next_state = True
-        else:
-            left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.05, lower_pro=0.02)
-
-    elif state == "R":
-        if state_memory is None:
-            print(datetime.now(), state, state_memory)
-            left_pro, right_pro = (turn_speed, turn_speed)
-            state_memory = ["pre_turn", 2 * 1000, datetime.now()]
-            print(datetime.now(), state, "to", state_memory)
-
-        elif state_memory[0] == "pre_turn":
-            if state_memory[1] > (datetime.now()-state_memory[2]).microseconds:
-                left_pro, right_pro = (turn_speed, turn_speed)
+            if state_arg == 0:
+                stop_drive(drive_off=False)
+                go_to_next_state = True
             else:
-                left_pro, right_pro = (0, 0)
+                left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.1)
+
+        elif state == "B":
+            if start_on_hline:
+                state_arg -= 1
+
+            if state_arg == 0:
+                stop_drive(drive_off=False)
+                go_to_next_state = True
+            else:
+                left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.05, lower_pro=0.02)
+
+        elif state == "R":
+            if state_memory is None:
                 print(datetime.now(), state, state_memory)
-                state_memory = ["start_turn"]
+                left_pro, right_pro = (turn_speed, turn_speed)
+                state_memory = ["pre_turn", 2 * 1000, datetime.now()]
                 print(datetime.now(), state, "to", state_memory)
 
-        elif state_memory[0] == "start_turn" and line_left and (not line_right):
-            print(datetime.now(), state, state_memory)
-            state_memory = ["mid_turn"]
-            print(datetime.now(), state, "to", state_memory)
-        elif state_memory[0] == "start_turn":
-            left_pro, right_pro = (turn_speed, -turn_speed)
+            elif state_memory[0] == "pre_turn":
+                if state_memory[1] > (datetime.now()-state_memory[2]).microseconds:
+                    left_pro, right_pro = (turn_speed, turn_speed)
+                else:
+                    left_pro, right_pro = (0, 0)
+                    print(datetime.now(), state, state_memory)
+                    state_memory = ["start_turn"]
+                    print(datetime.now(), state, "to", state_memory)
 
-        elif state_memory[0] == "mid_turn" and (not line_left) and line_right:
-            print(datetime.now(), state, state_memory)
-            state_memory = ["end_turn"]
-            print(datetime.now(), state, "to", state_memory)
-        elif state_memory[0] == "mid_turn":
-            left_pro, right_pro = (turn_speed, -turn_speed)
+            elif state_memory[0] == "start_turn" and line_left and (not line_right):
+                print(datetime.now(), state, state_memory)
+                state_memory = ["mid_turn"]
+                print(datetime.now(), state, "to", state_memory)
+            elif state_memory[0] == "start_turn":
+                left_pro, right_pro = (turn_speed, -turn_speed)
 
-        elif state_memory[0] == "end_turn" and (not line_right):
-            print(datetime.now(), state, state_memory)
-            stop_drive(drive_off=False)
-            go_to_next_state = True
-            print(datetime.now(), state, "done", state_memory)
-        elif state_memory[0] == "end_turn":
-            left_pro, right_pro = (turn_speed, -turn_speed)
+            elif state_memory[0] == "mid_turn" and (not line_left) and line_right:
+                print(datetime.now(), state, state_memory)
+                state_memory = ["end_turn"]
+                print(datetime.now(), state, "to", state_memory)
+            elif state_memory[0] == "mid_turn":
+                left_pro, right_pro = (turn_speed, -turn_speed)
+
+            elif state_memory[0] == "end_turn" and (not line_right):
+                print(datetime.now(), state, state_memory)
+                stop_drive(drive_off=False)
+                go_to_next_state = True
+                print(datetime.now(), state, "done", state_memory)
+            elif state_memory[0] == "end_turn":
+                left_pro, right_pro = (turn_speed, -turn_speed)
 
 
-    if go_to_next_state:
-        states_index += 1
-        if states_index >= len(states):
-            #End of states
+        if go_to_next_state:
+            states_index += 1
+            if states_index >= len(states):
+                #End of states
+                break
+            #Load new state
+            print("Loading new state")
+            state = states[states_index][0]
+            state_arg = states[states_index][1]
+            state_memory = None
+
+            print("New state is:", state, state_arg)
+
+        else:
+            left_pro = trim(left_pro, -100, 100)
+            right_pro = trim(right_pro, -100, 100)
+            tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
+
+        add_to_hist("rli_left", rli_left)
+        add_to_hist("rli_right", rli_right)
+        add_to_hist("line_left", line_left)
+        add_to_hist("line_right", line_right)
+        add_to_hist("h_line", h_line)
+        add_to_hist("start_on_hline", start_on_hline)
+        add_to_hist("left_pro", left_pro)
+        add_to_hist("right_pro", right_pro)
+
+
+        event = buttonHandle()
+        if event == 1:
             break
-        #Load new state
-        print("Loading new state")
-        state = states[states_index][0]
-        state_arg = states[states_index][1]
-        state_memory = None
+        elif event == 2:
+            upstart_predsiters()
+            states_index = 0
 
-        print("New state is:", state, state_arg)
+            state = states[states_index][0]
+            state_arg = states[states_index][1]
+            state_memory = None
+    while not bnt.is_pressed:
+        time.sleep(0.1)
 
-    else:
-        left_pro = trim(left_pro, -100, 100)
-        right_pro = trim(right_pro, -100, 100)
-        tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
+    upstart_predsiters()
+    states_index = 0
 
-    add_to_hist("rli_left", rli_left)
-    add_to_hist("rli_right", rli_right)
-    add_to_hist("line_left", line_left)
-    add_to_hist("line_right", line_right)
-    add_to_hist("h_line", h_line)
-    add_to_hist("start_on_hline", start_on_hline)
-    add_to_hist("left_pro", left_pro)
-    add_to_hist("right_pro", right_pro)
+    state = states[states_index][0]
+    state_arg = states[states_index][1]
+    state_memory = None
 
-
-    event = buttonHandle()
-    if event == 1:
-        break
-    elif event == 2:
-        upstart_predsiters()
-        states_index = 0
-
-        state = states[states_index][0]
-        state_arg = states[states_index][1]
-        state_memory = None
 
 
 

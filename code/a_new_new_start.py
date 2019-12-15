@@ -198,7 +198,7 @@ def upstart_predsiters():
 
 #Run time
 
-base_drive_pro = 40
+base_drive_pro = 30
 turn_speed = 20
 upstart_predsiters()
 

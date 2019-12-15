@@ -200,7 +200,7 @@ def upstart_predsiters():
 #Run time
 base_drive_pro = 30
 turn_speed = 20
-
+upstart_predsiters() #Is not realy nessery do to it beeing don later
 
 
 
@@ -223,6 +223,8 @@ while True:
     while not bnt.is_pressed:
         time.sleep(0.1)
     upstart_predsiters()
+    while bnt.is_pressed:
+        time.sleep(0.1)
     print("Press to start")
     while not bnt.is_pressed:
         time.sleep(0.1)

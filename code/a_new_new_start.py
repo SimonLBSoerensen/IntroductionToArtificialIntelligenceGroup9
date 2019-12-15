@@ -179,7 +179,7 @@ def trim(val, min, max):
         return min
 
 
-def upstart_predsiters():
+def upstart_predsiters(start_motor = True):
     get_hline.on_hline = False
 
     #Calibrate light sensor
@@ -193,14 +193,14 @@ def upstart_predsiters():
 
     print("Done calibrate white")
 
-    base_drive_pro = 60
-    tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
+    if start_motor:
+        tank_drive.on(SpeedPercent(base_drive_pro), SpeedPercent(base_drive_pro))
 
 
 #Run time
 base_drive_pro = 30
 turn_speed = 20
-upstart_predsiters() #Is not realy nessery do to it beeing don later
+upstart_predsiters(start_motor = False) #Is not realy nessery do to it beeing don later
 
 
 

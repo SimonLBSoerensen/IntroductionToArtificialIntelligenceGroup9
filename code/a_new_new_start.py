@@ -174,7 +174,7 @@ def buttonHandle():
     print("Press witin 2 sec for ready for reset else exit will hapen")
     hasBeenPreds = False
     now = datetime.now()
-    while (datetime.now() - now).seconds < 2:
+    while (datetime.now() - now).seconds < 20:
         if bnt.is_pressed:
             hasBeenPreds = True
             print("Reset pressed")

@@ -205,13 +205,13 @@ upstart_predsiters()
 
 states = [
     ["F", 2],
-    ["R", None],
+    ["L", None],
     ["P", None],
     ["F", 2],
-    ["R", None],
+    ["L", None],
     ["P", None],
     ["F", 2],
-    ["R", None],
+    ["L", None],
     ["P", None],
     ["Rep", None]
 ]

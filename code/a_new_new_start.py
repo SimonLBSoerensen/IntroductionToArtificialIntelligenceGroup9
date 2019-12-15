@@ -232,6 +232,8 @@ while True:
     print("Press to start")
     while not bnt.is_pressed:
         time.sleep(0.1)
+    while bnt.is_pressed:
+        time.sleep(0.1)
 
     while True:
         go_to_next_state = False

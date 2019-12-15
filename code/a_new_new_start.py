@@ -240,10 +240,13 @@ while True:
             print(datetime.now(), state, state_memory)
             left_pro, right_pro = (turn_speed, -turn_speed)
             state_memory = "start"
+            print(datetime.now(), state, "to", state_memory)
 
         elif state_memory == "start" and line_left and not line_right:
             print(datetime.now(), state, state_memory)
+            left_pro, right_pro = (turn_speed, -turn_speed)
             state_memory = "mid_turn"
+            print(datetime.now(), state, "to", state_memory)
 
         elif state_memory == "start":
             left_pro, right_pro = (turn_speed, -turn_speed)
@@ -251,6 +254,7 @@ while True:
         elif state_memory == "mid_turn" and not line_left and line_right:
             print(datetime.now(), state, state_memory)
             state_memory = "end_turn"
+            print(datetime.now(), state, "to", state_memory)
             left_pro, right_pro = (turn_speed * (1-0.2), -turn_speed * (1-0.2))
 
         elif state_memory == "end_turn" and not line_right:

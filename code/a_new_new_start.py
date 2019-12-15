@@ -200,10 +200,12 @@ def trim(val, min, max):
 #Run time
 
 base_drive_pro = 60
+turn_speed = 40
 upstart_predsiters()
 
-state = "F"
+state = "R"
 state_arg = 3
+state_memory = None
 
 while True:
     go_to_next_state = False
@@ -233,8 +235,28 @@ while True:
         else:
             left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.05, lower_pro=0.02)
 
+    elif state == "R":
+        if state_memory is None:
+            state_memory = "start"
+
+        if state_memory == "start":
+            left_pro, right_pro = (turn_speed, -turn_speed)
+
+        if line_left and not line_right:
+            state_memory = "mid_turn"
+
+        if state_memory == "mid_turn" and not line_left and line_right:
+            state_memory = "end_turn"
+            left_pro, right_pro = (turn_speed * (1-0.2), -turn_speed * (1-0.2))
+
+        if state_memory == "end_turn" and not line_right:
+            stop_drive(drive_off=False)
+            go_to_next_state = True
+
+
 
     if go_to_next_state:
+        state_memory = None
         pass
     else:
         left_pro = trim(left_pro, -100, 100)

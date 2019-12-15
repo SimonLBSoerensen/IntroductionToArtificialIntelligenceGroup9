@@ -206,14 +206,19 @@ upstart_predsiters()
 states = [
     ["F", 1],
     ["L"],
+    ["P"],
     ["F", 2],
     ["R"],
+    ["P"],
     ["F", 2],
     ["L"],
+    ["P"],
     ["F", 2],
     ["L"],
+    ["P"],
     ["F", 3],
     ["R"],
+    ["P"],
     ["F", 3]
 ]
 states_index = 0
@@ -319,7 +324,7 @@ while True:
             #Load new state
             print("Loading new state")
             state = states[states_index][0]
-            state_arg = states[states_index][1]
+            state_arg = states[states_index][1] if len(states[states_index]) else None
             state_memory = None
 
             print("New state is:", state, state_arg)

@@ -203,13 +203,13 @@ turn_speed = 20
 upstart_predsiters()
 
 states = [
-    ["F", 1],
+    ["F", 2],
     ["R", None],
     ["P", None],
-    ["F", 1],
+    ["F", 2],
     ["R", None],
     ["P", None],
-    ["F", 1],
+    ["F", 2],
     ["R", None],
     ["P", None],
     ["Rep", None]

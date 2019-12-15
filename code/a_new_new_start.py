@@ -31,10 +31,15 @@ def add_to_hist(name, data):
         histDict[name] = [data]
 
 
+def stop_drive(drive_off = True):
+    tank_drive.stop()
+    if drive_off:
+        tank_drive.off()
+
 def killProcs():
     save_data()
-    tank_drive.stop()
-    tank_drive.off()
+    stop_drive()
+
 
 def save_data():
     d = datetime.now()
@@ -153,6 +158,8 @@ def buttonHandle():
     if not bnt.is_pressed:
         return 0
 
+    stop_drive(drive_off=False)
+
     now = datetime.now()
     while (datetime.now() - now).seconds < 2:
         time.sleep(0.1)
@@ -181,7 +188,7 @@ while True:
     line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
     h_line, start_on_hline = get_hline(line_left, line_right)
 
-    left_pro, right_pro = lineflwoere(line_left, line_right, base_drive_pro, change = 100, lower_pro=0.2)
+    left_pro, right_pro = lineflwoere(line_left, line_right, base_drive_pro, change = 100, lower_pro=0.05)
 
     tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 

@@ -187,7 +187,13 @@ def buttonHandle():
     print("No pressd exit will happen")
     return 1
 
-
+def trim(val, min, max):
+    if min <= val <= max:
+        return val
+    elif val > max:
+        return max
+    else:
+        return min
 
 
 
@@ -231,6 +237,8 @@ while True:
     if go_to_next_state:
         pass
     else:
+        left_pro = trim(left_pro, -100, 100)
+        right_pro = trim(right_pro, -100, 100)
         tank_drive.on(SpeedPercent(left_pro), SpeedPercent(right_pro))
 
     add_to_hist("rli_left", rli_left)

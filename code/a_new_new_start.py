@@ -204,21 +204,22 @@ turn_speed = 20
 upstart_predsiters()
 
 states = [
+    ["F", 1],
+    ["L"],
     ["F", 2],
-    ["L", None],
-    ["P", None],
+    ["R"],
     ["F", 2],
-    ["L", None],
-    ["P", None],
+    ["L"],
     ["F", 2],
-    ["L", None],
-    ["P", None],
-    ["Rep", None]
+    ["L"],
+    ["F", 3],
+    ["R"],
+    ["F", 3]
 ]
 states_index = 0
 
 state = states[states_index][0]
-state_arg = states[states_index][1]
+state_arg = states[states_index][1] if len(states[states_index]) else None
 state_memory = None
 
 while True:

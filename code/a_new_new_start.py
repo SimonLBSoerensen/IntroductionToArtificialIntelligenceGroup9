@@ -251,10 +251,10 @@ while True:
             print(datetime.now(), state, "to", state_memory)
 
         elif state_memory[0] == "pre_turn":
-            print(datetime.now(), state, state_memory)
             if state_memory[1] > (datetime.now()-state_memory[2]).microseconds:
                 left_pro, right_pro = (turn_speed, turn_speed)
             else:
+                print(datetime.now(), state, state_memory)
                 state_memory = ["start_turn"]
                 print(datetime.now(), state, "to", state_memory)
 

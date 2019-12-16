@@ -266,7 +266,7 @@ while True:
                 go_to_next_state = True
             else:
                 left_pro, right_pro = lineflwoere_B(line_left, line_right, base_backing_drive_pro,
-                                                    change=1.05, lower_pro=0.02)
+                                                    change=1.10, lower_pro=0.05)
 
         elif state == "Rep":
             states_index = -1

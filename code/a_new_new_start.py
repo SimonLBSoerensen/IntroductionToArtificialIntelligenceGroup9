@@ -237,7 +237,8 @@ states = [
 #states_string = "F2,T,F2,T,O" #T test
 #states_string = "F1,R,F1,R,F1,R,F1,R,O" #R test
 #states_string = "F1,L,F1,L,F1,L,F1,L,O" #L test
-states_string = "B4, T, B4, T, O" #Back test
+#states_string = "B4, T, B4, T, O" #Back test
+states_string = "F4,R,F4,R,F4,R,F4,R,O" #F test
 
 state_times = {}
 states = []

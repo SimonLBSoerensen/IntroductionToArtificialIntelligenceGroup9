@@ -193,14 +193,14 @@ def upstart_predsiters():
 
     print("Done calibrate white")
 
-def get_diff_ms(d, d2 = datetime.now()):
-    return (d2 - d).microseconds * 1000
+def get_diff_s(time_start, time_now = time.clock()):
+    return time_start - time_now
 
 #Run time
 base_drive_pro = 30
 base_backing_drive_pro = -30
 turn_speed = 20
-min_time_before_hline = 1000
+min_time_before_hline = 0.5
 
 
 states = [
@@ -217,7 +217,7 @@ states_index = 0
 
 state = states[states_index][0]
 state_arg = states[states_index][1]
-state_start_time = datetime.now()
+state_start_time = time.clock()
 state_memory = None
 
 while True:
@@ -275,7 +275,7 @@ while True:
             go_to_next_state = True
 
         elif state == "F":
-            if start_on_hline and get_diff_ms(state_start_time) > min_time_before_hline:
+            if start_on_hline and get_diff_s(time.clock()) > min_time_before_hline:
                 state_arg -= 1
 
             if state_arg == 0:
@@ -285,7 +285,7 @@ while True:
                 left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.15)
 
         elif state == "B":
-            if start_on_hline and get_diff_ms(state_start_time) > min_time_before_hline:
+            if start_on_hline and get_diff_s(time.clock()) > min_time_before_hline:
                 state_arg -= 1
 
             if state_arg == 0:
@@ -345,7 +345,7 @@ while True:
 
 
         if go_to_next_state:
-            print("Finding next state, last took:", get_diff_ms(state_start_time),"ms")
+            print("Finding next state, last took:", get_diff_s(time.clock()),"s")
             states_index += 1
             if states_index >= len(states):
                 #End of states
@@ -367,7 +367,7 @@ while True:
                 print("Loading new state")
                 state = states[states_index][0]
                 state_arg = states[states_index][1]
-                state_start_time = datetime.now()
+                state_start_time = time.clock()
                 state_memory = None
 
             print("New state is:", state, state_arg)

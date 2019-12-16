@@ -205,10 +205,7 @@ min_time_before_hline = 0.5
 
 states = [
     ["F", 1],
-    ["T"],
-    ["F", 1],
-    ["T"],
-    ["Rep"],
+    ["R"],
 ]
 
 for i in range(len(states)):
@@ -342,11 +339,20 @@ while True:
 
             elif state_memory[0] == "end_turn" and (not line_right):
                 print(datetime.now(), state, state_memory)
-                stop_drive(drive_off=False)
-                go_to_next_state = True
-                print(datetime.now(), state, "done", state_memory)
+                state_memory = ["post_turn", 200 * 1000]
+                print(datetime.now(), state, "to", state_memory)
             elif state_memory[0] == "end_turn":
                 left_pro, right_pro = (turn_speed, -turn_speed)
+
+            elif state_memory[0] == "post_turn":
+                if state_memory[1] > (datetime.now() - state_memory[2]).microseconds:
+                    left_pro, right_pro = (turn_speed, -turn_speed)
+                else:
+                    left_pro, right_pro = (0, 0)
+                    print(datetime.now(), state, state_memory)
+                    stop_drive(drive_off=False)
+                    go_to_next_state = True
+                    print(datetime.now(), state, "done", state_memory)
 
             if state == "L":
                 temp = right_pro
@@ -397,11 +403,6 @@ while True:
 
             elif state_memory[0] == "end_turn":
                 left_pro, right_pro = (turn_speed, -turn_speed)
-
-
-
-
-
 
         if go_to_next_state:
             print("Finding next state, last took:", time.clock() - state_start_time,"s")

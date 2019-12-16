@@ -231,7 +231,7 @@ states = [
     ["F", 3]
 ]
 
-states_string = "F1, T, F6, L, F1, R, T, F1, F1, T, F1, F1, L, T, F1, R, F6, T, F5, L, T, F1, F1, T, R, T, T, L, F3, R, L, R, F1, R, F1, R, R, R, T, F5, F1, R, F1, L, T, F2, L, L, F1, F1, T, F1, L, T, F1, L, F5, L, T, T, F1, T, L, L, R, R, F1, L, R, R, L, T, F1, L, F1, F1, T, L, L, L, F3, F1, T, L, R, F1, F2, R, F1, T, L, R, F2, F2, F1, T, R, R, L, T, R, F2, F1, F2, F1, L, F1, T, F1, T, R, R, T, F1, R, L, T, F1, T, L, F4, F1, F1, L, F3, T, F1, F2, F1, L, T, F2, T, F1, T, F1, T, F2, L, F1, F1, R, R, F2, L, R, T, T, T, F3, F1, L, F1, R, L, L, F1, R, L, R, R, F1, R, F2, F2, T, L, T, R, L, R, T, F4, R, L, L, F1, L, L, F1, L, T, R, F1, R, T, F1, T, F1, R, L, T, T, R, F1, T, R, T, F3, F1, R,"
+states_string = "F6, T, F5, F1, R, F1, T, F3, F1, R, F1, T, F2, L, F1, T, F1, R, F3, F1, R, F1, R, F3, R, F1, L, F1, L, F1, L, F4, L, F1, L, F2, F1, F1, T, F1, T, F1, L, F1, T, F1, T, F1, L, F3, L, F1, T, F1, L, F1, L, F1, T, F1, T, F1, T, F1, T, F1, T, F1, T, F1, L, F2, L, F1, T, F1, R, F2, T, F3, F1, T, F3, F1, R, F1, R, F2, L, F1, R, F1, L, F1, T, F1, R, F1, L, F2, T, F2, T, F2, L, F2, T, F4, T, F4, L, F1, T, F1, T, F1, L, F4, T, F3, F1, R, F1, T, F1, T, F1, R, F4, T, F3, F1, L, F1, T, F1, T, F1, L, F3, F1, L, F1, L, F2, F1, F1, L, F1, T, F1, T, F1, T, F1, R, F1, F2, F1, T, F1, T, F1, T, F3, F1, L, F1, T, F1, T, F1, L, F1, F1, F1, L, F1, R, F1, T, F4, T, F2, F2, T, F2, F1, F1, L, F1, L, F4, L, F1, T, F1, R, F4, T,"
 states = []
 temp = None
 for i in range(len(states_string)):

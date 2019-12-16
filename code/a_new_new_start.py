@@ -204,6 +204,7 @@ turn_speed = 20
 
 states = [
     ["F", 2],
+    ["PB"],
     ["B", 2],
 ]
 
@@ -371,6 +372,7 @@ while True:
         add_to_hist("right_pro", right_pro)
 
         if bnt.is_pressed:
+            stop_drive(drive_off=False)
             break
 
 

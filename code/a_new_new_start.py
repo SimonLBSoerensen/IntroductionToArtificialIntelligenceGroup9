@@ -205,8 +205,8 @@ min_time_before_hline = 0.5
 
 states = [
     ["F", 2],
-    ["PB"],
-    ["B", 1]
+    ["B", 2]
+    ["Rep"],
 ]
 
 for i in range(len(states)):

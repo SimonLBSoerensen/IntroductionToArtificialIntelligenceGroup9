@@ -275,7 +275,7 @@ while True:
             go_to_next_state = True
 
         elif state == "F":
-            if start_on_hline and get_diff_s(time.clock()) > min_time_before_hline:
+            if start_on_hline and get_diff_s(state_start_time) > min_time_before_hline:
                 state_arg -= 1
 
             if state_arg == 0:
@@ -285,7 +285,7 @@ while True:
                 left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.15)
 
         elif state == "B":
-            if start_on_hline and get_diff_s(time.clock()) > min_time_before_hline:
+            if start_on_hline and get_diff_s(state_start_time) > min_time_before_hline:
                 state_arg -= 1
 
             if state_arg == 0:
@@ -345,7 +345,7 @@ while True:
 
 
         if go_to_next_state:
-            print("Finding next state, last took:", get_diff_s(time.clock()),"s")
+            print("Finding next state, last took:", get_diff_s(state_start_time),"s")
             states_index += 1
             if states_index >= len(states):
                 #End of states
@@ -370,7 +370,7 @@ while True:
                 state_start_time = time.clock()
                 state_memory = None
 
-            print("New state is:", state, state_arg)
+            print("New state is:", state, state_arg, state_start_time)
 
 
         else:

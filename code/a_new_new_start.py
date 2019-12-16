@@ -346,6 +346,7 @@ while True:
             states_index += 1
             if states_index >= len(states):
                 #End of states
+                print("Done with states", line_left, line_right, h_line, start_on_hline)
                 break
 
             next_state = states[states_index][0]

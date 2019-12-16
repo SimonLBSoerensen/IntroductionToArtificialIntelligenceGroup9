@@ -235,7 +235,7 @@ states_string = "F2, T, F2, T, F1, F3, L, F1, L, F4, L, F2, R, F1, R, F1, R, F4,
 #states_string = "F1, L, P, F2, R, P, F3, L, P, F3, L, P, F3, R, P, F3,"
 states_string = "F1, R, F1, R, F1, R, F1, R, F1, L, F1, L, F1, L, F1, L, F1, T, O," #8 drive
 states_string = "F2,T,F2,T,O" #T test
-states_string = "F2,R,F2,R,F2,R,F2,R,O" #R test
+states_string = "F1,R,F1,R,F1,R,F1,R,O" #R test
 #states_string = "F2,L,F2,L,F2,L,F2,L,O" #L test
 
 state_times = {}

@@ -349,6 +349,55 @@ while True:
                 right_pro = left_pro
                 left_pro = temp
 
+        elif state == "T":
+            if state_memory is None:
+                print(datetime.now(), state, state_memory)
+                left_pro, right_pro = (turn_speed, turn_speed)
+                state_memory = ["pre_turn", 400 * 1000, datetime.now()]
+                print(datetime.now(), state, "to", state_memory)
+
+            elif state_memory[0] == "pre_turn":
+                if state_memory[1] > (datetime.now() - state_memory[2]).microseconds:
+                    left_pro, right_pro = (turn_speed, turn_speed)
+                else:
+                    left_pro, right_pro = (0, 0)
+                    print(datetime.now(), state, state_memory)
+                    state_memory = ["start_turn", True] #True is that it is in the first part
+                    print(datetime.now(), state, "to", state_memory)
+
+            elif state_memory[0] == "start_turn" and line_left and (not line_right):
+                print(datetime.now(), state, state_memory)
+
+                state_memory = ["mid_turn", state_memory[1]]
+                print(datetime.now(), state, "to", state_memory)
+            elif state_memory[0] == "start_turn":
+                left_pro, right_pro = (turn_speed, -turn_speed)
+
+            elif state_memory[0] == "mid_turn" and (not line_left) and line_right:
+                print(datetime.now(), state, state_memory)
+                state_memory = ["end_turn",state_memory[1]]
+                print(datetime.now(), state, "to", state_memory)
+            elif state_memory[0] == "mid_turn":
+                left_pro, right_pro = (turn_speed, -turn_speed)
+
+            elif state_memory[0] == "end_turn" and (not line_right):
+                print(datetime.now(), state, state_memory)
+
+                if state_memory[1]:
+                    state_memory = ["start_turn", False]
+                    print(datetime.now(), state, "next part", state_memory)
+                else:
+                    stop_drive(drive_off=False)
+                    go_to_next_state = True
+                    print(datetime.now(), state, "done", state_memory)
+
+            elif state_memory[0] == "end_turn":
+                left_pro, right_pro = (turn_speed, -turn_speed)
+
+
+
+
+
 
         if go_to_next_state:
             print("Finding next state, last took:", time.clock() - state_start_time,"s")

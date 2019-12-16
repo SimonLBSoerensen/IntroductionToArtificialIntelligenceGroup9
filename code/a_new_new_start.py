@@ -232,6 +232,7 @@ states = [
 ]
 
 states_string = "F6, T, F5, F1, R, F1, T, F3, F1, R, F1, T, F2, L, F1, T, F1, R, F3, F1, R, F1, R, F3, R, F1, L, F1, L, F1, L, F4, L, F1, L, F2, F1, F1, T, F1, T, F1, L, F1, T, F1, T, F1, L, F3, L, F1, T, F1, L, F1, L, F1, T, F1, T, F1, T, F1, T, F1, T, F1, T, F1, L, F2, L, F1, T, F1, R, F2, T, F3, F1, T, F3, F1, R, F1, R, F2, L, F1, R, F1, L, F1, T, F1, R, F1, L, F2, T, F2, T, F2, L, F2, T, F4, T, F4, L, F1, T, F1, T, F1, L, F4, T, F3, F1, R, F1, T, F1, T, F1, R, F4, T, F3, F1, L, F1, T, F1, T, F1, L, F3, F1, L, F1, L, F2, F1, F1, L, F1, T, F1, T, F1, T, F1, R, F1, F2, F1, T, F1, T, F1, T, F3, F1, L, F1, T, F1, T, F1, L, F1, F1, F1, L, F1, R, F1, T, F4, T, F2, F2, T, F2, F1, F1, L, F1, L, F4, L, F1, T, F1, R, F4, T,"
+states_string = "F6"
 states = []
 temp = None
 for i in range(len(states_string)):
@@ -294,7 +295,7 @@ while True:
         left_pro, right_pro = (0, 0)
 
         rli_left, rli_right = get_rli()
-        line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
+        line_left, line_right = get_lines(rli_left, rli_right, pro=0.15)
         h_line, start_on_hline = get_hline(line_left, line_right)
         if state == "P":
             if not h_line:

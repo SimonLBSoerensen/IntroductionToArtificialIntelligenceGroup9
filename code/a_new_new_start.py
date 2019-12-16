@@ -339,7 +339,7 @@ while True:
 
             elif state_memory[0] == "end_turn" and (not line_right):
                 print(datetime.now(), state, state_memory)
-                state_memory = ["post_turn", 100 * 1000, datetime.now()]
+                state_memory = ["post_turn", 150 * 1000, datetime.now()]
                 print(datetime.now(), state, "to", state_memory)
             elif state_memory[0] == "end_turn":
                 left_pro, right_pro = (turn_speed, -turn_speed)

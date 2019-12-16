@@ -275,7 +275,7 @@ while True:
             go_to_next_state = True
 
         elif state == "F":
-            state_run_time = get_diff_s(state_start_time)
+            state_run_time = time.clock() - state_start_time
 
             if start_on_hline and state_run_time > min_time_before_hline:
                 state_arg -= 1
@@ -289,7 +289,7 @@ while True:
                 left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.15)
 
         elif state == "B":
-            state_run_time = get_diff_s(state_start_time)
+            state_run_time = time.clock() - state_start_time
 
             if start_on_hline and state_run_time > min_time_before_hline:
                 state_arg -= 1

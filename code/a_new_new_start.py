@@ -296,7 +296,7 @@ while True:
         left_pro, right_pro = (0, 0)
 
         rli_left, rli_right = get_rli()
-        line_left, line_right = get_lines(rli_left, rli_right, pro=0.1)
+        line_left, line_right = get_lines(rli_left, rli_right, pro=0.2)
         h_line, start_on_hline = get_hline(line_left, line_right)
         if state == "P":
             if not h_line:

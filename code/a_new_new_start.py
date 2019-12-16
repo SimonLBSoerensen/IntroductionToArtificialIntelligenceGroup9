@@ -217,7 +217,7 @@ state = states[states_index][0]
 state_arg = states[states_index][1]
 state_start_time = time.clock()
 state_memory = None
-
+print("Start state is:", state, state_arg)
 while True:
     while bnt.is_pressed:
         time.sleep(0.1)

@@ -200,7 +200,7 @@ def get_diff_ms(d, d2 = datetime.now()):
 base_drive_pro = 30
 base_backing_drive_pro = -30
 turn_speed = 20
-min_time_before_hline = 500
+min_time_before_hline = 1000
 
 
 states = [
@@ -345,6 +345,7 @@ while True:
 
 
         if go_to_next_state:
+            print("Finding next state, last took:", get_diff_ms(state_start_time),"ms")
             states_index += 1
             if states_index >= len(states):
                 #End of states

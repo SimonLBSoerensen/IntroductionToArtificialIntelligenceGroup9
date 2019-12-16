@@ -194,7 +194,7 @@ def upstart_predsiters():
     print("Done calibrate white")
 
 def get_diff_s(time_start, time_now = time.clock()):
-    return time_start - time_now
+    return time_now - time_start
 
 #Run time
 base_drive_pro = 30

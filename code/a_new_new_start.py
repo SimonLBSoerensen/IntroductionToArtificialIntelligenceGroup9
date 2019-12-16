@@ -259,6 +259,14 @@ while True:
             else:
                 left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.1)
 
+        if state == "PB":
+            if not h_line:
+                stop_drive(drive_off=False)
+                go_to_next_state = True
+            else:
+                left_pro, right_pro = lineflwoere_B(line_left, line_right, base_backing_drive_pro,
+                                                    change=1.05, lower_pro=0.02)
+
         elif state == "Rep":
             states_index = -1
             go_to_next_state = True

@@ -233,8 +233,9 @@ states = [
 
 states_string = "F2, T, F2, T, F1, F3, L, F1, L, F4, L, F2, R, F1, R, F1, R, F4, F1, T, F4, F1, L, F1, T, F1, T, F1, T, F1, R, F5, L, F1, L, F3, F1, L, F3, F1, T, F1, F1, F1, F1, T, F2, R, F1, T, F1, R, F1, F1, T, F3, F1, R, F1, F3, T, F1, F3, L, F4, T, F2, L, F1, T, F1, L, F2, T, F4, T, F2, F1, L, F1, T, F2, F1, L, F1, R, F2, R, F1, T, F1, L, F2, F1, F1, T, F2, F2, R, F2, R, F1, F1, T, F1, F1, T, F2, R, F1, L, F2, F1, T, F4, F1, T, F2, F3, L, F1, L, F1, L, F2, R, F2, R, F1, R, F3, L, F1, T, F1, R, F4, L, F1, R, F1, T, F2, L, F1, F1, T, F1, T, F1, T, F2, R, F1, F1, T, F1, F3, L, F4, R, F4, T, F3, T, F1, F2, R, F2, R, F1, L, F1, T, F3, F1, L, F1, L, F1, L, F1, L, F1, L, F1, L, F1, T, F1, T, F1, L, F1, T, F2, F1, T, F3, L,"
 #states_string = "F1, L, P, F2, R, P, F3, L, P, F3, L, P, F3, R, P, F3,"
-states_string = "F1, R, F1, R, F1, R, F1, R, F1, L, F1, L, F1, L, F1, L, F1, T, O,"
+states_string = "F1, R, F1, R, F1, R, F1, R, F1, L, F1, L, F1, L, F1, L, F1, T, O," #8 drive
 
+state_times = {}
 states = []
 temp = None
 for i in range(len(states_string)):
@@ -262,8 +263,10 @@ states_index = 0
 
 state = states[states_index][0]
 state_arg = states[states_index][1]
+state_arg_org = states[states_index][1]
 state_start_time = time.clock()
 state_memory = None
+old_state = None
 print("Start state is:", state, state_arg)
 while True:
     while bnt.is_pressed:
@@ -462,6 +465,10 @@ while True:
 
         if go_to_next_state:
             print("Finding next state, last took:", time.clock() - state_start_time,"s")
+            if state not in state_times:
+                state_times[state] = []
+            state_times[state].append([state_arg_org, old_state, time.clock() - state_start_time])
+
             states_index += 1
             if states_index >= len(states):
                 #End of states
@@ -481,8 +488,10 @@ while True:
             else:
                 #Load new state
                 print("Loading new state")
+                old_state = state
                 state = states[states_index][0]
                 state_arg = states[states_index][1]
+                state_arg_org = states[states_index][1]
                 state_start_time = time.clock()
                 state_memory = None
 
@@ -505,6 +514,7 @@ while True:
 
         if bnt.is_pressed:
             stop_drive(drive_off=False)
+            print(state_times)
             break
 
 

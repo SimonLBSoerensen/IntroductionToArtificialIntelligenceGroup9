@@ -197,6 +197,7 @@ def upstart_predsiters():
 
 #Run time
 base_drive_pro = 30
+base_backing_drive_pro = -30
 turn_speed = 20
 
 
@@ -280,7 +281,8 @@ while True:
                 stop_drive(drive_off=False)
                 go_to_next_state = True
             else:
-                left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change=1.05, lower_pro=0.02)
+                left_pro, right_pro = lineflwoere_B(line_left, line_right, base_backing_drive_pro,
+                                                    change=1.05, lower_pro=0.02)
 
         elif state == "R" or state == "L":
             if state == "L":

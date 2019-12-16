@@ -205,7 +205,7 @@ turn_speed = 20
 states = [
     ["F", 2],
     ["PB"],
-    ["B", 2]
+    ["B", 1]
 ]
 
 for i in range(len(states)):

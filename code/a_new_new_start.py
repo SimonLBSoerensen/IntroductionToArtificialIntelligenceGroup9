@@ -233,6 +233,8 @@ states = [
 
 states_string = "F2, T, F2, T, F1, F3, L, F1, L, F4, L, F2, R, F1, R, F1, R, F4, F1, T, F4, F1, L, F1, T, F1, T, F1, T, F1, R, F5, L, F1, L, F3, F1, L, F3, F1, T, F1, F1, F1, F1, T, F2, R, F1, T, F1, R, F1, F1, T, F3, F1, R, F1, F3, T, F1, F3, L, F4, T, F2, L, F1, T, F1, L, F2, T, F4, T, F2, F1, L, F1, T, F2, F1, L, F1, R, F2, R, F1, T, F1, L, F2, F1, F1, T, F2, F2, R, F2, R, F1, F1, T, F1, F1, T, F2, R, F1, L, F2, F1, T, F4, F1, T, F2, F3, L, F1, L, F1, L, F2, R, F2, R, F1, R, F3, L, F1, T, F1, R, F4, L, F1, R, F1, T, F2, L, F1, F1, T, F1, T, F1, T, F2, R, F1, F1, T, F1, F3, L, F4, R, F4, T, F3, T, F1, F2, R, F2, R, F1, L, F1, T, F3, F1, L, F1, L, F1, L, F1, L, F1, L, F1, L, F1, T, F1, T, F1, L, F1, T, F2, F1, T, F3, L,"
 #states_string = "F1, L, P, F2, R, P, F3, L, P, F3, L, P, F3, R, P, F3,"
+states_string = "F1, R, F1, R, F1, R, F1, R, F1, R, F1, L, F1, L, F1, L, F1, L, F1, T, O,"
+
 states = []
 temp = None
 for i in range(len(states_string)):
@@ -313,7 +315,7 @@ while True:
                 left_pro, right_pro = lineflwoere_B(line_left, line_right, base_backing_drive_pro,
                                                     change=1.30, lower_pro=0.1)
 
-        elif state == "Rep":
+        elif state == "O":
             states_index = -1
             go_to_next_state = True
 

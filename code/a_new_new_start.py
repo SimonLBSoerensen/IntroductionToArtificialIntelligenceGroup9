@@ -299,7 +299,7 @@ while True:
                 go_to_next_state = True
             else:
                 left_pro, right_pro = lineflwoere_B(line_left, line_right, base_backing_drive_pro,
-                                                    change=1.50, lower_pro=0.15)
+                                                    change=1.20, lower_pro=0.1)
 
         elif state == "R" or state == "L":
             if state == "L":
@@ -351,7 +351,7 @@ while True:
 
 
         if go_to_next_state:
-            print("Finding next state, last took:", get_diff_s(state_start_time),"s")
+            print("Finding next state, last took:", time.clock() - state_start_time,"s")
             states_index += 1
             if states_index >= len(states):
                 #End of states

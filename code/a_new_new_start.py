@@ -299,7 +299,7 @@ while True:
                 go_to_next_state = True
             else:
                 left_pro, right_pro = lineflwoere_B(line_left, line_right, base_backing_drive_pro,
-                                                    change=1.20, lower_pro=0.10)
+                                                    change=1.50, lower_pro=0.15)
 
         elif state == "R" or state == "L":
             if state == "L":

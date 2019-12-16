@@ -203,8 +203,7 @@ turn_speed = 20
 
 states = [
     ["F", 1],
-    ["R"],
-    ["R"]
+    ["B", 2],
 ]
 
 for i in range(len(states)):
@@ -218,12 +217,20 @@ state_arg = states[states_index][1]
 state_memory = None
 
 while True:
+    while bnt.is_pressed:
+        time.sleep(0.1)
     print("Press to calibrate")
     while not bnt.is_pressed:
         time.sleep(0.1)
 
     print("Calibrateing")
     upstart_predsiters()
+
+    print("Reset state")
+    states_index = 0
+    state = states[states_index][0]
+    state_arg = states[states_index][1]
+    state_memory = None
 
     if bnt.is_pressed:
         print("Release button")
@@ -273,7 +280,7 @@ while True:
                 stop_drive(drive_off=False)
                 go_to_next_state = True
             else:
-                left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change = 1.05, lower_pro=0.02)
+                left_pro, right_pro = lineflwoere_B(line_left, line_right, base_drive_pro, change=1.05, lower_pro=0.02)
 
         elif state == "R" or state == "L":
             if state == "L":
@@ -353,26 +360,11 @@ while True:
         add_to_hist("left_pro", left_pro)
         add_to_hist("right_pro", right_pro)
 
-
-        event = buttonHandle()
-        if event == 1:
+        if bnt.is_pressed:
             break
-        elif event == 2:
-            upstart_predsiters()
-            states_index = 0
 
-            state = states[states_index][0]
-            state_arg = states[states_index][1]
-            state_memory = None
-    while not bnt.is_pressed:
-        time.sleep(0.1)
 
-    upstart_predsiters()
-    states_index = 0
 
-    state = states[states_index][0]
-    state_arg = states[states_index][1]
-    state_memory = None
 
 
 

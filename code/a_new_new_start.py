@@ -212,6 +212,25 @@ states = [
     ["T"],
 ]
 
+states = [
+    ["F", 1],
+    ["L"],
+    ["P"],
+    ["F", 2],
+    ["R"],
+    ["P"],
+    ["F", 3],
+    ["L"],
+    ["P"],
+    ["F", 3],
+    ["L"],
+    ["P"],
+    ["F", 3],
+    ["R"],
+    ["P"],
+    ["F", 3]
+]
+
 for i in range(len(states)):
     if len(states[i]) < 2:
         states[i].append(None)

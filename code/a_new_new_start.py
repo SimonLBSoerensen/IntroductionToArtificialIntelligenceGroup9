@@ -205,7 +205,7 @@ min_time_before_hline = 0.5
 
 states = [
     ["F", 1],
-    ["R"],
+    ["L"],
 ]
 
 for i in range(len(states)):
@@ -339,7 +339,7 @@ while True:
 
             elif state_memory[0] == "end_turn" and (not line_right):
                 print(datetime.now(), state, state_memory)
-                state_memory = ["post_turn", 200 * 1000]
+                state_memory = ["post_turn", 200 * 1000, datetime.now()]
                 print(datetime.now(), state, "to", state_memory)
             elif state_memory[0] == "end_turn":
                 left_pro, right_pro = (turn_speed, -turn_speed)

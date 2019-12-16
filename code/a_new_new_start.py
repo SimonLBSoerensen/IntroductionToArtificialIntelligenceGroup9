@@ -280,7 +280,7 @@ while True:
             if start_on_hline and state_run_time > min_time_before_hline:
                 state_arg -= 1
             elif start_on_hline and state_run_time < min_time_before_hline:
-                print("Hline seen but state time is:", state_run_time)
+                print("Hline seen but state time is:", state_run_time, state_start_time, time.clock())
 
             if state_arg == 0:
                 stop_drive(drive_off=False)
@@ -294,7 +294,7 @@ while True:
             if start_on_hline and state_run_time > min_time_before_hline:
                 state_arg -= 1
             elif start_on_hline and state_run_time < min_time_before_hline:
-                print("Hline seen but state time is:", state_run_time)
+                print("Hline seen but state time is:", state_run_time, state_start_time, time.clock())
 
             if state_arg == 0:
                 stop_drive(drive_off=False)

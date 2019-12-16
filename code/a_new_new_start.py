@@ -275,8 +275,12 @@ while True:
             go_to_next_state = True
 
         elif state == "F":
-            if start_on_hline and get_diff_s(state_start_time) > min_time_before_hline:
+            state_run_time = get_diff_s(state_start_time)
+
+            if start_on_hline and state_run_time > min_time_before_hline:
                 state_arg -= 1
+            elif start_on_hline and state_run_time < min_time_before_hline:
+                print("Hline seen but state time is:", state_run_time)
 
             if state_arg == 0:
                 stop_drive(drive_off=False)
@@ -285,8 +289,12 @@ while True:
                 left_pro, right_pro = lineflwoere_F(line_left, line_right, base_drive_pro, change=1.9, lower_pro=0.15)
 
         elif state == "B":
-            if start_on_hline and get_diff_s(state_start_time) > min_time_before_hline:
+            state_run_time = get_diff_s(state_start_time)
+
+            if start_on_hline and state_run_time > min_time_before_hline:
                 state_arg -= 1
+            elif start_on_hline and state_run_time < min_time_before_hline:
+                print("Hline seen but state time is:", state_run_time)
 
             if state_arg == 0:
                 stop_drive(drive_off=False)

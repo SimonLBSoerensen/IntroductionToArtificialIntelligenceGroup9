@@ -348,11 +348,21 @@ while True:
                 #End of states
                 break
 
-            #Load new state
-            print("Loading new state")
-            state = states[states_index][0]
-            state_arg = states[states_index][1]
-            state_memory = None
+            next_state = states[states_index][0]
+
+            if h_line and (next_state == "B" or next_state == "F"):
+                if next_state == "B":
+                    state = "PB"
+                    states_index -= 1
+                if next_state == "F":
+                    state = "P"
+                    states_index -= 1
+            else:
+                #Load new state
+                print("Loading new state")
+                state = states[states_index][0]
+                state_arg = states[states_index][1]
+                state_memory = None
 
             print("New state is:", state, state_arg)
 

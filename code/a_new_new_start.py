@@ -240,6 +240,7 @@ states = [
 #states_string = "B4, T, B4, T, O" #Back test
 states_string = "F4,R,F4,R,F4,R,F4,R,O" #F test
 
+
 state_times = {}
 states = []
 temp = None
@@ -302,6 +303,9 @@ while True:
     while bnt.is_pressed:
         time.sleep(0.1)
 
+    rep_time = time.clock()
+    rep_times = []
+
     while True:
         go_to_next_state = False
         left_pro, right_pro = (0, 0)
@@ -327,6 +331,8 @@ while True:
         elif state == "O":
             states_index = -1
             go_to_next_state = True
+            rep_times.append(time.clock() - rep_time)
+            rep_time = time.clock()
 
         elif state == "F":
             state_run_time = time.clock() - state_start_time
@@ -521,6 +527,7 @@ while True:
         if bnt.is_pressed:
             stop_drive(drive_off=False)
             print(state_times)
+            print("Reptimes:", rep_times)
             break
 
 
